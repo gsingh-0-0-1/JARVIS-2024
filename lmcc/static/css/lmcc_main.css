@@ -1,0 +1,33 @@
+body {
+	background-color: #222;
+}
+
+.panel_lmcc {
+	background-color: #444;
+	border: 0.7vh solid #101010;
+}
+
+.info_lmcc {
+	font-family: Source Code Pro, Courier;
+	font-size: 2vh;
+	position: relative;
+	left: 50%;
+	transform: translate(-50%, 0%);
+}
+
+#panel_mission_monitoring {
+	position: fixed;
+	left: 0%;
+	top: 0%;
+	width: 60%;
+	height: 60%;
+}
+
+#panel_timers {
+	position: absolute;
+	left: 15%;
+	top: 55%;
+	transform: translate(-50%, -50%);
+	width: 20%;
+	height: 70%;
+}
