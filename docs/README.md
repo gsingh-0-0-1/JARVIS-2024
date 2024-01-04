@@ -21,5 +21,22 @@ git push origin dev/[your_branch_name]
 
 ### Code Standards
 
-Every function you write should be preceded by a multiline comment describing the function.
+Every function you write should be preceded by a multiline comment describing the function. For example, in Python:
+
+```
+
+'''
+An incredibly frustrating way to take the sum of two numbers.
+Do not use in production!
+'''
+def dumb_sum(a, b):
+	s = 0
+	for i in range(a):
+		s = s + 1
+
+	for j in range(b):
+		s = s + 1
+	
+	return s
+```
 
