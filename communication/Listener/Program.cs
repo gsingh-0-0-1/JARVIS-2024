@@ -2,14 +2,18 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading;
+
+using JSONClasses;
 
 class Server
 {
     static TcpListener server;
 
     private static Dictionary<string, NetworkStream> clients = new Dictionary<string, NetworkStream>();
-    private static object lockObject = new object();
+    private static readonly object lockObject = new object();
 
     private TcpClient client;
     private NetworkStream stream;
@@ -43,7 +47,7 @@ class Server
         this.stream = client.GetStream();
     }
 
-    void HandleClient()
+    async void HandleClient()
     {
         string clientId = ReadString();
         Console.WriteLine($"Client is named {clientId}");
@@ -55,28 +59,25 @@ class Server
 
         while (true)
         {
-            string reciever;
+            string recieved;
             try {
-                reciever = ReadString();
+                recieved = await ReadJson();
             } catch (SocketException e) {
                 break;
             }
-            Console.WriteLine($"{clientId} Received: {reciever}");
-            if (clients.ContainsKey(reciever)) {
-                Console.WriteLine("Valid key");
-                string message;
-                try
-                {
-                    message = ReadString();
-                }
-                catch (SocketException e)
-                {
-                    break;
-                }
-                SendString(reciever, message);
-            } else {
-                Console.WriteLine("Invalid key");
+            Console.WriteLine($"{clientId}:");
+            InformationJSON recievedInformation = JsonSerializer.Deserialize<InformationJSON>(recieved)!;
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string prettyJsonString = JsonSerializer.Serialize(recievedInformation, options);
+            Console.WriteLine(prettyJsonString);
+
+            recievedInformation.sender = clientId;
+
+            if (clients.ContainsKey(recievedInformation.reciever)) {
+                SendJsonAsync(recievedInformation);
             }
+            
         }
         Console.WriteLine($"Client {clientId} disconnected");
 
@@ -97,11 +98,21 @@ class Server
         return message;
     }
 
-    static void SendString(string client, string str) {
-        Stream stream = clients[client];
+    async void SendJsonAsync(InformationJSON informationJSON) {
+        NetworkStream stream = clients[informationJSON.reciever];
 
-        byte[] data = Encoding.ASCII.GetBytes(str);
-        stream.Write(data, 0, data.Length);
+        await JsonSerializer.SerializeAsync(stream, informationJSON);
+    }
+
+    async Task<string> ReadJson() {
+        byte[] buffer = new byte[1024];
+        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+        if (bytesRead == 0) {
+            throw new SocketException();
+        }
+
+        string jsonString = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+        return jsonString;
     }
 
     static IPAddress GetLocalIPAddress()

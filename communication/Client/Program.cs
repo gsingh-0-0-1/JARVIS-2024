@@ -2,7 +2,11 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
+using Microsoft.VisualBasic;
+
+using JSONClasses;
 
 class Client
 {
@@ -14,23 +18,23 @@ class Client
         client = new TcpClient(IPAddress.Loopback.ToString(), 1234);
         stream = client.GetStream();
 
-        Thread receiveThread = new Thread(ReceiveMessages);
+        Task recieveMessages = ReceiveMessagesAsync();
+
         Thread sendThread = new Thread(SendMessages);
 
-        receiveThread.Start();
         sendThread.Start();
     }
 
-    static void ReceiveMessages()
-    {
+    static async Task ReceiveMessagesAsync() {
         while (true)
         {
-            byte[] data = new byte[256];
-            int bytesRead = stream.Read(data, 0, data.Length);
-            if (bytesRead == 0) {
+            string message;
+            try {
+                message = await ReadJson();
+            } catch (SocketException e) {
                 break;
             }
-            string message = Encoding.ASCII.GetString(data, 0, bytesRead);
+
             Console.WriteLine($"Received: {message}");
         }
         Console.WriteLine("Diconnected from sever :(");
@@ -43,14 +47,38 @@ class Client
         SendString(Console.ReadLine());
         while (true)
         {
-            string messageToSend = Console.ReadLine();
-            SendString(messageToSend);
-            Console.WriteLine($"Sent: {messageToSend}");
+            Console.WriteLine("Enter other client name:");
+            string clientName = Console.ReadLine();
+            SendJsonAsync(clientName);
         }
     }
 
     static void SendString(string str) {
         byte[] data = Encoding.ASCII.GetBytes(str);
         stream.Write(data, 0, data.Length);
+        stream.Flush();
     }
+
+    static async void SendJsonAsync(string clientName) {
+        InformationJSON json = new InformationJSON
+        {
+            reciever = clientName,
+            information = "Hello!"
+        };
+
+        await JsonSerializer.SerializeAsync(stream, json);
+    }
+
+
+    static async Task<string> ReadJson() {
+        byte[] buffer = new byte[1024];
+        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+        if (bytesRead == 0) {
+            throw new SocketException();
+        }
+
+        string jsonString = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+        return jsonString;
+    }
+
 }
