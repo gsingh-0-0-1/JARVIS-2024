@@ -1,17 +1,13 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
-using Microsoft.VisualBasic;
-
-using JSONClasses;
+using System.Text.Json.Nodes;
 
 class Client
 {
-    static TcpClient client;
-    static NetworkStream stream;
+    private static TcpClient client = null!;
+    private static NetworkStream stream = null!;
 
     static void Main()
     {
@@ -28,10 +24,10 @@ class Client
     static async Task ReceiveMessagesAsync() {
         while (true)
         {
-            string message;
+            JsonNode message;
             try {
                 message = await ReadJson();
-            } catch (SocketException e) {
+            } catch (SocketException) {
                 break;
             }
 
@@ -41,44 +37,50 @@ class Client
         Environment.Exit(Environment.ExitCode);
     }
 
-    static void SendMessages()
+    static async void SendMessages()
     {
         Console.WriteLine("Enter name:");
-        SendString(Console.ReadLine());
+        SendString(Console.ReadLine()!);
         while (true)
         {
             Console.WriteLine("Enter other client name:");
-            string clientName = Console.ReadLine();
-            SendJsonAsync(clientName);
+            string clientName = Console.ReadLine()!;
+            await SendJsonAsync(clientName);
         }
     }
 
     static void SendString(string str) {
         byte[] data = Encoding.ASCII.GetBytes(str);
         stream.Write(data, 0, data.Length);
-        stream.Flush();
     }
 
-    static async void SendJsonAsync(string clientName) {
-        InformationJSON json = new InformationJSON
-        {
-            reciever = clientName,
-            information = "Hello!"
-        };
+    static async Task SendJsonAsync(string clientName) {
+        var json = new { reciever = clientName, information = "Hello!" };
 
-        await JsonSerializer.SerializeAsync(stream, json);
+        string jsonString = JsonSerializer.Serialize(json);
+        byte[] data = Encoding.UTF8.GetBytes(jsonString);
+        byte[] lengthPrefix = BitConverter.GetBytes(data.Length);
+
+        await stream.WriteAsync(lengthPrefix, 0, lengthPrefix.Length);
+        await stream.WriteAsync(data, 0, data.Length);
     }
 
 
-    static async Task<string> ReadJson() {
-        byte[] buffer = new byte[1024];
-        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-        if (bytesRead == 0) {
-            throw new SocketException();
-        }
+    static async Task<JsonNode> ReadJson() {
+        int bufferLengthRecieved;
 
-        string jsonString = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-        return jsonString;
+        byte[] lengthBuffer = new byte[4];
+        bufferLengthRecieved = await stream.ReadAsync(lengthBuffer, 0, lengthBuffer.Length);
+        if (bufferLengthRecieved == 0) { throw new SocketException(); }
+        int messageLength = BitConverter.ToInt32(lengthBuffer, 0);
+
+        byte[] buffer = new byte[messageLength];
+        bufferLengthRecieved = await stream.ReadAsync(buffer, 0, buffer.Length);
+        if (bufferLengthRecieved == 0) { throw new SocketException(); }
+
+        JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(buffer)!;
+
+        return recievedInformation;
     }
 
 }

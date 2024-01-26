@@ -1,16 +1,12 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading;
-
-using JSONClasses;
 
 class Server
 {
-    static TcpListener server;
+    private static TcpListener server = null!;
 
     private static Dictionary<string, NetworkStream> clients = new Dictionary<string, NetworkStream>();
     private static readonly object lockObject = new object();
@@ -49,7 +45,15 @@ class Server
 
     async void HandleClient()
     {
-        string clientId = ReadString();
+        string clientId;
+        try {
+            clientId = ReadString();
+        } catch (SocketException) {
+            Console.WriteLine("Client disconnected");
+            return;
+        }
+
+        // TODO Check if client is already in dictonary. Idk if needed.
         Console.WriteLine($"Client is named {clientId}");
         
         lock (lockObject)
@@ -59,23 +63,18 @@ class Server
 
         while (true)
         {
-            string recieved;
+            JsonNode recievedInformation;
             try {
-                recieved = await ReadJson();
-            } catch (SocketException e) {
-                break;
-            }
-            Console.WriteLine($"{clientId}:");
-            InformationJSON recievedInformation = JsonSerializer.Deserialize<InformationJSON>(recieved)!;
+                recievedInformation = await ReadJson();
+            } catch (SocketException) { break; }
 
             var options = new JsonSerializerOptions { WriteIndented = true };
             string prettyJsonString = JsonSerializer.Serialize(recievedInformation, options);
             Console.WriteLine(prettyJsonString);
 
-            recievedInformation.sender = clientId;
-
-            if (clients.ContainsKey(recievedInformation.reciever)) {
-                SendJsonAsync(recievedInformation);
+            recievedInformation["sender"] = clientId;
+            if (clients.ContainsKey(recievedInformation["reciever"]!.GetValue<string>())) {
+                await SendJsonAsync(recievedInformation);
             }
             
         }
@@ -98,21 +97,33 @@ class Server
         return message;
     }
 
-    async void SendJsonAsync(InformationJSON informationJSON) {
-        NetworkStream stream = clients[informationJSON.reciever];
+    async Task SendJsonAsync(JsonNode json) {
+        NetworkStream stream = clients[json["reciever"]!.GetValue<string>()];
 
-        await JsonSerializer.SerializeAsync(stream, informationJSON);
+        string jsonString = JsonSerializer.Serialize(json);
+        byte[] data = Encoding.UTF8.GetBytes(jsonString);
+        byte[] lengthPrefix = BitConverter.GetBytes(data.Length);
+
+        await stream.WriteAsync(lengthPrefix, 0, lengthPrefix.Length);
+        await stream.WriteAsync(data, 0, data.Length);
     }
 
-    async Task<string> ReadJson() {
-        byte[] buffer = new byte[1024];
-        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-        if (bytesRead == 0) {
-            throw new SocketException();
-        }
 
-        string jsonString = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-        return jsonString;
+    async Task<JsonNode> ReadJson() {
+        int bufferLengthRecieved;
+
+        byte[] lengthBuffer = new byte[4];
+        bufferLengthRecieved = await stream.ReadAsync(lengthBuffer, 0, lengthBuffer.Length);
+        if (bufferLengthRecieved == 0) { throw new SocketException(); }
+        int messageLength = BitConverter.ToInt32(lengthBuffer, 0);
+
+        byte[] buffer = new byte[messageLength];
+        bufferLengthRecieved = await stream.ReadAsync(buffer, 0, buffer.Length);
+        if (bufferLengthRecieved == 0) { throw new SocketException(); }
+
+        JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(buffer)!;
+
+        return recievedInformation;
     }
 
     static IPAddress GetLocalIPAddress()
