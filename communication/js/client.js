@@ -4,7 +4,7 @@ var XMLHttpRequest = require('xhr2');
 const HOST = '0.0.0.0';
 const PORT = 14142;
 
-if (process.argv.slice(2) == undefined) {
+if (process.argv.slice(2) == undefined || process.argv.slice(2) == '') {
 	console.log("Please specify user (HMD/LMCC) from command line argument!")
 	console.log("Usage: node client.js <user>")
 	process.exit(1)	
@@ -19,9 +19,12 @@ const GEO_ENDPOINT = "http://" + TSS_ADDR + ":" + TSS_PORT + "/json_data/IMU.jso
 const ws = new WebSocket('ws://' + HOST + ':' + String(PORT));
 
 ws.onmessage = function (event) {
-  console.log('Received message: ' + event.data);
-  var data = JSON.parse(event.data)
-  console.log(data["content"]["EVA1"]["x"])
+	var message = JSON.parse(event.data)
+	var message_type = message["type"];
+ 	console.log('Received ' + message_type + ' from ' + message["sender"]);
+ 	if (message_type == "GEOPIN") {
+ 		console.log(message["content"])
+ 	}
 };
 
 ws.onopen = function (event) {
@@ -54,6 +57,7 @@ function createGeoPin(description = '') {
 			};
 
 			data["sender"] = USER;
+			data["type"] = "GEOPIN"
 			data["content"] = content;
 
 			ws.send(JSON.stringify(data))
