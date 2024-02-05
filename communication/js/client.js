@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+var XMLHttpRequest = require('xhr2');
 
 const HOST = '0.0.0.0';
 const PORT = 14142;
@@ -13,6 +14,8 @@ const USER = process.argv.slice(2);
 const TSS_PORT = "14141"
 const TSS_ADDR = "data.cs.purdue.edu"
 
+const GEO_ENDPOINT = "http://" + TSS_ADDR + ":" + TSS_PORT + "/json_data/IMU.json"
+
 const ws = new WebSocket('ws://' + HOST + ':' + String(PORT));
 
 ws.onmessage = function (event) {
@@ -25,26 +28,44 @@ ws.onopen = function (event) {
   console.log('WebSocket connection established');
 };
 
-function createGeoPin() {
+function createGeoPin(description = '') {
 	// TODO: Ask NASA about how to properly pull GeoData. The TSS
 	// is being a bit annoying
 
 	// Just going to load up some sample random content for now
 
-	var data = {};
-	var content = {"EVA1" : {
-			"x" : 0, 
-			"y" : 0
-		}, 
-		"EVA2" : {
-			"x" : 0, 
-			"y" : 0
+	var georeq = new XMLHttpRequest();
+	georeq.open("GET", GEO_ENDPOINT)
+	georeq.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var reqdata = this.responseText;
+			var reqdata_json = JSON.parse(reqdata);
+
+			var data = {};
+			var content = {"EVA1" : {
+					"x" : reqdata_json["imu"]["eva1"]["posx"], 
+					"y" : reqdata_json["imu"]["eva1"]["posy"]
+				}, 
+				"EVA2" : {
+					"x" : reqdata_json["imu"]["eva2"]["posx"], 
+					"y" : reqdata_json["imu"]["eva2"]["posy"]
+				},
+				"desc" : description
+			};
+
+			data["sender"] = USER;
+			data["content"] = content;
+
+			ws.send(JSON.stringify(data))
+		
 		}
-	};
-
-	data["sender"] = USER;
-	data["content"] = content;
-
-	ws.send(JSON.stringify(data))
+	}
+	georeq.send()
 }
 
+function simulateGeoPinCreation() {
+	console.log("Simulating geopin creation...")
+	createGeoPin("default geo pin")
+}
+
+setInterval(simulateGeoPinCreation, 2000)
