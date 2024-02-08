@@ -11,6 +11,14 @@ button {
 	font-family: Source Code Pro, Courier;
 }
 
+input[type=text] {
+	color: #bbb;
+	padding: 1vh 1vh;
+	background-color: #444;
+	border: none;
+	font-family: Source Code Pro, Courier;
+}
+
 .panel {
 	position: fixed;
 	border: 0.5vh solid black;
@@ -24,13 +32,21 @@ button {
 	width: 25%;
 	height: 50%;
 	background-color: #88c;
+	overflow-y: scroll;
 }
 
 #button_geopincreate {
 	position: relative;
 	margin-top: 5%;
-	transform: translate(-50%, 0%);
-	left: 50%;
+	left: 10%;
+	display: inline-block;
+}
+
+#pindesc {
+	position: relative;
+	margin-top: 5%;
+	left: 10%;
+	display: inline-block;
 }
 
 #geo_pin_list {

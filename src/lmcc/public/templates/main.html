@@ -17,6 +17,9 @@
 			Create Geo Pin
 		</button>
 
+		<input type="text" id="pindesc" placeholder="Description...">
+
+
 		<ul id="geo_pin_list">
 			
 		</ul>
@@ -34,7 +37,8 @@
 
 	function requestGeoPinCreation() {
 		var req = new XMLHttpRequest();
-		req.open("GET", "/creategeopin")
+		let val = document.getElementById("pindesc").value
+		req.open("GET", "/creategeopin/" + val)
 		req.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 201) {
 				// created

@@ -119,8 +119,8 @@ app.get('/', (req, res) => {
 	res.sendFile("public/templates/main.html", {root: __dirname});
 });
 
-app.get('/creategeopin', (req, res) => {
-	simulateGeoPinCreation()
+app.get('/creategeopin/:desc', (req, res) => {
+	createGeoPin(req.params.desc)
 	// resource created
 	res.sendStatus(201);
 });
