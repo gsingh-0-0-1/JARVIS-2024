@@ -2,13 +2,33 @@
 <html>
 <head>
 	<title>JARVIS LMCC</title>
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="/css/main.css">
+
+
 </head>
 <body>
-	<button onclick="javascript:requestGeoPinCreation()">
-		Create Geo Pin
-	</button>
+	<div id="panel_geo" class="panel">
+		<button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
+			Create Geo Pin
+		</button>
+
+		<ul id="geo_pin_list">
+			
+		</ul>
+	</div>
 </body>
 <script>
+
+	var LOCAL_DATA = {}
+	LOCAL_DATA["GEOPINS"] = [];
+
+	var geo_pin_list = document.getElementById("geo_pin_list")
+
 	// we need to keep this port value fixed, I guess
 	const ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
 
@@ -17,10 +37,57 @@
 		req.open("GET", "/creategeopin")
 		req.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 201) {
-				alert("pin created")
+				// created
 			}
 		}
 		req.send()
 	}
+
+	function addGeoPin(content) {
+ 		LOCAL_DATA["GEOPINS"].push(content)
+
+		var li = document.createElement('li');
+
+		var EVA1_x = Math.round(Number(content["EVA1"]["x"]) * 100) / 100
+		var EVA1_y = Math.round(Number(content["EVA1"]["y"]) * 100) / 100
+
+		var EVA2_x = Math.round(Number(content["EVA2"]["x"]) * 100) / 100
+		var EVA2_y = Math.round(Number(content["EVA2"]["y"]) * 100) / 100
+
+
+		li.appendChild(document.createTextNode(content["desc"]));
+		li.appendChild(document.createElement("br"))
+		li.appendChild(document.createTextNode("-: EVA1 (" + EVA1_x + ", " + EVA1_y + ")"))
+		li.appendChild(document.createElement("br"))
+		li.appendChild(document.createTextNode("-: EVA2 (" + EVA2_x + ", " + EVA2_y + ")"))
+
+		geo_pin_list.appendChild(li)
+	}
+
+	ws.onmessage = async function (event, isBinary) {
+		var data = await event.data.text();
+		var message = JSON.parse(data)
+		var message_type = message["type"];
+	 	console.log('Received ' + message_type + ' from ' + message["sender"]);
+	 	if (message_type == "GEOPIN") {
+	 		console.log(message["content"])
+	 		addGeoPin(message["content"])
+	 	}
+	};
+
+	// when we load, check with the server for existing pins
+	var load_existing_geopins_req = new XMLHttpRequest();
+	load_existing_geopins_req.open("GET", "/localdata/GEOPINS")
+	load_existing_geopins_req.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var raw_data = this.responseText
+			var data_json = JSON.parse(raw_data)
+			for (var pin_num of Object.keys(data_json)) {
+				addGeoPin(data_json[pin_num])
+			}
+		}
+	}
+	load_existing_geopins_req.send()
+
 </script>
 </html>

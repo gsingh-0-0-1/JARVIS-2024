@@ -37,10 +37,11 @@ const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
 
 const app = express();
 const server = http.createServer(app);
+app.use(express.static('public'))
 
 
 var LOCAL_DATA = {}
-LOCAL_DATA["GEOPINS"] = [];
+LOCAL_DATA["GEOPINS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -49,7 +50,8 @@ ws.onmessage = function (event) {
  	console.log('Received ' + message_type + ' from ' + message["sender"]);
  	if (message_type == "GEOPIN") {
  		console.log(message["content"])
- 		LOCAL_DATA["GEOPINS"].push(message["content"])
+ 		let npins = Object.keys(LOCAL_DATA["GEOPINS"]).length
+ 		LOCAL_DATA["GEOPINS"][npins] = message["content"]
  	}
 };
 
@@ -93,7 +95,7 @@ function createGeoPin(description = '') {
 			data["type"] = "GEOPIN"
 			data["content"] = content;
 
-			ws.send(JSON.stringify(data))
+			ws.send(String(JSON.stringify(data)))
 		
 		}
 	}
@@ -122,6 +124,10 @@ app.get('/creategeopin', (req, res) => {
 	// resource created
 	res.sendStatus(201);
 });
+
+app.get('/localdata/:item', (req, res) => {
+	res.send(LOCAL_DATA[req.params.item]);
+})
 
 
 server.listen(PORT_WEB, HOST, () => console.log(`Server running on port ${PORT_WEB}`));

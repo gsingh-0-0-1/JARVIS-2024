@@ -1,0 +1,38 @@
+body {
+	background-color: #123;
+	font-family: Source Code Pro, Courier;
+}
+
+button {
+	color: #bbb;
+	padding: 1vh 1vh;
+	background-color: #444;
+	border: none;
+	font-family: Source Code Pro, Courier;
+}
+
+.panel {
+	position: fixed;
+	border: 0.5vh solid black;
+}
+
+
+
+#panel_geo {
+	left: 0%;
+	top: 0%;
+	width: 25%;
+	height: 50%;
+	background-color: #88c;
+}
+
+#button_geopincreate {
+	position: relative;
+	margin-top: 5%;
+	transform: translate(-50%, 0%);
+	left: 50%;
+}
+
+#geo_pin_list {
+	/* list-style-type: none; */
+}
