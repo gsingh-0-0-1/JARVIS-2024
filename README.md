@@ -3,3 +3,4 @@
 <h2>Purdue University</h2>
 </div>
 
+Start by running the gateway using `node gateway.js` inside `src/gateway`. Then run the LMCC using `node lmcc.js` inside `src/lmcc'.
