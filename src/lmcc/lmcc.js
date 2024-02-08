@@ -1,22 +1,47 @@
+const express = require('express');
+const http = require('http');
 const WebSocket = require('ws');
+const fs = require('fs')
 var XMLHttpRequest = require('xhr2');
 
-const HOST = '0.0.0.0';
-const PORT = 14142;
 
-if (process.argv.slice(2) == undefined || process.argv.slice(2) == '') {
-	console.log("Please specify user (HMD/LMCC) from command line argument!")
-	console.log("Usage: node client.js <user>")
-	process.exit(1)	
-}
-const USER = process.argv.slice(2);
+/*
 
-const TSS_PORT = "14141"
-const TSS_ADDR = "data.cs.purdue.edu"
+--------CONFIG INITIALIZATION--------
 
-const GEO_ENDPOINT = "http://" + TSS_ADDR + ":" + TSS_PORT + "/json_data/IMU.json"
+*/
 
-const ws = new WebSocket('ws://' + HOST + ':' + String(PORT));
+const CONFIG = JSON.parse(fs.readFileSync('../config.json'));
+
+const HOST = CONFIG['LMCC']['HOST'];
+const PORT_WEB = CONFIG['LMCC']['PORT_WEB'];
+
+// the gateway and LMCC will be on the same machine
+const GATEWAY_HOST = 'localhost';
+const GATEWAY_PORT = CONFIG['GATEWAY']['PORT_SOC'];
+
+const TSS_PORT = CONFIG['TSS']['PORT_WEB'];
+const TSS_ADDR = CONFIG['TSS']['HOST'];
+
+const USER = "LMCC";
+
+const TSS_FULL_HTTP = "http://" + TSS_ADDR + ":" + TSS_PORT
+const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
+
+
+/*
+
+--------SERVER & SOCKET INITIALIZATION--------
+
+*/
+
+const app = express();
+const server = http.createServer(app);
+
+
+var LOCAL_DATA = {}
+LOCAL_DATA["GEOPINS"] = [];
+const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
 	var message = JSON.parse(event.data)
@@ -24,12 +49,20 @@ ws.onmessage = function (event) {
  	console.log('Received ' + message_type + ' from ' + message["sender"]);
  	if (message_type == "GEOPIN") {
  		console.log(message["content"])
+ 		LOCAL_DATA["GEOPINS"].push(message["content"])
  	}
 };
 
 ws.onopen = function (event) {
   console.log('WebSocket connection established');
 };
+
+
+/*
+
+--------FUNCTION DEFS--------
+
+*/
 
 function createGeoPin(description = '') {
 	// TODO: Ask NASA about how to properly pull GeoData. The TSS
@@ -72,4 +105,23 @@ function simulateGeoPinCreation() {
 	createGeoPin("default geo pin")
 }
 
-setInterval(simulateGeoPinCreation, 2000)
+
+/*
+
+--------ROUTES AND SUCH--------
+
+*/
+
+
+app.get('/', (req, res) => {
+	res.sendFile("public/templates/main.html", {root: __dirname});
+});
+
+app.get('/creategeopin', (req, res) => {
+	simulateGeoPinCreation()
+	// resource created
+	res.sendStatus(201);
+});
+
+
+server.listen(PORT_WEB, HOST, () => console.log(`Server running on port ${PORT_WEB}`));

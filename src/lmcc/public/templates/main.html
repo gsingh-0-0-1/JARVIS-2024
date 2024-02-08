@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JARVIS LMCC</title>
+</head>
+<body>
+	<button onclick="javascript:requestGeoPinCreation()">
+		Create Geo Pin
+	</button>
+</body>
+<script>
+	// we need to keep this port value fixed, I guess
+	const ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
+
+	function requestGeoPinCreation() {
+		var req = new XMLHttpRequest();
+		req.open("GET", "/creategeopin")
+		req.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 201) {
+				alert("pin created")
+			}
+		}
+		req.send()
+	}
+</script>
+</html>
