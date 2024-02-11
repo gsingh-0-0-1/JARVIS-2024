@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using WebSocketSharp;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 public class Client : MonoBehaviour
 {
@@ -24,6 +26,9 @@ public class Client : MonoBehaviour
             byte[] dataBytes = e.RawData;
             string dataString = System.Text.Encoding.UTF8.GetString(dataBytes);
             Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + dataString);
+
+            JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(dataString)!;
+            Debug.Log($"JsonNode Received: {recievedInformation}");
         };
         ws.OnError += (sender, e) => {
                 Debug.Log(e.Message);
@@ -32,7 +37,7 @@ public class Client : MonoBehaviour
         string host = "data.cs.purdue.edu";
         TSSc.ConnectToHost(host, 7);
     }
-    
+
     void Update()
     {
         if (TSSc.isUIAUpdated())
@@ -43,8 +48,12 @@ public class Client : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space)) {
             Debug.Log("Space pressed");
-            Debug.Log(UIAJsonString);
-            ws.Send("{\"type\" : \"DEFAULT\", \"sender\" : \"HMD\", \"content\" : \"hi\"}");
+
+            JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(UIAJsonString)!;
+            bool eva1_power = recievedInformation["uia"]["eva1_power"].GetValue<bool>();
+            Debug.Log($"UIA eva1_power: {eva1_power}");
+
+            ws.Send($"{{\"type\" : \"DEFAULT\", \"sender\" : \"HMD\", \"content\" : \"{eva1_power}\"}}");
         }
 
     }
