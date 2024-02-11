@@ -11,7 +11,6 @@ public class Client : MonoBehaviour
 {
     public TSScConnection TSSc;
 
-    string UIAJsonString;
     WebSocket ws;
 
     void Start()
@@ -25,10 +24,9 @@ public class Client : MonoBehaviour
         {
             byte[] dataBytes = e.RawData;
             string dataString = System.Text.Encoding.UTF8.GetString(dataBytes);
-            Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + dataString);
-
             JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(dataString)!;
-            Debug.Log($"JsonNode Received: {recievedInformation}");
+
+            Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + recievedInformation);
         };
         ws.OnError += (sender, e) => {
                 Debug.Log(e.Message);
@@ -40,21 +38,52 @@ public class Client : MonoBehaviour
 
     void Update()
     {
-        if (TSSc.isUIAUpdated())
-        {
-            Debug.Log("UIA Updated");
-            UIAJsonString = TSSc.GetUIAJsonString();
-        }
 
         if (Input.GetKeyDown(KeyCode.Space)) {
             Debug.Log("Space pressed");
 
-            JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(UIAJsonString)!;
-            bool eva1_power = recievedInformation["uia"]["eva1_power"].GetValue<bool>();
-            Debug.Log($"UIA eva1_power: {eva1_power}");
+//            string UIAJsonString = TSSc.GetUIAJsonString();
+//            JsonNode UIAJson = JsonSerializer.Deserialize<JsonNode>(UIAJsonString)!;
+//            bool eva1_power = UIAJson["uia"]["eva1_power"].GetValue<bool>();
+//            Debug.Log($"UIA eva1_power: {eva1_power}");
 
-            ws.Send($"{{\"type\" : \"DEFAULT\", \"sender\" : \"HMD\", \"content\" : \"{eva1_power}\"}}");
+            string IMUJsonString = TSSc.GetIMUJsonString();
+            JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
+            float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
+            Debug.Log($"IMU posx: {posx}");
+
+            sendPin(posx, 1, "hi", "HMD", "12:00");
+
         }
+
+    }
+
+    void sendPin(float x, float y, string desc, string sender, string timestamp) {
+    /*
+    {
+        "coords": {
+                "x": 123,
+                "y": 123
+        },
+        "desc":"adasdasd",
+        "sender": "LMCC or HMD",
+        "timestamp": "whataever"
+    } 
+    */
+
+            var json = new {
+                coords = new {
+                    x = x,
+                    y = y,
+                },
+                desc = desc,
+                sender = sender,
+                timestamp = timestamp,
+            };
+
+            string jsonString = JsonSerializer.Serialize(json);
+
+            ws.Send(jsonString);
 
     }
 
