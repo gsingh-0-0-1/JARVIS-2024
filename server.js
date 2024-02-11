@@ -11,7 +11,7 @@ const io = socketIo(server);
 let pins = [];
 
 
-// Serve a simple test page
+//  a simple test page
 app.get('/', (req, res) => {
   res.send('Hi! Testing Yay');
 });
@@ -56,12 +56,6 @@ socket.on('remove_pin', (pinId) => {
 
 
 
-  // Example: listening for a custom event
-  socket.on('example_event', (data) => {
-    console.log('Example event received:', data);
-    // Broadcast the data to all connected clients
-    io.emit('example_response', { message: 'Data received!' });
-  });
 });
 
 
