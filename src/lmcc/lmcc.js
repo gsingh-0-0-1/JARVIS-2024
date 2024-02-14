@@ -114,10 +114,19 @@ function simulateGeoPinCreation() {
 
 */
 
-
 app.get('/', (req, res) => {
-	res.sendFile("public/templates/main.html", {root: __dirname});
+	res.redirect("/right")
+	//res.sendFile("public/templates/right.html", {root: __dirname});
 });
+
+app.get('/right', (req, res) => {
+	res.sendFile("public/templates/right.html", {root: __dirname});
+});
+
+app.get('/left', (req, res) => {
+	res.sendFile("public/templates/left.html", {root: __dirname});
+});
+
 
 app.get('/creategeopin/:desc', (req, res) => {
 	createGeoPin(req.params.desc)

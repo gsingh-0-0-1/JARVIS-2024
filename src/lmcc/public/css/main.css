@@ -24,31 +24,10 @@ input[type=text] {
 	border: 0.5vh solid black;
 }
 
-
-
-#panel_geo {
-	left: 0%;
-	top: 0%;
-	width: 25%;
-	height: 50%;
-	background-color: #88c;
-	overflow-y: scroll;
-}
-
-#button_geopincreate {
+.paneltitle {
 	position: relative;
+	font-family: Source Code Pro, Courier;
+	text-align: center;
 	margin-top: 5%;
-	left: 10%;
-	display: inline-block;
-}
-
-#pindesc {
-	position: relative;
-	margin-top: 5%;
-	left: 10%;
-	display: inline-block;
-}
-
-#geo_pin_list {
-	/* list-style-type: none; */
+	font-size: 4vh;
 }
