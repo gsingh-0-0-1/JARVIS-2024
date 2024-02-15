@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs')
-var XMLHttpRequest = require('xhr2');
+
 
 
 /*
@@ -17,7 +17,7 @@ const HOST = CONFIG['LMCC']['HOST'];
 const PORT_WEB = CONFIG['LMCC']['PORT_WEB'];
 
 // the gateway and LMCC will be on the same machine
-const GATEWAY_HOST = 'localhost';
+const GATEWAY_HOST = '0.0.0.0';
 const GATEWAY_PORT = CONFIG['GATEWAY']['PORT_SOC'];
 
 const TSS_PORT = CONFIG['TSS']['PORT_WEB'];
@@ -36,17 +36,18 @@ const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
 */
 
 const app = express();
+app.use(express.json());
 const server = http.createServer(app);
 app.use(express.static('public'))
 
 
-var LOCAL_DATA = {}
+let LOCAL_DATA = {}
 LOCAL_DATA["GEOPINS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
-	var message = JSON.parse(event.data)
-	var message_type = message["type"];
+	let message = JSON.parse(event.data)
+	let message_type = message["type"];
  	console.log('Received ' + message_type + ' from ' + message["sender"]);
  	if (message_type == "GEOPIN") {
  		console.log(message["content"])
@@ -66,41 +67,85 @@ ws.onopen = function (event) {
 
 */
 
-function createGeoPin(description = '') {
+async function createGeoPin(data) {
 	// TODO: Ask NASA about how to properly pull GeoData. The TSS
 	// is being a bit annoying
 
 	// Just going to load up some sample random content for now
+    let postData;
 
-	var georeq = new XMLHttpRequest();
-	georeq.open("GET", GEO_ENDPOINT)
-	georeq.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			var reqdata = this.responseText;
-			var reqdata_json = JSON.parse(reqdata);
-
-			var data = {};
-			var content = {"EVA1" : {
-					"x" : reqdata_json["imu"]["eva1"]["posx"], 
-					"y" : reqdata_json["imu"]["eva1"]["posy"]
-				}, 
-				"EVA2" : {
-					"x" : reqdata_json["imu"]["eva2"]["posx"], 
-					"y" : reqdata_json["imu"]["eva2"]["posy"]
-				},
-				"desc" : description
-			};
-
-			data["sender"] = USER;
-			data["type"] = "GEOPIN"
-			data["content"] = content;
-
-			ws.send(String(JSON.stringify(data)))
-		
+    // If user provides data, use it directly
+    if (data && Object.keys(data).length > 0) {
+        postData = {
+			coords: data.coords,
+			desc: data.desc,
+			sender: data.sender || "LMCC",
+			type: data.type,
+            timestamp: new Date().toISOString()
 		}
-	}
-	georeq.send()
-}
+    } else {
+        // Fetching from TSS and sending TSS data
+		try {
+			const response = await fetch(GEO_ENDPOINT);
+			if (!response.ok) throw new Error('Failed to fetch data from TSS');
+			const reqdata = await response.json();
+	
+			const content = {
+				"EVA1": {
+					"x": reqdata["imu"]["eva1"]["posx"], 
+					"y": reqdata["imu"]["eva1"]["posy"]
+				},
+				"EVA2": {
+					"x": reqdata["imu"]["eva2"]["posx"], 
+					"y": reqdata["imu"]["eva2"]["posy"]
+				},
+				"desc": description
+			};
+	
+			const data = {
+				"sender": USER,
+				"type": "GEOPIN",
+				"content": content
+			};
+	
+			ws.send(JSON.stringify(data));
+		} catch (error) {
+			console.error('Error fetching and posting TSS data:', error);
+		}
+    }
+
+    // Send the geopin data via WebSocket
+    ws.send(JSON.stringify(postData));
+};
+	// var georeq = new XMLHttpRequest();
+	// georeq.open("GET", GEO_ENDPOINT)
+	// georeq.onreadystatechange = function() {
+	// 	if (this.readyState == 4 && this.status == 200) {
+	// 		var reqdata = this.responseText;
+	// 		var reqdata_json = JSON.parse(reqdata);
+
+	// 		var data = {};
+	// 		var content = {"EVA1" : {
+	// 				"x" : reqdata_json["imu"]["eva1"]["posx"], 
+	// 				"y" : reqdata_json["imu"]["eva1"]["posy"]
+	// 			}, 
+	// 			"EVA2" : {
+	// 				"x" : reqdata_json["imu"]["eva2"]["posx"], 
+	// 				"y" : reqdata_json["imu"]["eva2"]["posy"]
+	// 			},
+	// 			"desc" : description
+	// 		};
+
+	// 		data["sender"] = USER;
+	// 		data["type"] = "GEOPIN"
+	// 		data["content"] = content;
+
+	// 		ws.send(JSON.stringify(data))
+		
+	// 	}
+	// }
+	// georeq.send()
+
 
 function simulateGeoPinCreation() {
 	console.log("Simulating geopin creation...")
@@ -119,11 +164,11 @@ app.get('/', (req, res) => {
 	res.sendFile("public/templates/main.html", {root: __dirname});
 });
 
-app.get('/creategeopin/:desc', (req, res) => {
-	createGeoPin(req.params.desc)
-	// resource created
-	res.sendStatus(201);
+app.post('/geopins', async (req, res) => {
+    await createGeoPin(req.body); // Assuming `createGeoPin` handles both custom and TSS data
+    res.sendStatus(201); // Indicate resource creation
 });
+
 
 app.get('/localdata/:item', (req, res) => {
 	res.send(LOCAL_DATA[req.params.item]);

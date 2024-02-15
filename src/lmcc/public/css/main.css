@@ -33,9 +33,23 @@ input[type=text] {
 	height: 50%;
 	background-color: #88c;
 	overflow-y: scroll;
+	
 }
 
 #button_geopincreate {
+	position: relative;
+	margin-top: 5%;
+	left: 10%;
+	display: inline-block;
+}
+
+#pinX {
+	position: relative;
+	margin-top: 5%;
+	left: 10%;
+	display: inline-block;
+}
+#pinY {
 	position: relative;
 	margin-top: 5%;
 	left: 10%;
