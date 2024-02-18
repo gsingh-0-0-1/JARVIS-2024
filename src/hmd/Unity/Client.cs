@@ -52,13 +52,13 @@ public class Client : MonoBehaviour
             float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
             Debug.Log($"IMU posx: {posx}");
 
-            sendPin(posx, 1, "hi", "HMD", "12:00");
+            sendPin(posx, 1, "hi", "HMD");
 
         }
 
     }
 
-    void sendPin(float x, float y, string desc, string sender, string timestamp) {
+    void sendPin(float x, float y, string desc, string sender) {
     /*
     {
         "coords": {
@@ -70,20 +70,23 @@ public class Client : MonoBehaviour
         "timestamp": "whataever"
     } 
     */
+        DateTime now = DateTime.UtcNow;
+        string timestamp = now.ToString("yyyy-MM-ddTHH:mm:ssZ");
 
-            var json = new {
-                coords = new {
-                    x = x,
-                    y = y,
-                },
-                desc = desc,
-                sender = sender,
-                timestamp = timestamp,
-            };
+        var json = new {
+            coords = new {
+                x = x,
+                y = y,
+            },
+            desc = desc,
+            sender = sender,
+            type = "pins",
+            timestamp = timestamp,
+        };
 
-            string jsonString = JsonSerializer.Serialize(json);
+        string jsonString = JsonSerializer.Serialize(json);
 
-            ws.Send(jsonString);
+        ws.Send(jsonString);
 
     }
 
