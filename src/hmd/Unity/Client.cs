@@ -6,12 +6,19 @@ using UnityEngine;
 using WebSocketSharp;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using UnityEngine.UI;
+using TMPro;
+using UnityEditor.AssetImporters;
 
 public class Client : MonoBehaviour
 {
     public TSScConnection TSSc;
 
     WebSocket ws;
+
+    public TMP_InputField textboxx;
+    public TMP_InputField textboxy;
+    public TMP_InputField textboxdesc;
 
     void Start()
     {
@@ -39,26 +46,31 @@ public class Client : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            Debug.Log("Space pressed");
-
-//            string UIAJsonString = TSSc.GetUIAJsonString();
-//            JsonNode UIAJson = JsonSerializer.Deserialize<JsonNode>(UIAJsonString)!;
-//            bool eva1_power = UIAJson["uia"]["eva1_power"].GetValue<bool>();
-//            Debug.Log($"UIA eva1_power: {eva1_power}");
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            Debug.Log("Right Arrow pressed");
 
             string IMUJsonString = TSSc.GetIMUJsonString();
             JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
             float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
             Debug.Log($"IMU posx: {posx}");
 
-            sendPin(posx, 1, "hi", "HMD");
+            SendPin(posx, 1, "hi", "HMD");
 
         }
 
     }
 
-    void sendPin(float x, float y, string desc, string sender) {
+    public void OnButtonClick()
+    {
+        string textx = textboxx.text;
+        string texty = textboxy.text;
+        string textdesc = textboxdesc.text;
+
+        SendPin(float.Parse(textx), float.Parse(texty), textdesc, "HMD");
+
+    }
+
+    void SendPin(float x, float y, string desc, string sender) {
     /*
     {
         "coords": {
