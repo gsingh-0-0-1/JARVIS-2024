@@ -1,23 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JARVIS LMCC</title>
+	<title>JARVIS LMCC | Right</title>
 	
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/right.css">
 
 
 </head>
 <body>
 	<div id="panel_geo" class="panel">
+		<div class="paneltitle">
+			Geo Info
+		</div>
+
+		<input type="text" id="pindesc" placeholder="Description...">
+
 		<button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
 			Create Geo Pin
 		</button>
-
-		<input type="text" id="pindesc" placeholder="Description...">
 
 
 		<ul id="geo_pin_list">
