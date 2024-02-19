@@ -17,7 +17,7 @@ const HOST = CONFIG['LMCC']['HOST'];
 const PORT_WEB = CONFIG['LMCC']['PORT_WEB'];
 
 // the gateway and LMCC will be on the same machine
-const GATEWAY_HOST = 'localhost';
+const GATEWAY_HOST = '0.0.0.0'; //'localhost';
 const GATEWAY_PORT = CONFIG['GATEWAY']['PORT_SOC'];
 
 const TSS_PORT = CONFIG['TSS']['PORT_WEB'];
@@ -27,6 +27,8 @@ const USER = "LMCC";
 
 const TSS_FULL_HTTP = "http://" + TSS_ADDR + ":" + TSS_PORT
 const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
+const CHECK_STATUIA = TSS_FULL_HTTP + "/json_data/UIA.json"
+const CHECK_STATDCU = TSS_FULL_HTTP + "/json_data/DCU.json"
 
 
 /*
@@ -56,15 +58,52 @@ ws.onmessage = function (event) {
 };
 
 ws.onopen = function (event) {
+
   console.log('WebSocket connection established');
+  // Usage
+  EVA1_powerstat(function(powerStat) {
+    console.log('UIA EVA1 Power Complete: '+ powerStat); // This will log the powerStat value retrieved from the server
+  });
+
+  DCU_EVA(function(eva1_battstat) { //can add stats to this function to save room?
+    console.log('DCU EVA1 Battery Complete: '+ eva1_battstat);
+	//log multiple DCU EVA values HERE.
+  });
+
+
 };
 
+//--------FUNCTION DEFS--------
+//start of my addition
 
-/*
+function EVA1_powerstat(callback) {
+    var georeq = new XMLHttpRequest();
+    georeq.open("GET", CHECK_STATUIA)
+    georeq.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var reqdata = this.responseText;
+            var reqdata_json = JSON.parse(reqdata);
+			var powerStat = reqdata_json["uia"]["eva1_power"];
+            callback(powerStat);
+        }
+    }
+    georeq.send();
+}
 
---------FUNCTION DEFS--------
-
-*/
+function DCU_EVA(callback) {
+    var georeq = new XMLHttpRequest();
+    georeq.open("GET", CHECK_STATDCU)
+	georeq.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var reqdata = this.responseText;
+            var reqdata_json = JSON.parse(reqdata);
+			var eva1_battstat = reqdata_json["dcu"]["eva1"]["batt"];
+            callback(eva1_battstat);
+        }
+    }
+    georeq.send();
+}
+//end of my addition
 
 function createGeoPin(description = '') {
 	// TODO: Ask NASA about how to properly pull GeoData. The TSS
