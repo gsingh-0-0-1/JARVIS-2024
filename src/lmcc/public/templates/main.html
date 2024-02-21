@@ -53,12 +53,16 @@
 		const desc = document.getElementById('pindesc').value;
 	
 		const geopinData = {
-			coords: { x: x || undefined, y: y || undefined }, // Will be ignored if undefined
+			content: {
+				coords: { x: x || undefined, y: y || undefined },
+			}, // Will be ignored if undefined
 			desc: desc,
 			sender: "LMCC", // Automatically set; adjust if needed for HMD
-			type: "pins", // Default type; adjust as needed
+			type: "GEOPIN",
 			timestamp: new Date().toISOString()
 		};
+
+		console.log(geopinData)
 	
 		// Use fetch to send data
 		fetch('/geopins', {
@@ -68,7 +72,7 @@
 		})
 		.then(response => {
 			if (!response.ok) throw new Error('Failed to create geopin');
-			return response.json(); // Or handle the response appropriately
+			// return response.json(); // Or handle the response appropriately
 		})
 		.then(data => console.log('Geopin created:', data))
 		.catch(error => console.error('Error creating geopin:', error));
@@ -80,18 +84,18 @@
 
 		var li = document.createElement('li');
 
-		var EVA1_x = Math.round(Number(content["EVA1"]["x"]) * 100) / 100
-		var EVA1_y = Math.round(Number(content["EVA1"]["y"]) * 100) / 100
+		var EVA1_x = Math.round(Number(content["coords"]["x"]) * 100) / 100
+		var EVA1_y = Math.round(Number(content["coords"]["y"]) * 100) / 100
 
-		var EVA2_x = Math.round(Number(content["EVA2"]["x"]) * 100) / 100
-		var EVA2_y = Math.round(Number(content["EVA2"]["y"]) * 100) / 100
+		// var EVA2_x = Math.round(Number(content["EVA2"]["x"]) * 100) / 100
+		// var EVA2_y = Math.round(Number(content["EVA2"]["y"]) * 100) / 100
 
 
 		li.appendChild(document.createTextNode(content["desc"]));
 		li.appendChild(document.createElement("br"))
-		li.appendChild(document.createTextNode("-: EVA1 (" + EVA1_x + ", " + EVA1_y + ")"))
-		li.appendChild(document.createElement("br"))
-		li.appendChild(document.createTextNode("-: EVA2 (" + EVA2_x + ", " + EVA2_y + ")"))
+		li.appendChild(document.createTextNode("-: (" + EVA1_x + ", " + EVA1_y + ")"))
+		// li.appendChild(document.createElement("br"))
+		// li.appendChild(document.createTextNode("-: EVA2 (" + EVA2_x + ", " + EVA2_y + ")"))
 
 		geo_pin_list.appendChild(li)
 	}
@@ -101,6 +105,7 @@
 		var message = JSON.parse(data)
 		var message_type = message["type"];
 	 	console.log('Received ' + message_type + ' from ' + message["sender"]);
+		
 	 	if (message_type == "GEOPIN") {
 	 		console.log(message["content"])
 	 		addGeoPin(message["content"])
