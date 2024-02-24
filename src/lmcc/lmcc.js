@@ -59,32 +59,106 @@ ws.onmessage = function (event) {
 
 ws.onopen = function (event) {
 
+ // should create WARNINGS indicating a switch using timestamps ~ (brainstorm)
+ // the function calls with each console.log was used for testing, doesnt necessarily need to be kept.
+ // alot of these switches (based on the task list) require specific timing. I think it would be a great idea to incorporate if statements/ timing warnings to aid the astronaut
+ // organization is important 
+
+ //START OF TESTING
   console.log('WebSocket connection established');
   // Usage
-  EVA1_powerstat(function(powerStat) {
-    console.log('UIA EVA1 Power Complete: '+ powerStat); // This will log the powerStat value retrieved from the server
+  UIA_EVA(function(powerStat, powerStat2, depress, oxyvent) {
+    console.log('EVA1 Umbilical activated on UIA side: ' + powerStat + '\nEVA2 Umbilical activated on UIA side: ' + powerStat2) // This will log the powerStat value retrieved from the server
+	console.log('Both Suits Depress Complete: ' + depress)
+	console.log('Both suits oxygen ventilation status: ' + oxyvent)
   });
 
-  DCU_EVA(function(eva1_battstat) { //can add stats to this function to save room?
-    console.log('DCU EVA1 Battery Complete: '+ eva1_battstat);
+
+  DCU_EVA(function(eva1_battstat, eva2_battstat) { //can add stats to this function to save room?
+    console.log('EVA1 Umbilical activated on DCU side: ' + eva1_battstat + '\nEVA2 Umbilical activated on DCU side: ' + eva2_battstat);
 	//log multiple DCU EVA values HERE.
   });
 
+  DCU_EVA(function(eva1_oxyfill, eva2_oxyfill) {
+	console.log('Oxygen Fill - Primary Tank is active: ' + eva1_oxyfill)
+	console.log('Oxygen Fill - Secondary Tank is active: ' + eva2_oxyfill)
+	if(eva1_oxyfill == true) //a if statement could be useful wherever this information is displayed... to ensure that the correct tank is ACTIVE
+	{
+		UIA_EVA(function(oxysupply){
+			console.log('EVA1 oxygen supply status: ' + oxysupply)
 
+		})
+	}
+	if(eva2_oxyfill == true)
+	{
+		UIA_EVA(function(oxysupply2){
+			console.log('EVA2 oxygen supply status: ' + oxysupply2)
+
+		})
+	}
+  });
+
+  DCU_EVA(function(eva1_pump, eva2_pump) {
+	console.log('Primary Tank Pump is ON: ' + eva1_pump)
+	console.log('Secondary Tank Pump is ON: ' + eva2_pump)
+	//ensure pumps are active,
+	UIA_EVA(function(eva1water_waste, eva2water_waste, eva1water_supply, eva2water_supply) {
+		console.log('EVA1 coolant flushing: ' + eva1water_waste + '\nEVA2 coolant flushing: ' + eva2water_waste)
+		console.log('EVA1 coolant is being supplied: ' + eva1water_supply + '\nEVA2 coolant is being supplied: ' + eva2water_supply)
+	});
+  }); 
 };
+//END OF TESTING
+
+//creating a dictionary to store and place all of the switches
+ // Usage
+ let switchdictionary = {};
+
+ UIA_EVA(function(powerStat, powerStat2, depress, oxyvent, oxysupply, oxysupply2, eva1water_waste, eva2water_waste, eva1water_supply, eva2water_supply) {
+	switchdictionary["eva1power"] =  powerStat
+	switchdictionary["eva2power"] =  powerStat2
+	switchdictionary["depressstat"] = depress
+	switchdictionary["oxy_vent"] = oxyvent
+	switchdictionary["eva1_oxygen"] = oxysupply
+	switchdictionary["eva2_oxygen"] = oxysupply2
+	switchdictionary["eva1_waterwaste"] = eva1water_waste
+	switchdictionary["eva2_waterwaste"] = eva2water_waste
+	switchdictionary["eva1_watersupply"] = eva1water_supply
+	switchdictionary["eva2_watersupply"] = eva2water_supply
+	DCU_EVA(function(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump) { //can add stats to this function to save room?
+		switchdictionary["eva1_battstat"] = eva1_battstat
+		switchdictionary["eva2_battstat"] = eva2_battstat
+		switchdictionary["eva1_oxyfill"] = eva1_oxyfill
+		switchdictionary["eva2_oxyfill"] = eva2_oxyfill
+		switchdictionary["eva1_pump"] = eva1_pump
+		switchdictionary["eva2_pump"] = eva2_pump
+
+		console.log(Object.keys(switchdictionary))
+		Switches(switchdictionary); // would need to call switches function HERE 
+	  });
+	});
 
 //--------FUNCTION DEFS--------
-//start of my addition
 
-function EVA1_powerstat(callback) {
+function UIA_EVA(callback) {
     var georeq = new XMLHttpRequest();
     georeq.open("GET", CHECK_STATUIA)
     georeq.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var reqdata = this.responseText;
             var reqdata_json = JSON.parse(reqdata);
-			var powerStat = reqdata_json["uia"]["eva1_power"];
-            callback(powerStat);
+			var powerStat = reqdata_json["uia"]["eva1_power"]
+			var powerStat2 = reqdata_json["uia"]["eva2_power"]
+			var depress = reqdata_json["uia"]["depress"]
+			var oxyvent = reqdata_json["uia"]["oxy_vent"]
+			var oxysupply = reqdata_json["uia"]["eva1_oxy"]
+			var oxysupply2 = reqdata_json["uia"]["eva2_oxy"]
+			var eva1water_waste = reqdata_json["uia"]["eva1_water_waste"]
+			var eva2water_waste = reqdata_json["uia"]["eva2_water_waste"]
+			var eva1water_supply = reqdata_json["uia"]["eva1_water_supply"]
+			var eva2water_supply = reqdata_json["uia"]["eva2_water_supply"]
+			callback(powerStat, powerStat2, depress, oxyvent, oxysupply, oxysupply2, eva1water_waste, eva2water_waste, eva1water_supply, eva2water_supply);
+            
         }
     }
     georeq.send();
@@ -97,12 +171,23 @@ function DCU_EVA(callback) {
         if (this.readyState == 4 && this.status == 200) {
             var reqdata = this.responseText;
             var reqdata_json = JSON.parse(reqdata);
-			var eva1_battstat = reqdata_json["dcu"]["eva1"]["batt"];
-            callback(eva1_battstat);
+			var eva1_battstat = reqdata_json["dcu"]["eva1"]["batt"]
+			var eva2_battstat = reqdata_json["dcu"]["eva2"]["batt"]
+			var eva1_oxyfill = reqdata_json["dcu"]["eva1"]["oxy"]
+			var eva2_oxyfill = reqdata_json["dcu"]["eva2"]["oxy"]
+			var eva1_pump = reqdata_json["dcu"]["eva1"]["pump"]
+			var eva2_pump = reqdata_json["dcu"]["eva2"]["pump"]
+            callback(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump);
         }
     }
     georeq.send();
 }
+
+function Switches(switchdictionary){
+	//can access each switch in the dictionary
+	//How will we send??
+}
+
 //end of my addition
 
 function createGeoPin(description = '') {
