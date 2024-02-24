@@ -44,6 +44,7 @@ app.use(express.static('public'))
 
 var LOCAL_DATA = {}
 LOCAL_DATA["GEOPINS"] = {};
+LOCAL_DATA["breadcrumbs"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -55,6 +56,11 @@ ws.onmessage = function (event) {
  		let npins = Object.keys(LOCAL_DATA["GEOPINS"]).length
  		LOCAL_DATA["GEOPINS"][npins] = message["content"]
  	}
+	 else if (message_type == "breadcrumbs"){
+		console.log(message["content"])
+ 		let ncums = Object.keys(LOCAL_DATA["breadcrumbs"]).length
+ 		LOCAL_DATA["breadcrumbs"][ncums] = message["content"]
+	}
 };
 
 ws.onopen = function (event) {
@@ -224,6 +230,41 @@ function createGeoPin(description = '') {
 		}
 	}
 	georeq.send()
+}
+
+function createBreadCrums(description = ''){
+	// Right now it is the same as create geoPin
+	// The only diffence is the type in the json is "breadcrumbs"
+	// I will look into returning list 
+	
+	var georeq = new XMLHttpRequest();
+	georeq.open("GET", GEO_ENDPOINT)
+	georeq.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var reqdata = this.responseText;
+			var reqdata_json = JSON.parse(reqdata);
+
+			var data = {};
+			var content = {"EVA1" : {
+					"x" : reqdata_json["imu"]["eva1"]["posx"], 
+					"y" : reqdata_json["imu"]["eva1"]["posy"]
+				}, 
+				"EVA2" : {
+					"x" : reqdata_json["imu"]["eva2"]["posx"], 
+					"y" : reqdata_json["imu"]["eva2"]["posy"]
+				},
+		  	"desc" : description
+	  	};
+
+			data["sender"] = USER;
+			data["type"] = "breadcrumbs"
+			data["content"] = content;
+
+			ws.send(String(JSON.stringify(data)))
+  
+    }
+	}
+	georeq.send
 }
 
 function simulateGeoPinCreation() {
