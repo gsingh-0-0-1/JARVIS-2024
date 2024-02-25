@@ -24,6 +24,9 @@
 			Create Geo Pin
 		</button>
 
+			<input type="number" id="pinX" placeholder="X coordinate">
+			<input type="number" id="pinY" placeholder="Y coordinate">
+			<input type="text" id="pindesc" placeholder="Description">
 
 		<ul id="geo_pin_list">
 			
@@ -40,35 +43,67 @@
 	// we need to keep this port value fixed, I guess
 	const ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
 
+	// function requestGeoPinCreation() {
+	// 	var req = new XMLHttpRequest();
+	// 	let val = document.getElementById("pindesc").value
+	// 	req.open("GET", "/creategeopin/" + val)
+	// 	req.onreadystatechange = function() {
+	// 		if (this.readyState == 4 && this.status == 201) {
+	// 			// created
+	// 		}
+	// 	}
+	// 	req.send()
+	// }
+
 	function requestGeoPinCreation() {
-		var req = new XMLHttpRequest();
-		let val = document.getElementById("pindesc").value
-		req.open("GET", "/creategeopin/" + val)
-		req.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 201) {
-				// created
-			}
-		}
-		req.send()
+		const x = document.getElementById('pinX').value;
+		const y = document.getElementById('pinY').value;
+		const desc = document.getElementById('pindesc').value;
+	
+		const geopinData = {
+			content: {
+				coords: { x: x || undefined, y: y || undefined },
+			}, // Will be ignored if undefined
+			desc: desc,
+			sender: "LMCC", // Automatically set; adjust if needed for HMD
+			type: "GEOPIN",
+			timestamp: new Date().toISOString()
+		};
+
+		console.log(geopinData)
+	
+		// Use fetch to send data
+		fetch('/geopins', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(geopinData)
+		})
+		.then(response => {
+			if (!response.ok) throw new Error('Failed to create geopin');
+			// return response.json(); // Or handle the response appropriately
+		})
+		.then(data => console.log('Geopin created:', data))
+		.catch(error => console.error('Error creating geopin:', error));
 	}
+	
 
 	function addGeoPin(content) {
  		LOCAL_DATA["GEOPINS"].push(content)
 
 		var li = document.createElement('li');
 
-		var EVA1_x = Math.round(Number(content["EVA1"]["x"]) * 100) / 100
-		var EVA1_y = Math.round(Number(content["EVA1"]["y"]) * 100) / 100
+		var EVA1_x = Math.round(Number(content["coords"]["x"]) * 100) / 100
+		var EVA1_y = Math.round(Number(content["coords"]["y"]) * 100) / 100
 
-		var EVA2_x = Math.round(Number(content["EVA2"]["x"]) * 100) / 100
-		var EVA2_y = Math.round(Number(content["EVA2"]["y"]) * 100) / 100
+		// var EVA2_x = Math.round(Number(content["EVA2"]["x"]) * 100) / 100
+		// var EVA2_y = Math.round(Number(content["EVA2"]["y"]) * 100) / 100
 
 
 		li.appendChild(document.createTextNode(content["desc"]));
 		li.appendChild(document.createElement("br"))
-		li.appendChild(document.createTextNode("-: EVA1 (" + EVA1_x + ", " + EVA1_y + ")"))
-		li.appendChild(document.createElement("br"))
-		li.appendChild(document.createTextNode("-: EVA2 (" + EVA2_x + ", " + EVA2_y + ")"))
+		li.appendChild(document.createTextNode("-: (" + EVA1_x + ", " + EVA1_y + ")"))
+		// li.appendChild(document.createElement("br"))
+		// li.appendChild(document.createTextNode("-: EVA2 (" + EVA2_x + ", " + EVA2_y + ")"))
 
 		geo_pin_list.appendChild(li)
 	}
@@ -78,6 +113,7 @@
 		var message = JSON.parse(data)
 		var message_type = message["type"];
 	 	console.log('Received ' + message_type + ' from ' + message["sender"]);
+		
 	 	if (message_type == "GEOPIN") {
 	 		console.log(message["content"])
 	 		addGeoPin(message["content"])
@@ -85,13 +121,13 @@
 	};
 
 	// when we load, check with the server for existing pins
-	var load_existing_geopins_req = new XMLHttpRequest();
+	let load_existing_geopins_req = new XMLHttpRequest();
 	load_existing_geopins_req.open("GET", "/localdata/GEOPINS")
 	load_existing_geopins_req.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			var raw_data = this.responseText
-			var data_json = JSON.parse(raw_data)
-			for (var pin_num of Object.keys(data_json)) {
+			let raw_data = this.responseText
+			let data_json = JSON.parse(raw_data)
+			for (let pin_num of Object.keys(data_json)) {
 				addGeoPin(data_json[pin_num])
 			}
 		}

@@ -1,0 +1,10 @@
+{
+    "coords": {
+            "x": 123,
+            "y": 123
+    },
+    "desc":"adasdasd",
+    "createdBy": "LMCC or HMD",
+    "type": "GEOPINS or BREADCRUMBS",
+    "timestamp": "whataever"
+}
