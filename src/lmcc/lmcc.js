@@ -212,7 +212,7 @@ async function createGeoPin(data) {
     if (data && Object.keys(data).length > 0) {
         postData = {
 			content: {
-				coords: data.coords,
+				coords: data.content.coords,
 				desc: data.desc
 			},
 			sender: data.sender || "LMCC",
