@@ -54,7 +54,8 @@ public class Client : MonoBehaviour
             float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
             Debug.Log($"IMU posx: {posx}");
 
-            SendPin(posx, 1, "hi", "HMD");
+            SendGEOPin(posx, 1, "hi");
+            SendBreadcrumbs(-0.14f, posx, "bread");
 
         }
 
@@ -66,33 +67,43 @@ public class Client : MonoBehaviour
         string texty = textboxy.text;
         string textdesc = textboxdesc.text;
 
-        SendPin(float.Parse(textx), float.Parse(texty), textdesc, "HMD");
+        SendGEOPin(float.Parse(textx), float.Parse(texty), textdesc);
 
     }
 
-    void SendPin(float x, float y, string desc, string sender) {
-    /*
-    {
-        "coords": {
-                "x": 123,
-                "y": 123
-        },
-        "desc":"adasdasd",
-        "sender": "LMCC or HMD",
-        "timestamp": "whataever"
-    } 
-    */
+    void SendGEOPin(float x, float y, string desc) {
+
         DateTime now = DateTime.UtcNow;
         string timestamp = now.ToString("yyyy-MM-ddTHH:mm:ssZ");
 
         var json = new {
-            coords = new {
-                x = x,
-                y = y,
+            content = new {
+                coords = new { x = x, y = y },
+                desc = desc,
             },
-            desc = desc,
-            sender = sender,
-            type = "pins",
+            sender = "HMD",
+            type = "GEOPIN",
+            timestamp = timestamp,
+        };
+
+        string jsonString = JsonSerializer.Serialize(json);
+
+        ws.Send(jsonString);
+
+    }
+
+    void SendBreadcrumbs(float x, float y, string desc) {
+
+        DateTime now = DateTime.UtcNow;
+        string timestamp = now.ToString("yyyy-MM-ddTHH:mm:ssZ");
+
+        var json = new {
+            content = new {
+                coords = new { x = x, y = y },
+                desc = desc,
+            },
+            sender = "HMD",
+            type = "breadcrumbs",
             timestamp = timestamp,
         };
 
