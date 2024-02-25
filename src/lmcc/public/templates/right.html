@@ -1,136 +1,138 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JARVIS LMCC | Right</title>
-	
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <title>JARVIS LMCC | Right</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 
-	<link rel="stylesheet" href="/css/main.css">
-	<link rel="stylesheet" href="/css/right.css">
-
-
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/right.css">
 </head>
 <body>
-	<div id="panel_geo" class="panel">
-		<div class="paneltitle">
-			Geo Info
-		</div>
+    <div id="panel_geo" class="panel">
+        <div class="paneltitle">
+            Geo Info
+        </div>
 
-		<button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
-			Create Geo Pin
-		</button>
+        <button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
+            Create Geo Pin
+        </button>
 
-			<input type="number" id="pinX" placeholder="X coordinate">
-			<input type="number" id="pinY" placeholder="Y coordinate">
-			<input type="text" id="pindesc" placeholder="Description...">
+        <button id="button_breadcrumbs" onclick="javascript:requestBreadCrumbs()">
+            Display Bread Crumbs
+        </button>
 
-		<ul id="geo_pin_list">
-			
-		</ul>
+        <input type="number" id="pinX" placeholder="X coordinate">
+        <input type="number" id="pinY" placeholder="Y coordinate">
+        <input type="text" id="pindesc" placeholder="Description...">
+	<div id="custom_pin_panel">
+		<ul id="geo_pin_list"></ul>
 	</div>
+
+	<div id="breadcrumb_panel">
+        <ul id="breadcrumb_list"></ul>
+    </div>
+
 </body>
 <script>
+    var LOCAL_DATA = {}
+    LOCAL_DATA["GEOPINS"] = [];
 
-	var LOCAL_DATA = {}
-	LOCAL_DATA["GEOPINS"] = [];
+    var geo_pin_list = document.getElementById("geo_pin_list")
 
-	var geo_pin_list = document.getElementById("geo_pin_list")
+    // we need to keep this port value fixed, I guess
+    const ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
 
-	// we need to keep this port value fixed, I guess
-	const ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
+    function requestGeoPinCreation() {
+        const x = document.getElementById('pinX').value;
+        const y = document.getElementById('pinY').value;
+        const desc = document.getElementById('pindesc').value;
+    
+        const geopinData = {
+            content: {
+                coords: { x: x || undefined, y: y || undefined },
+            }, // Will be ignored if undefined
+            desc: desc,
+            sender: "LMCC", // Automatically set; adjust if needed for HMD
+            type: "GEOPIN",
+            timestamp: new Date().toISOString()
+        };
 
-	// function requestGeoPinCreation() {
-	// 	var req = new XMLHttpRequest();
-	// 	let val = document.getElementById("pindesc").value
-	// 	req.open("GET", "/creategeopin/" + val)
-	// 	req.onreadystatechange = function() {
-	// 		if (this.readyState == 4 && this.status == 201) {
-	// 			// created
-	// 		}
-	// 	}
-	// 	req.send()
-	// }
+        console.log(geopinData)
+    
+        // Use fetch to send data
+        fetch('/geopins', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(geopinData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to create geopin');
+            // return response.json(); // Or handle the response appropriately
+        })
+        .then(data => console.log('Geopin created:', data))
+        .catch(error => console.error('Error creating geopin:', error));
+    }
+    
+    function requestBreadCrumbs() {
 
-	function requestGeoPinCreation() {
-		const x = document.getElementById('pinX').value;
-		const y = document.getElementById('pinY').value;
-		const desc = document.getElementById('pindesc').value;
-	
-		const geopinData = {
-			content: {
-				coords: { x: x || undefined, y: y || undefined },
-			}, // Will be ignored if undefined
-			desc: desc,
-			sender: "LMCC", // Automatically set; adjust if needed for HMD
-			type: "GEOPIN",
-			timestamp: new Date().toISOString()
-		};
-
-		console.log(geopinData)
-	
-		// Use fetch to send data
-		fetch('/geopins', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(geopinData)
-		})
-		.then(response => {
-			if (!response.ok) throw new Error('Failed to create geopin');
-			// return response.json(); // Or handle the response appropriately
-		})
-		.then(data => console.log('Geopin created:', data))
-		.catch(error => console.error('Error creating geopin:', error));
-	}
-	
-
-	function addGeoPin(content) {
- 		LOCAL_DATA["GEOPINS"].push(content)
-
-		var li = document.createElement('li');
-
-		var EVA1_x = Math.round(Number(content["coords"]["x"]) * 100) / 100
-		var EVA1_y = Math.round(Number(content["coords"]["y"]) * 100) / 100
-
-		// var EVA2_x = Math.round(Number(content["EVA2"]["x"]) * 100) / 100
-		// var EVA2_y = Math.round(Number(content["EVA2"]["y"]) * 100) / 100
+		fetch('/geopins')
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch geopins');
+            return response.json();
+        })
+        .then(geopins => {
+            const breadcrumbs = geopins.filter(pin => pin.type === 'BREADCRUMBS');
+            console.log('Breadcrumbs:', breadcrumbs);
+            // Display breadcrumbs on the page
+            // For example, you can append them to a list or display them on a map
+        })
+        .catch(error => console.error('Error fetching geopins:', error));
 
 
-		li.appendChild(document.createTextNode(content["desc"]));
-		li.appendChild(document.createElement("br"))
-		li.appendChild(document.createTextNode("-: (" + EVA1_x + ", " + EVA1_y + ")"))
-		// li.appendChild(document.createElement("br"))
-		// li.appendChild(document.createTextNode("-: EVA2 (" + EVA2_x + ", " + EVA2_y + ")"))
+    }
 
-		geo_pin_list.appendChild(li)
-	}
+    function addGeoPin(content) {
+        LOCAL_DATA["GEOPINS"].push(content)
 
-	ws.onmessage = async function (event, isBinary) {
-		var data = await event.data.text();
-		var message = JSON.parse(data)
-		var message_type = message["type"];
-	 	console.log('Received ' + message_type + ' from ' + message["sender"]);
-		
-	 	if (message_type == "GEOPIN") {
-	 		console.log(message["content"])
-	 		addGeoPin(message["content"])
-	 	}
-	};
+        var li = document.createElement('li');
 
-	// when we load, check with the server for existing pins
-	let load_existing_geopins_req = new XMLHttpRequest();
-	load_existing_geopins_req.open("GET", "/localdata/GEOPINS")
-	load_existing_geopins_req.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			let raw_data = this.responseText
-			let data_json = JSON.parse(raw_data)
-			for (let pin_num of Object.keys(data_json)) {
-				addGeoPin(data_json[pin_num])
-			}
-		}
-	}
-	load_existing_geopins_req.send()
+        var EVA1_x = Math.round(Number(content["coords"]["x"]) * 100) / 100
+        var EVA1_y = Math.round(Number(content["coords"]["y"]) * 100) / 100
+
+        li.appendChild(document.createTextNode(content["desc"]));
+        li.appendChild(document.createElement("br"))
+        li.appendChild(document.createTextNode("-: (" + EVA1_x + ", " + EVA1_y + ")"))
+
+        geo_pin_list.appendChild(li)
+    }
+
+    ws.onmessage = async function (event, isBinary) {
+        var data = await event.data.text();
+        var message = JSON.parse(data)
+        var message_type = message["type"];
+        console.log('Received ' + message_type + ' from ' + message["sender"]);
+        
+        if (message_type == "GEOPIN") {
+            console.log(message["content"])
+            addGeoPin(message["content"])
+        }
+    };
+
+    // when we load, check with the server for existing pins
+    fetch('/localdata/GEOPINS')
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to load existing geopins');
+        return response.json();
+    })
+    .then(data => {
+        for (let pin_num of Object.keys(data)) {
+            addGeoPin(data[pin_num]);
+        }
+    })
+    .catch(error => console.error('Error loading existing geopins:', error));
 
 </script>
 </html>

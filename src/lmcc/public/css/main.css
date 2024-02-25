@@ -36,13 +36,31 @@ input[type=text] {
 	
 }
 
+#custom_pin_panel {
+	background-color: white;
+}
+
+#breadcrumb_panel {
+	background-color: white;
+}
+
 #button_geopincreate {
 	position: relative;
 	font-family: Source Code Pro, Courier;
 	text-align: center;
 	margin-top: 5%;
-	font-size: 4vh;
+
+
 }
+
+#button_breadcrumbs {
+	position: relative;
+	font-family: Source Code Pro, Courier;
+	text-align: center;
+	margin-top: 5%;
+}
+
+
 
 #pinX {
 	position: relative;

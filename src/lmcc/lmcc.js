@@ -3,6 +3,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs')
 const XMLHttpRequest = require('xhr2');
+const fetch = require('node-fetch');
 
 
 
@@ -153,47 +154,53 @@ ws.onopen = function (event) {
 //--------FUNCTION DEFS--------
 
 function UIA_EVA(callback) {
-    var georeq = new XMLHttpRequest();
-    georeq.open("GET", CHECK_STATUIA)
-    georeq.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var reqdata = this.responseText;
-            var reqdata_json = JSON.parse(reqdata);
-			var powerStat = reqdata_json["uia"]["eva1_power"]
-			var powerStat2 = reqdata_json["uia"]["eva2_power"]
-			var depress = reqdata_json["uia"]["depress"]
-			var oxyvent = reqdata_json["uia"]["oxy_vent"]
-			var oxysupply = reqdata_json["uia"]["eva1_oxy"]
-			var oxysupply2 = reqdata_json["uia"]["eva2_oxy"]
-			var eva1water_waste = reqdata_json["uia"]["eva1_water_waste"]
-			var eva2water_waste = reqdata_json["uia"]["eva2_water_waste"]
-			var eva1water_supply = reqdata_json["uia"]["eva1_water_supply"]
-			var eva2water_supply = reqdata_json["uia"]["eva2_water_supply"]
-			callback(powerStat, powerStat2, depress, oxyvent, oxysupply, oxysupply2, eva1water_waste, eva2water_waste, eva1water_supply, eva2water_supply);
-            
-        }
-    }
-    georeq.send();
+    fetch(CHECK_STATUIA)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const powerStat = data["uia"]["eva1_power"];
+            const powerStat2 = data["uia"]["eva2_power"];
+            const depress = data["uia"]["depress"];
+            const oxyvent = data["uia"]["oxy_vent"];
+            const oxysupply = data["uia"]["eva1_oxy"];
+            const oxysupply2 = data["uia"]["eva2_oxy"];
+            const eva1water_waste = data["uia"]["eva1_water_waste"];
+            const eva2water_waste = data["uia"]["eva2_water_waste"];
+            const eva1water_supply = data["uia"]["eva1_water_supply"];
+            const eva2water_supply = data["uia"]["eva2_water_supply"];
+            callback(powerStat, powerStat2, depress, oxyvent, oxysupply, oxysupply2, eva1water_waste, eva2water_waste, eva1water_supply, eva2water_supply);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
 }
 
 function DCU_EVA(callback) {
-    var georeq = new XMLHttpRequest();
-    georeq.open("GET", CHECK_STATDCU)
-	georeq.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var reqdata = this.responseText;
-            var reqdata_json = JSON.parse(reqdata);
-			var eva1_battstat = reqdata_json["dcu"]["eva1"]["batt"]
-			var eva2_battstat = reqdata_json["dcu"]["eva2"]["batt"]
-			var eva1_oxyfill = reqdata_json["dcu"]["eva1"]["oxy"]
-			var eva2_oxyfill = reqdata_json["dcu"]["eva2"]["oxy"]
-			var eva1_pump = reqdata_json["dcu"]["eva1"]["pump"]
-			var eva2_pump = reqdata_json["dcu"]["eva2"]["pump"]
+    fetch(CHECK_STATDCU)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const eva1_battstat = data["dcu"]["eva1"]["batt"];
+            const eva2_battstat = data["dcu"]["eva2"]["batt"];
+            const eva1_oxyfill = data["dcu"]["eva1"]["oxy"];
+            const eva2_oxyfill = data["dcu"]["eva2"]["oxy"];
+            const eva1_pump = data["dcu"]["eva1"]["pump"];
+            const eva2_pump = data["dcu"]["eva2"]["pump"];
             callback(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump);
-        }
-    }
-    georeq.send();
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
 }
+
 
 function Switches(switchdictionary){
 	//can access each switch in the dictionary
@@ -289,7 +296,7 @@ async function createGeoPin(data) {
 	// georeq.send()
 
 
-function createBreadCrums(description = ''){
+function createBreadCrumbs(description = ''){
 	// Right now it is the same as create geoPin
 	// The only diffence is the type in the json is "breadcrumbs"
 	// I will look into returning list 
@@ -355,6 +362,8 @@ app.post('/geopins', async (req, res) => {
     await createGeoPin(req.body); // Assuming `createGeoPin` handles both custom and TSS data
     res.sendStatus(201); // Indicate resource creation
 });
+
+
 
 
 app.get('/localdata/:item', (req, res) => {
