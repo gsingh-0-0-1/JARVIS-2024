@@ -80,6 +80,7 @@ ws.onopen = function (event) {
  //START OF TESTING
   console.log('WebSocket connection established');
   // Usage
+  /*
   UIA_EVA(function(powerStat, powerStat2, depress, oxyvent) {
     console.log('EVA1 Umbilical activated on UIA side: ' + powerStat + '\nEVA2 Umbilical activated on UIA side: ' + powerStat2) // This will log the powerStat value retrieved from the server
 	console.log('Both Suits Depress Complete: ' + depress)
@@ -119,7 +120,31 @@ ws.onopen = function (event) {
 		console.log('EVA1 coolant flushing: ' + eva1water_waste + '\nEVA2 coolant flushing: ' + eva2water_waste)
 		console.log('EVA1 coolant is being supplied: ' + eva1water_supply + '\nEVA2 coolant is being supplied: ' + eva2water_supply)
 	});
-  }); 
+  });
+  */
+
+	console.log('test');
+
+	const filePath = 'tasks/task1.txt';
+
+	try {
+		fs.readFile(filePath, (error, data) => {
+		  if (error) {
+			console.error(`Got an error trying to read the file: ${error.message}`);
+			return;
+		  }
+
+		  const lines = data.toString().split('\n')
+		  const lastLine = lines.pop().split(', ');
+		  const remainingContent = lines.join('\n')
+		  
+		  console.log("Last line:", lastLine);
+		  console.log("Remaining content:\n", remainingContent);
+
+		});
+	  } catch (error) {
+		console.error(`Got an error trying to read the file: ${error.message}`);
+	  }
 };
 //END OF TESTING
 
