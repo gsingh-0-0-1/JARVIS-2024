@@ -24,9 +24,6 @@ input[type=text] {
 	border: 0.5vh solid black;
 }
 
-<<<<<<< HEAD
-.paneltitle {
-=======
 
 
 #panel_geo {
@@ -40,15 +37,12 @@ input[type=text] {
 }
 
 #button_geopincreate {
->>>>>>> dev/customgeopins
 	position: relative;
 	font-family: Source Code Pro, Courier;
 	text-align: center;
 	margin-top: 5%;
 	font-size: 4vh;
 }
-<<<<<<< HEAD
-=======
 
 #pinX {
 	position: relative;
@@ -70,4 +64,3 @@ input[type=text] {
 	display: inline-block;
 }
 
->>>>>>> dev/customgeopins
