@@ -3,7 +3,6 @@ const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs')
 const XMLHttpRequest = require('xhr2');
-const fetch = require('node-fetch');
 
 
 
