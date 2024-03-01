@@ -3,7 +3,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs')
 const XMLHttpRequest = require('xhr2');
-const fetch = require('node-fetch');
+
 
 
 
@@ -46,29 +46,23 @@ app.use(express.static('public'))
 
 //store local data
 let LOCAL_DATA = {}
-LOCAL_DATA["GEOPINS"] = {};
-LOCAL_DATA["BREADCRUMBS"] = {};
+LOCAL_DATA["GEOPINS"] = [];
+LOCAL_DATA["BREADCRUMBS"] = [];
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
-	let message = JSON.parse(event.data)
-	let message_type = message["type"];
- 	console.log('Received ' + message_type + ' from ' + message["sender"]);
-	console.log(message)
- 	if (message_type == "GEOPIN") {
- 		console.log(message["content"])
- 		let npins = Object.keys(LOCAL_DATA["GEOPINS"]).length
- 		LOCAL_DATA["GEOPINS"][npins] = message["content"]
- 	}
+    let message = JSON.parse(event.data);
+    let message_type = message["type"];
+    console.log('Received ' + message_type + ' from ' + message["sender"]);
+    console.log(message); // Log the full message only once
 
-	if (message_type == "BREADCRUMBS") {
-		console.log(message["content"])
- 		let ncrumbs = Object.keys(LOCAL_DATA["BREADCRUMBS"]).length
- 		LOCAL_DATA["BREADCRUMBS"][ncrumbs] = message["content"]
-	}
-
-
+    if (message_type == "GEOPIN") {
+        LOCAL_DATA["GEOPINS"].push(message["content"]);
+    } else if (message_type == "BREADCRUMBS") {
+        LOCAL_DATA["BREADCRUMBS"].push(message["content"]);
+    }
 };
+
 
 ws.onopen = function (event) {
 
@@ -266,70 +260,43 @@ async function createGeoPin(data) {
     }
 
 };
-	// var georeq = new XMLHttpRequest();
-	// georeq.open("GET", GEO_ENDPOINT)
-	// georeq.onreadystatechange = function() {
-	// 	if (this.readyState == 4 && this.status == 200) {
-	// 		var reqdata = this.responseText;
-	// 		var reqdata_json = JSON.parse(reqdata);
-
-	// 		var data = {};
-	// 		var content = {"EVA1" : {
-	// 				"x" : reqdata_json["imu"]["eva1"]["posx"], 
-	// 				"y" : reqdata_json["imu"]["eva1"]["posy"]
-	// 			}, 
-	// 			"EVA2" : {
-	// 				"x" : reqdata_json["imu"]["eva2"]["posx"], 
-	// 				"y" : reqdata_json["imu"]["eva2"]["posy"]
-	// 			},
-	// 			"desc" : description
-	// 		};
-
-	// 		data["sender"] = USER;
-	// 		data["type"] = "GEOPIN"
-	// 		data["content"] = content;
-
-	// 		ws.send(JSON.stringify(data))
-		
-	// 	}
-	// }
-	// georeq.send()
 
 
-function createBreadCrumbs(description = ''){
-	// Right now it is the same as create geoPin
-	// The only diffence is the type in the json is "breadcrumbs"
-	// I will look into returning list 
-	
-	var georeq = new XMLHttpRequest();
-	georeq.open("GET", GEO_ENDPOINT)
-	georeq.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			var reqdata = this.responseText;
-			var reqdata_json = JSON.parse(reqdata);
+function generateBreadcrumbs() {
+    setInterval(() => {
+        // Fetch IMU data from TSS
+        fetch(GEO_ENDPOINT)
+            .then(response => response.json())
+            .then(data => {
+                // Create a breadcrumb based on the IMU data
+                const breadcrumb = {
+                    content: {
+                        coords: {
+                            x: data["imu"]["eva1"]["posx"],
+                            y: data["imu"]["eva1"]["posy"]
+                        },
+						desc: "Breadcrumb",
 
-			var data = {};
-			var content = {"EVA1" : {
-					"x" : reqdata_json["imu"]["eva1"]["posx"], 
-					"y" : reqdata_json["imu"]["eva1"]["posy"]
-				}, 
-				"EVA2" : {
-					"x" : reqdata_json["imu"]["eva2"]["posx"], 
-					"y" : reqdata_json["imu"]["eva2"]["posy"]
-				},
-		  	"desc" : description
-	  	};
+                    },
+                    sender: "LMCC",
+                    type: "BREADCRUMBS",
+                    timestamp: new Date().toISOString()
+                };
 
-			data["sender"] = USER;
-			data["type"] = "breadcrumbs"
-			data["content"] = content;
 
-			ws.send(String(JSON.stringify(data)))
-  
-    }
-	}
-	georeq.send
+             // Add the breadcrumb to LOCAL_DATA and send it via WebSocket
+                LOCAL_DATA["BREADCRUMBS"].push(breadcrumb);
+                ws.send(JSON.stringify(breadcrumb));
+            })
+            .catch(error => console.error('Error generating breadcrumb:', error));
+    }, 10000); // 10 seconds interval
 }
+
+
+	ws.onopen = function (event) {
+		generateBreadcrumbs();
+	};
+	
 
 function simulateGeoPinCreation() {
 	console.log("Simulating geopin creation...")
@@ -354,6 +321,10 @@ app.get('/right', (req, res) => {
 
 app.get('/left', (req, res) => {
 	res.sendFile("public/templates/left.html", {root: __dirname});
+});
+
+app.get('/breadcrumbs', (req, res) => {
+    res.json(Object.values(LOCAL_DATA["BREADCRUMBS"]));
 });
 
 
