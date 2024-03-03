@@ -24,6 +24,8 @@
 
 #custom_pin_panel {
 	background-color: white;
+    max-height: 20vh; /* Adjust the height as needed */
+    overflow-y: auto;
 }
 
 #breadcrumb_panel {
