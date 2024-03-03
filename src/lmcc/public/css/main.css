@@ -14,18 +14,19 @@ button {
 .panel {
 	position: fixed;
 	border: 0.5vh solid black;
+	box-sizing: border-box;
 }
 
 
 
 
 .toggle-button {
+	position: relative;
     color: #fff;
-    padding: 10px 20px;
+    padding: 1vh 1vh;
     background-color: #444;
-    border: 2px solid #fff;
     font-family: Source Code Pro, Courier;
-    cursor: pointer;
+    text-align: center;
 }
 
 .toggle-button.active {
