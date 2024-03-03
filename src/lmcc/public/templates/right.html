@@ -122,6 +122,8 @@
         breadcrumbsVisible = !breadcrumbsVisible;
 	}
 	
+
+    var MAPDOTS = []
 	
     function addBreadCrumb(content) {
         // console.log(content)
@@ -143,6 +145,12 @@
         // hardcoding that I (Gurmehar) am doing for now
         dot.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%"
         dot.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%"
+
+        if (MAPDOTS.length != 0) {
+            MAPDOTS[MAPDOTS.length - 1].style.backgroundColor = "#f00"
+        }
+
+        MAPDOTS.push(dot)
         document.getElementById("panel_minimap").appendChild(dot)
     }
 
