@@ -36,6 +36,10 @@
         <ul id="breadcrumb_list"></ul>
     </div>
 
+    <button id="button_task_toggle" onclick="toggleTaskState()">
+        Task: Not Started
+    </button>
+
 </body>
 <script>
     var LOCAL_DATA = {}
@@ -122,6 +126,27 @@
         li.appendChild(document.createTextNode("-: (" + EVA1_x + ", " + EVA1_y + ")"))
 
         geo_pin_list.appendChild(li)
+    }
+    function toggleTaskState() {
+        // Get the button element
+        var button = document.getElementById('button_task_toggle');
+
+        // Check the current state
+        if (button.innerText === 'Task: Not Started') {
+            button.innerText = 'Task: Ongoing';
+            button.classList.remove('not-started'); // Remove not-started class
+            button.classList.add('ongoing'); // Add ongoing class
+        } else if (button.innerText === 'Task: Ongoing') {
+            button.innerText = 'Task: Completed';
+            button.classList.remove('ongoing'); // Remove ongoing class
+            button.classList.add('completed'); // Add completed class
+        } else {
+            button.innerText = 'Task: Not Started';
+            button.classList.remove('completed'); // Remove completed class
+            button.classList.add('not-started'); // Add not-started class
+        }
+
+        // make function call 
     }
 
 	ws.onmessage = async function (event, isBinary) {
