@@ -1,94 +1,55 @@
 body {
-	background-color: #123;
-	font-family: Source Code Pro, Courier;
+    background-color: #123;
+    font-family: 'Source Code Pro', Courier;
+    color: #bbb;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-button {
-	color: #bbb;
-	padding: 1vh 1vh;
-	background-color: #444;
-	border: none;
-	font-family: Source Code Pro, Courier;
-}
-
-input[type=text] {
-	color: #bbb;
-	padding: 1vh 1vh;
-	background-color: #444;
-	border: none;
-	font-family: Source Code Pro, Courier;
+button, input[type=text], input[type=number], select {
+    padding: 1vh 1vh;
+    background-color: #444;
+    border: none;
+    font-family: 'Source Code Pro', Courier;
+    color: #bbb;
 }
 
 .panel {
-	position: fixed;
-	border: 0.5vh solid black;
+    border: 0.5vh solid black;
+    background-color: #88c;
+    overflow-y: auto;
+    padding: 1vh;
 }
-
-
 
 #panel_geo {
-	left: 0%;
-	top: 0%;
-	width: 25%;
-	height: 50%;
-	background-color: #88c;
-	overflow-y: scroll;
-	
+    width: 50%;
+    height: 80%;
 }
 
-#custom_pin_panel {
-	background-color: white;
+#custom_pin_panel, #breadcrumb_panel {
+    background-color: white;
+    color: black;
+    margin-top: 1vh;
+    padding: 1vh;
 }
 
-#breadcrumb_panel {
-	background-color: white;
+#button_geopincreate, #button_togglebreadcrumbs {
+    display: block;
+    width: 100%;
+    margin-top: 1vh;
 }
 
-#button_geopincreate {
-	position: relative;
-	font-family: Source Code Pro, Courier;
-	text-align: center;
-	margin-top: 5%;
-
-
+#pinX, #pinY, #pindesc {
+    display: block;
+    width: 80%;
+    margin-top: 1vh;
 }
-
-#button_breadcrumbs {
-	position: relative;
-	font-family: Source Code Pro, Courier;
-	text-align: center;
-	margin-top: 5%;
-}
-
-
-
-#pinX {
-	position: relative;
-	margin-top: 5%;
-	left: 10%;
-	display: inline-block;
-}
-#pinY {
-	position: relative;
-	margin-top: 5%;
-	left: 10%;
-	display: inline-block;
-}
-
-#pindesc {
-	position: relative;
-	margin-top: 5%;
-	left: 10%;
-	display: inline-block;
-}
-
 
 .toggle-button {
-    color: #fff;
-    padding: 10px 20px;
-    background-color: #444;
-    border: 2px solid #fff;
-    font-family: Source Code Pro, Courier;
     cursor: pointer;
 }
 
@@ -97,8 +58,13 @@ input[type=text] {
     border-color: #bbb;
 }
 
-.paneltitle {
-	position: relative;
-	left: 50%;
-	transform: translate(-50%, 0%);
+#breadcrumb_list {
+    display: none; /* Hide breadcrumbs by default */
 }
+
+.paneltitle {
+    text-align: center;
+    margin-bottom: 1vh;
+}
+
+
