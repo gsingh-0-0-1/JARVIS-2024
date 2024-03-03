@@ -96,3 +96,9 @@ input[type=text] {
     background-color: #666;
     border-color: #bbb;
 }
+
+.paneltitle {
+	position: relative;
+	left: 50%;
+	transform: translate(-50%, 0%);
+}

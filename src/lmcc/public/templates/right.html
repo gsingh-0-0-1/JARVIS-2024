@@ -45,6 +45,7 @@
 <script>
     var LOCAL_DATA = {}
     LOCAL_DATA["GEOPINS"] = [];
+    LOCAL_DATA["BREADCRUMBS"] = [];
 
     var geo_pin_list = document.getElementById("geo_pin_list")
 
@@ -66,7 +67,7 @@
             timestamp: new Date().toISOString()
         };
 
-        console.log(geopinData)
+        // console.log(geopinData)
     
         // Use fetch to send data
         fetch('/geopins', {
@@ -87,10 +88,10 @@
 	var breadcrumbsVisible = false;
 
 	function toggleBreadcrumbs() {
-		breadcrumbsVisible = !breadcrumbsVisible;
 		var toggleButton = document.getElementById("button_togglebreadcrumbs");
 	
-		if (breadcrumbsVisible) {
+		if (!breadcrumbsVisible) {
+            /*
 			fetch('/breadcrumbs')
 				.then(response => response.json())
 				.then(breadcrumbs => {
@@ -105,13 +106,31 @@
 					toggleButton.classList.add("active");
 				})
 				.catch(error => console.error('Error fetching breadcrumbs:', error));
+                */
+            breadcrumbList.style.display = "inline-block"
 		} else {
-			breadcrumbList.innerHTML = '';
+            breadcrumbList.style.display = "none"
+			//breadcrumbList.innerHTML = '';
 			toggleButton.classList.remove("active");
 		}
+
+        breadcrumbsVisible = !breadcrumbsVisible;
 	}
 	
 	
+    function addBreadCrumb(content) {
+        // console.log(content)
+        LOCAL_DATA["BREADCRUMBS"].push(content)
+
+        var li = document.createElement('li');
+
+        var coords = content.coords;
+        var desc = content.desc;
+
+        li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+
+        breadcrumbList.appendChild(li);
+    }
 
 
     function addGeoPin(content) {
@@ -128,6 +147,7 @@
 
         geo_pin_list.appendChild(li)
     }
+
     function toggleTaskState() {
         // Get the button element
         var button = document.getElementById('button_task_toggle');
@@ -154,21 +174,22 @@
 		var data = await event.data.text();
 		var message = JSON.parse(data);
 		var message_type = message["type"];
-		console.log('Received ' + message_type + ' from ' + message["sender"]);
+		// console.log('Received ' + message_type + ' from ' + message["sender"]);
 	
 		if (message_type == "GEOPIN") {
-			console.log(message["content"]);
+			// console.log(message["content"]);
 			addGeoPin(message["content"]);
 		} else if (message_type == "BREADCRUMBS") {
 			// Display the list of breadcrumbs
-			breadcrumbList.innerHTML = '';
-			message.content.forEach(breadcrumb => {
-				var li = document.createElement('li');
-				var coords = breadcrumb.content.coords;
-				var desc = breadcrumb.desc;
-				li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-				breadcrumbList.appendChild(li);
-			});
+			// breadcrumbList.innerHTML = '';
+            // console.log(message.content)
+			// message.content.forEach(breadcrumb => {
+			var li = document.createElement('li');
+			var coords = message.content.coords;
+			var desc = message.content.desc;
+			li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+			breadcrumbList.appendChild(li);
+			// });
 		}
 	};
 	
@@ -181,10 +202,25 @@
     })
     .then(data => {
         for (let pin_num of Object.keys(data)) {
-            addGeoPin(data[pin_num]);
+            console.log("load/creating geopin", data[pin_num])
+            addGeoPin(data[pin_num]["content"]);
         }
     })
     .catch(error => console.error('Error loading existing geopins:', error));
+
+    // when we load, check with the server for existing breadcrumbs
+    fetch('/localdata/BREADCRUMBS')
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to load existing breadcrumbs');
+        return response.json();
+    })
+    .then(data => {
+        for (let pin_num of Object.keys(data)) {
+            console.log("load/creating bcrumb", data[pin_num])
+            addBreadCrumb(data[pin_num]["content"]);
+        }
+    })
+    .catch(error => console.error('Error loading existing breadcrumbs:', error));
 
 </script>
 </html>

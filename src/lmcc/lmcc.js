@@ -55,9 +55,9 @@ ws.onmessage = function (event) {
     console.log(message); // Log the full message only once
 
     if (message_type == "GEOPIN") {
-        LOCAL_DATA["GEOPINS"].push(message["content"]);
+        LOCAL_DATA["GEOPINS"].push(message);
     } else if (message_type == "BREADCRUMBS") {
-        LOCAL_DATA["BREADCRUMBS"].push(message["content"]);
+        LOCAL_DATA["BREADCRUMBS"].push(message);
     }
 };
 
@@ -307,8 +307,8 @@ function generateBreadcrumbs() {
                 };
 
 
-             // Add the breadcrumb to LOCAL_DATA and send it via WebSocket
-                LOCAL_DATA["BREADCRUMBS"].push(breadcrumb);
+             	// Add the breadcrumb to LOCAL_DATA and send it via WebSocket
+                //LOCAL_DATA["BREADCRUMBS"].push(breadcrumb);
                 ws.send(JSON.stringify(breadcrumb));
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
@@ -347,6 +347,9 @@ app.get('/left', (req, res) => {
 });
 
 app.get('/breadcrumbs', (req, res) => {
+	for (let item of Object.values(LOCAL_DATA["BREADCRUMBS"])) {
+		console.log(item)
+	}
     res.json(Object.values(LOCAL_DATA["BREADCRUMBS"]));
 });
 
@@ -361,6 +364,11 @@ app.post('/geopins', async (req, res) => {
 
 
 app.get('/localdata/:item', (req, res) => {
+	/*
+	for (let item of LOCAL_DATA[req.params.item]) {
+		console.log(item)
+	}
+	*/
 	res.send(LOCAL_DATA[req.params.item]);
 })
 
