@@ -1,0 +1,66 @@
+#pinX {
+	position: relative;
+	left: 5%;
+}
+
+#pinY {
+	position: relative;
+	left: 5%;
+}
+
+#pindesc {
+	position: relative;
+	margin-top: 5%;
+	left: 5%;
+	display: inline-block;
+}
+
+#button_breadcrumbs {
+	position: relative;
+	font-family: Source Code Pro, Courier;
+	text-align: center;
+	margin-top: 5%;
+}
+
+#custom_pin_panel {
+	background-color: white;
+}
+
+#breadcrumb_panel {
+	background-color: white;
+}
+
+#button_geopincreate {
+	position: relative;
+	font-family: Source Code Pro, Courier;
+	text-align: center;
+	margin-top: 5%;
+	left: 5%;
+}
+
+#panel_geo {
+	left: 0%;
+	top: 0%;
+	width: 25%;
+	height: 50%;
+	background-color: #88c;
+	overflow-y: scroll;
+	
+}
+
+#breadcrumb_panel {
+	position: relative;
+}
+
+#breadcrumb_list {
+	margin-top: 5%;
+	display: block;
+	padding-top: 2%;
+}
+
+#breadcrumb_list li {
+	margin-top: 2%;
+	font-family: Source Code Pro, Courier;
+	border-bottom: 1px solid black;
+}
+

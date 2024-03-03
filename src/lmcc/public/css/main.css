@@ -11,76 +11,12 @@ button {
 	font-family: Source Code Pro, Courier;
 }
 
-input[type=text] {
-	color: #bbb;
-	padding: 1vh 1vh;
-	background-color: #444;
-	border: none;
-	font-family: Source Code Pro, Courier;
-}
-
 .panel {
 	position: fixed;
 	border: 0.5vh solid black;
 }
 
 
-
-#panel_geo {
-	left: 0%;
-	top: 0%;
-	width: 25%;
-	height: 50%;
-	background-color: #88c;
-	overflow-y: scroll;
-	
-}
-
-#custom_pin_panel {
-	background-color: white;
-}
-
-#breadcrumb_panel {
-	background-color: white;
-}
-
-#button_geopincreate {
-	position: relative;
-	font-family: Source Code Pro, Courier;
-	text-align: center;
-	margin-top: 5%;
-
-
-}
-
-#button_breadcrumbs {
-	position: relative;
-	font-family: Source Code Pro, Courier;
-	text-align: center;
-	margin-top: 5%;
-}
-
-
-
-#pinX {
-	position: relative;
-	margin-top: 5%;
-	left: 10%;
-	display: inline-block;
-}
-#pinY {
-	position: relative;
-	margin-top: 5%;
-	left: 10%;
-	display: inline-block;
-}
-
-#pindesc {
-	position: relative;
-	margin-top: 5%;
-	left: 10%;
-	display: inline-block;
-}
 
 
 .toggle-button {
@@ -98,7 +34,18 @@ input[type=text] {
 }
 
 .paneltitle {
-	position: relative;
+	text-align: center;
+	margin-top: 1%;
 	left: 50%;
-	transform: translate(-50%, 0%);
+}
+
+.user_input {
+	color: #bbb;
+	padding: 1vh 1vh;
+	background-color: #444;
+	border: none;
+	font-family: Source Code Pro, Courier;
+	width: 40%;
+	margin-top: 5%;
+	display: inline-block;
 }
