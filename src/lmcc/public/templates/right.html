@@ -15,22 +15,24 @@
         <div class="paneltitle">
             Geo Info
         </div>
+		
+
+        <input class="user_input" type="number" id="pinX" placeholder="X coordinate">
+        <input class="user_input" type="number" id="pinY" placeholder="Y coordinate">
+        <input class="user_input" type="text" id="pindesc" placeholder="Description...">
 
         <button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
             Create Geo Pin
         </button>
 
-		<button id="button_togglebreadcrumbs" class="toggle-button" onclick="javascript:toggleBreadcrumbs()">
-			Toggle Bread Crumbs
-		</button>
-		
+        <div id="custom_pin_panel">
+            <ul id="geo_pin_list"></ul>
+        </div>
 
-        <input type="number" id="pinX" placeholder="X coordinate">
-        <input type="number" id="pinY" placeholder="Y coordinate">
-        <input type="text" id="pindesc" placeholder="Description...">
-    	<div id="custom_pin_panel">
-    		<ul id="geo_pin_list"></ul>
-    	</div>
+
+        <button id="button_togglebreadcrumbs" class="toggle-button" onclick="javascript:toggleBreadcrumbs()">
+            Toggle Bread Crumbs
+        </button>
 
     	<div id="breadcrumb_panel">
             <ul id="breadcrumb_list"></ul>
@@ -85,7 +87,7 @@
     
 
 	var breadcrumbList = document.getElementById("breadcrumb_list");
-	var breadcrumbsVisible = false;
+	var breadcrumbsVisible = true;
 
 	function toggleBreadcrumbs() {
 		var toggleButton = document.getElementById("button_togglebreadcrumbs");
@@ -107,11 +109,11 @@
 				})
 				.catch(error => console.error('Error fetching breadcrumbs:', error));
                 */
-            breadcrumbList.style.display = "inline-block"
+            breadcrumbList.style.display = "block"
 		} else {
             breadcrumbList.style.display = "none"
 			//breadcrumbList.innerHTML = '';
-			toggleButton.classList.remove("active");
+			// toggleButton.classList.remove("active");
 		}
 
         breadcrumbsVisible = !breadcrumbsVisible;
