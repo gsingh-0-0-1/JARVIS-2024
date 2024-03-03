@@ -18,8 +18,8 @@
 #button_breadcrumbs {
 	position: relative;
 	font-family: Source Code Pro, Courier;
-	text-align: center;
 	margin-top: 5%;
+	left: 5%;
 }
 
 #custom_pin_panel {
@@ -40,8 +40,8 @@
 
 #panel_geo {
 	position: fixed;
-	left: 0%;
-	top: 0%;
+	bottom: 0%;
+	right: 0%;
 	width: 25%;
 	height: 50%;
 	background-color: #88c;
@@ -59,7 +59,7 @@
 	position: relative;
 	margin-top: 5%;
 	display: block;
-	padding-top: 2%;
+	margin-top: 2%;
 	background-color: #88c;
 }
 
@@ -67,5 +67,13 @@
 	margin-top: 2%;
 	font-family: Source Code Pro, Courier;
 	border-bottom: 1px solid black;
+}
+
+#panel_minimap {
+	top: 0%;
+	right: 0%;
+	height: 50%;
+	width: 25%;
+	background-color: #000;
 }
 
