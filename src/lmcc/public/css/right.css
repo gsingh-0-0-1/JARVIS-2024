@@ -73,10 +73,11 @@
 	top: 0%;
 	right: 0%;
 	height: 50%;
-	aspect-ratio: 1 / 1;
+	aspect-ratio: 5 / 4;
 	background-image: url('/images/rockYardMap.png');
 	background-size: contain;
 	background-repeat: no-repeat;
+	background-position: center;
 }
 
 .mapdot {
