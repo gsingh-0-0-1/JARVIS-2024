@@ -44,8 +44,8 @@
 	position: fixed;
 	bottom: 0%;
 	right: 0%;
+	width: 25%;
 	height: 50%;
-	aspect-ratio: 1 / 1;
 	background-color: #88c;
 }
 
@@ -75,18 +75,7 @@
 	top: 0%;
 	right: 0%;
 	height: 50%;
-	aspect-ratio: 1 / 1;
-	background-image: url('/images/rockYardMap.png');
-	background-size: contain;
-	background-repeat: no-repeat;
-}
-
-.mapdot {
-	position: absolute;
-	height: 5px;
-	width: 5px;
-	background-color: #f00;
-	border-radius: 50%;
-	display: inline-block;
+	width: 25%;
+	background-color: #000;
 }
 
