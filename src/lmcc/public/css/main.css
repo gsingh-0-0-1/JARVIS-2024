@@ -1,56 +1,32 @@
 body {
-    background-color: #123;
-    font-family: 'Source Code Pro', Courier;
-    color: #bbb;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+	background-color: #123;
+	font-family: Source Code Pro, Courier;
 }
 
-button, input[type=text], input[type=number], select {
-    padding: 1vh 1vh;
-    background-color: #444;
-    border: none;
-    font-family: 'Source Code Pro', Courier;
-    color: #bbb;
+button {
+	color: #bbb;
+	padding: 1vh 1vh;
+	background-color: #444;
+	border: none;
+	font-family: Source Code Pro, Courier;
 }
 
 .panel {
-    border: 0.5vh solid black;
-    background-color: #88c;
-    overflow-y: auto;
-    padding: 1vh;
+	position: fixed;
+	border: 0.5vh solid black;
+	box-sizing: border-box;
 }
 
-#panel_geo {
-    width: 50%;
-    height: 80%;
-}
 
-#custom_pin_panel, #breadcrumb_panel {
-    background-color: white;
-    color: black;
-    margin-top: 1vh;
-    padding: 1vh;
-}
 
-#button_geopincreate, #button_togglebreadcrumbs {
-    display: block;
-    width: 100%;
-    margin-top: 1vh;
-}
-
-#pinX, #pinY, #pindesc {
-    display: block;
-    width: 80%;
-    margin-top: 1vh;
-}
 
 .toggle-button {
-    cursor: pointer;
+	position: relative;
+    color: #fff;
+    padding: 1vh 1vh;
+    background-color: #444;
+    font-family: Source Code Pro, Courier;
+    text-align: center;
 }
 
 .toggle-button.active {
@@ -58,13 +34,19 @@ button, input[type=text], input[type=number], select {
     border-color: #bbb;
 }
 
-#breadcrumb_list {
-    display: none; /* Hide breadcrumbs by default */
-}
-
 .paneltitle {
-    text-align: center;
-    margin-bottom: 1vh;
+	text-align: center;
+	margin-top: 1%;
+	left: 50%;
 }
 
-
+.user_input {
+	color: #bbb;
+	padding: 1vh 1vh;
+	background-color: #444;
+	border: none;
+	font-family: Source Code Pro, Courier;
+	width: 40%;
+	margin-top: 5%;
+	display: inline-block;
+}
