@@ -46,6 +46,7 @@ app.use(express.static('public'))
 let LOCAL_DATA = {}
 LOCAL_DATA["GEOPINS"] = [];
 LOCAL_DATA["BREADCRUMBS"] = [];
+LOCAL_DATA["TASKS"] = [];
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -58,7 +59,9 @@ ws.onmessage = function (event) {
         LOCAL_DATA["GEOPINS"].push(message);
     } else if (message_type == "BREADCRUMBS") {
         LOCAL_DATA["BREADCRUMBS"].push(message);
-    }
+    } else if (message_type == "TASKS")
+	LOCAL_DATA["TASKS"].push(message);
+
 };
 
 
@@ -321,10 +324,22 @@ function generateBreadcrumbs() {
 	};
 	
 
-function simulateGeoPinCreation() {
-	console.log("Simulating geopin creation...")
-	createGeoPin("default geo pin")
-}
+
+	async function createTask(data) {
+
+	
+		let postData;
+	
+		// If user provides data, use it directly
+		if (data && Object.keys(data).length > 0) {
+			postData = {
+			//JSON SCHEMA HERE
+			}
+	
+			ws.send(JSON.stringify(postData));
+	
+		} 
+	};
 
 
 /*
