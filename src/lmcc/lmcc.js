@@ -315,7 +315,7 @@ function generateBreadcrumbs() {
                 ws.send(JSON.stringify(breadcrumb));
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
-    }, 1000); // 10 seconds interval
+    }, 30000); // 10 seconds interval
 }
 
 
@@ -328,13 +328,28 @@ function generateBreadcrumbs() {
 	async function createTask(data) {
 
 	
-		let postData;
+		let Taskjson;
 	
 		// If user provides data, use it directly
 		if (data && Object.keys(data).length > 0) {
-			postData = {
-			//JSON SCHEMA HERE
-			}
+			const response = await fetch(CHECK_STATUIA);
+			if (!response.ok) throw new Error('Failed to fetch data from TSS');
+			const reqdata = await response.json();
+
+
+				TASKjson = {
+					content: {
+						taskName: data.content.taskName, //string (ex: task1)
+						taskDesc: data.taskDesc, //ex: string do this\nthen click button
+						tssInfo: reqdata["eva1_oxy"]["eva2_oxy"], //(ex: [“eva1_power”, …]. This is so the HMD knows what to pull from the TSS and what to display.)
+						status: "Not started" || "Ongoing" || "Completed",
+						
+					},
+					sender: "LMCC" || "HMD",
+					type: "TASK",
+					timestamp: new Date().toISOString()
+				};
+			
 	
 			ws.send(JSON.stringify(postData));
 	
@@ -372,6 +387,12 @@ app.get('/breadcrumbs', (req, res) => {
 app.post('/geopins', async (req, res) => {
 	console.log(req.body)
     await createGeoPin(req.body); // Assuming `createGeoPin` handles both custom and TSS data
+    res.sendStatus(201); // Indicate resource creation
+});
+
+app.post('/tasks', async (req, res) => {
+	console.log(req.body)
+    await createTask(req.body); // Assuming `createGeoPin` handles both custom and TSS data
     res.sendStatus(201); // Indicate resource creation
 });
 

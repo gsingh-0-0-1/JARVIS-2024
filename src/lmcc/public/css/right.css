@@ -54,6 +54,29 @@
 	background-color: #88c;
 }
 
+
+#custom_pin_panel {
+	position: relative;
+	height: 40%;
+	width: 100%;
+	overflow: auto;
+	background-color: #88c;
+}
+
+#geo_pin_list {
+	position: relative;
+	margin-top: 5%;
+	display: block;
+	margin-top: 2%;
+	background-color: #88c;
+}
+
+#geo_pin_list li {
+	margin-top: 2%;
+	font-family: Source Code Pro, Courier;
+	border-bottom: 1px solid black;
+}
+
 #breadcrumb_panel {
 	position: relative;
 	height: 40%;
