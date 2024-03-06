@@ -29,9 +29,16 @@
             <ul id="geo_pin_list"></ul>
         </div>
 
-        <button id="button_breadcrumbs" class="button" onclick="javascript:toggleBreadcrumbs()">
-            Toggle Bread Crumbs
-        </button>
+        <label class="switch">
+            <input type="checkbox" id="breadcrumbToggle" onchange="toggleBreadcrumbs()">
+            <span class="slider">
+                <!-- <span class="slider-text">Toggle Breadcrumbs</span> -->
+                <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+                <path fill="none" d="m4 16.5 8 8 16-16"></path>
+              </svg>
+            </span>
+          </label>
+          
 
     	<div id="breadcrumb_panel">
             <ul id="breadcrumb_list"></ul>
@@ -93,9 +100,10 @@
 	var breadcrumbsVisible = true;
 
 	function toggleBreadcrumbs() {
-		var toggleButton = document.getElementById("button_togglebreadcrumbs");
-	
-		if (!breadcrumbsVisible) {
+        var breadcrumbList = document.getElementById("breadcrumb_list");
+        var toggleCheckbox = document.getElementById("breadcrumbToggle");
+      
+        if (toggleCheckbox.checked) {
             /*
 			fetch('/breadcrumbs')
 				.then(response => response.json())
@@ -119,7 +127,6 @@
 			// toggleButton.classList.remove("active");
 		}
 
-        breadcrumbsVisible = !breadcrumbsVisible;
 	}
 	
 

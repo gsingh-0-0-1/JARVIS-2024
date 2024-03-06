@@ -15,12 +15,19 @@
 	display: inline-block;
 }
 
-#button_breadcrumbs {
+/* #button_breadcrumbs {
 	position: relative;
+	background-color: #08d;
 	font-family: Source Code Pro, Courier;
 	margin-top: 5%;
 	left: 5%;
-}
+} */
+
+.switch {
+	/* Adjustments for right page */
+	margin-left: 5%;
+  }
+  
 
 #custom_pin_panel {
 	background-color: white;
