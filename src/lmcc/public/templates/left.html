@@ -1,9 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JARVIS LMCC | Right</title>
+	<title>JARVIS LMCC | Left</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/left.css">
 </head>
 <body>
-
+    <div id="task_panel" class="panel">
+        <div class="paneltitle">Tasks</div>
+        <select id="taskSelector">
+            <option value="task1">Task 1 (test)</option>
+            <option value="TASK1EGRESS">Task 1 EGRESS</option>
+            <option value="TASK1INGRESS">Task 1 INGRESS</option>
+            <option value="TASK2INGRESS">Task 2 INGRESS</option>
+            <option value="TASK3INGRESS">Task 3 INGRESS</option>
+            <option value="TASK4INGRESS">Task 4 INGRESS</option>
+            <!-- Add more tasks as needed -->
+        </select>
+        <button onclick="createTask()">Create Task</button>
+    </div>
 </body>
 </html>

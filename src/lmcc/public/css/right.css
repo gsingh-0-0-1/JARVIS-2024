@@ -213,13 +213,3 @@
 }
 
 
-#task_panel {
-	flex-direction: column;
-	position: fixed;
-	top: 0%;
-	left: 0%;
-	height: 50%;
-	aspect-ratio: 1 / 1;
-	background-color: #88c;
-}
-
