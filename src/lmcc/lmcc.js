@@ -315,7 +315,7 @@ function generateBreadcrumbs() {
                 ws.send(JSON.stringify(breadcrumb));
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
-    }, 30000); // 10 seconds interval
+    }, 300000); // 10 seconds interval
 }
 
 
@@ -325,36 +325,33 @@ function generateBreadcrumbs() {
 	
 
 
-	async function createTask(data) {
-
+	async function createTask(taskName) {
+		const filePath = `tasks/${taskName}.txt`;
 	
-		let Taskjson;
+		try {
+			const data = fs.readFileSync(filePath, 'utf8');
+			const lines = data.split('\n');
+			const tssInfo = lines.pop().split(', ');
+			const taskDesc = lines.join('\n');
 	
-		// If user provides data, use it directly
-		if (data && Object.keys(data).length > 0) {
-			const response = await fetch(CHECK_STATUIA);
-			if (!response.ok) throw new Error('Failed to fetch data from TSS');
-			const reqdata = await response.json();
-
-
-				TASKjson = {
-					content: {
-						taskName: data.content.taskName, //string (ex: task1)
-						taskDesc: data.taskDesc, //ex: string do this\nthen click button
-						tssInfo: reqdata["eva1_oxy"]["eva2_oxy"], //(ex: [“eva1_power”, …]. This is so the HMD knows what to pull from the TSS and what to display.)
-						status: "Not started" || "Ongoing" || "Completed",
-						
-					},
-					sender: "LMCC" || "HMD",
-					type: "TASK",
-					timestamp: new Date().toISOString()
-				};
-			
+			const taskJson = {
+				content: {
+					taskName: taskName,
+					taskDesc: taskDesc,
+					tssInfo: tssInfo,
+					status: "Not started"
+				},
+				sender: "LMCC",
+				type: "TASK",
+				timestamp: new Date().toISOString()
+			};
 	
-			ws.send(JSON.stringify(postData));
+			ws.send(JSON.stringify(taskJson));
+		} catch (error) {
+			console.error(`Got an error trying to read the file: ${error.message}`);
+		}
+	}
 	
-		} 
-	};
 
 
 /*
@@ -390,10 +387,10 @@ app.post('/geopins', async (req, res) => {
     res.sendStatus(201); // Indicate resource creation
 });
 
-app.post('/tasks', async (req, res) => {
-	console.log(req.body)
-    await createTask(req.body); // Assuming `createGeoPin` handles both custom and TSS data
-    res.sendStatus(201); // Indicate resource creation
+app.post('/createTask', (req, res) => {
+    const taskName = req.body.taskName;
+    createTask(taskName);
+    res.sendStatus(201);
 });
 
 

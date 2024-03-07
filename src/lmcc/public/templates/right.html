@@ -11,47 +11,92 @@
     <link rel="stylesheet" href="/css/right.css">
 </head>
 <body>
+
+    <!-- Geo info panel -->
     <div id="panel_geo" class="panel">
         <div class="paneltitle">
             Geo Info
         </div>
 		
+        <div id="geopin_input_panel">
+            <input class="user_input" type="number" id="pinX" placeholder="X coordinate">
+            <input class="user_input" type="number" id="pinY" placeholder="Y coordinate">
+            <input class="user_input" type="text" id="pindesc" placeholder="Description...">
 
-        <input class="user_input" type="number" id="pinX" placeholder="X coordinate">
-        <input class="user_input" type="number" id="pinY" placeholder="Y coordinate">
-        <input class="user_input" type="text" id="pindesc" placeholder="Description...">
-
-        <button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
-            Create Geo Pin
-        </button>
-
-        <div id="custom_pin_panel">
-            <ul id="geo_pin_list"></ul>
+            <button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
+                Create Geo Pin
+            </button>
         </div>
 
-        <label class="switch">
-            <input type="checkbox" id="breadcrumbToggle" onchange="toggleBreadcrumbs()">
-            <span class="slider">
-                <!-- <span class="slider-text">Toggle Breadcrumbs</span> -->
-                <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
-                <path fill="none" d="m4 16.5 8 8 16-16"></path>
-              </svg>
-            </span>
-          </label>
+        <div id="button_panels">
+
+        </div>
+
+
+        <div id="panel_lists">
+
+            <!-- List for geopins -->
+            <div id="custom_pin_panel">
+
+                <div id="geopin_title" class="paneltitle">
+                    Geo Pins
+                </div>
+
+                <div id="geo_pin_list_panel">
+                    <ul id="geo_pin_list"></ul>
+                </div>
+            </div>
+
+            <!-- List for breadcrumbs -->
+            <div id="breadcrumb_panel">
+                
+                <div id ="breadcrumb_title" class="paneltitle">
+                    BreadCrumbs
+                        <!-- Our switches -->
+                    <!-- <label class="switch">
+                        <input type="checkbox" id="breadcrumbToggle" onchange="toggleBreadcrumbs()">
+                        <span class="slider">
+                            <span class="slider-text">Toggle Breadcrumbs</span>
+                            <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+                            <path fill="none" d="m4 16.5 8 8 16-16"></path>
+                        </svg>
+                        </span>
+                    </label> -->
+                </div>
+
+              
+
+                <div id="breadcrumb_list_panel">
+                    <ul id="breadcrumb_list"></ul>
+                </div>
+            </div>
+        
+
+          
+        </div>
           
 
-    	<div id="breadcrumb_panel">
-            <ul id="breadcrumb_list"></ul>
-        </div>
     </div>
 
+    <!-- minimap panel -->
     <div id="panel_minimap" class="panel">
 
     </div>
 
-    <button id="button_task_toggle" onclick="toggleTaskState()">
+    <div id="task_panel" class="panel">
+        <div class="paneltitle">Tasks</div>
+        <select id="taskSelector">
+            <option value="task1">Task 1</option>
+            <option value="task2">Task 2</option>
+            <!-- Add more tasks as needed -->
+        </select>
+        <button onclick="createTask()">Create Task</button>
+    </div>
+    
+
+    <!-- <button id="button_task_toggle" onclick="toggleTaskState()">
         Task: Not Started
-    </button>
+    </button> -->
 
 </body>
 <script>
@@ -177,27 +222,43 @@
         geo_pin_list.appendChild(li)
     }
 
-    function toggleTaskState() {
+    function createTask() {
+        const taskName = document.getElementById('taskSelector').value;
+    
+        fetch('/createTask', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ taskName: taskName })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to create task');
+        })
+        .catch(error => console.error('Error creating task:', error));
+    }
+    
+
+
+    //function toggleTaskState() {
         // Get the button element
-        var button = document.getElementById('button_task_toggle');
+        //var button = document.getElementById('button_task_toggle');
 
         // Check the current state
-        if (button.innerText === 'Task: Not Started') {
-            button.innerText = 'Task: Ongoing';
-            button.classList.remove('not-started'); // Remove not-started class
-            button.classList.add('ongoing'); // Add ongoing class
-        } else if (button.innerText === 'Task: Ongoing') {
-            button.innerText = 'Task: Completed';
-            button.classList.remove('ongoing'); // Remove ongoing class
-            button.classList.add('completed'); // Add completed class
-        } else {
-            button.innerText = 'Task: Not Started';
-            button.classList.remove('completed'); // Remove completed class
-            button.classList.add('not-started'); // Add not-started class
-        }
+        //if (button.innerText === 'Task: Not Started') {
+          //  button.innerText = 'Task: Ongoing';
+            //button.classList.remove('not-started'); // Remove not-started class
+         //   button.classList.add('ongoing'); // Add ongoing class
+        //} else if (button.innerText === 'Task: Ongoing') {
+         //   button.innerText = 'Task: Completed';
+          //  button.classList.remove('ongoing'); // Remove ongoing class
+           // button.classList.add('completed'); // Add completed class
+        //} else {
+         //   button.innerText = 'Task: Not Started';
+          //  button.classList.remove('completed'); // Remove completed class
+           // button.classList.add('not-started'); // Add not-started class
+        //}
 
         // make function call 
-    }
+    //}
 
 	ws.onmessage = async function (event, isBinary) {
 		var data = await event.data.text();

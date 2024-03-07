@@ -1,19 +1,4 @@
-#pinX {
-	position: relative;
-	left: 5%;
-}
 
-#pinY {
-	position: relative;
-	left: 5%;
-}
-
-#pindesc {
-	position: relative;
-	margin-top: 5%;
-	left: 5%;
-	display: inline-block;
-}
 
 /* #button_breadcrumbs {
 	position: relative;
@@ -26,79 +11,186 @@
 .switch {
 	/* Adjustments for right page */
 	margin-left: 5%;
+
+	border: 0.5vh solid rgb(161, 54, 154);
+
   }
-  
 
-#custom_pin_panel {
-	background-color: white;
-}
-
-#breadcrumb_panel {
-	background-color: white;
-}
-
-#button_geopincreate {
-	position: relative;
-	font-family: Source Code Pro, Courier;
-	text-align: center;
-	margin-top: 5%;
-	left: 5%;
-}
-
+/* Geo info panel */
 #panel_geo {
+	flex-direction: column;
 	position: fixed;
 	bottom: 0%;
 	right: 0%;
 	height: 50%;
 	aspect-ratio: 1 / 1;
 	background-color: #88c;
+	/* align-items: center;
+	justify-content: space-around; */
+	/* border: 0.5vh solid rgb(209, 173, 173); */
+
+}
+
+/* THE PANEL THAT CONTAINS BOTH LISTS */
+#panel_lists {
+	display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: 58%; 
+    overflow: hidden; /* Prevent overflow outside this container */
+
+	/* border: 0.5vh solid rgb(27, 143, 175); */
+
+}
+/* Panel that contains the buttons and list of geopins created */
+#custom_pin_panel {
+
+	position: relative;
+    width: 49%; /* Adjust the width to fit side by side */
+    height: 100%; /* Take up full height of the parent container */
+    overflow: auto; /* Make it scrollable */
+    background-color: rgb(116, 116, 175);
+
+
+    /* border: 0.5vh solid rgb(86, 174, 115); */
+}
+
+#geopin_title{
+	position: sticky;
+	background-color: #88c;
+	/* border: 0.1vh solid rgb(64, 59, 95); */
 }
 
 
-#custom_pin_panel {
-	position: relative;
-	height: 40%;
-	width: 100%;
-	overflow: auto;
-	background-color: #88c;
+#geo_pin_list_panel{
+	height: calc(100% - 40px); /* Adjust the height based on the title's height */
+    overflow: auto; 
+	
+	/* border: 0.1vh solid rgb(64, 59, 95); */
+
 }
 
 #geo_pin_list {
-	position: relative;
-	margin-top: 5%;
-	display: block;
-	margin-top: 2%;
-	background-color: #88c;
-}
+	overflow: auto;
+	list-style-position: inside; /* Moves the bullet points inside the padding area */
+    padding-left: 10px; /* Adjust this value as needed */
 
+	/* border: 0.5vh solid rgb(255, 211, 79); */
+
+
+}
+/* styling for list items */
 #geo_pin_list li {
 	margin-top: 2%;
 	font-family: Source Code Pro, Courier;
+	font-size: small;
 	border-bottom: 1px solid black;
+
+
 }
 
+/* Button for creating geo pin */
+
+
+#geopin_input_panel {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content:space-evenly ;
+    background-color: rgb(116, 116, 175);
+
+	/* align-content: flex-end; */
+	/* gap: 10px; */
+	border: 0.1vh solid rgb(64, 59, 95);
+
+	padding-bottom: 1em;
+	margin-left: 1em;
+	margin-right: 1em;
+
+
+}
+
+#pinX {
+	/* position: relative;
+	left: 5%;
+	flex: 1; */
+}
+
+#pinY {
+	/* position: relative;
+	left: 5%;
+	flex: 1; */
+}
+
+#pindesc {
+	/* position: relative;
+	margin-top: 5%;
+	left: 5%;
+	display: inline-block; */
+	align-self:flex-end;
+
+}
+
+#button_geopincreate {
+	/* position: relative; */
+	/* font-family: Source Code Pro, Courier; */
+	/* text-align: center; */
+	/* margin-top: 5%;
+	left: 5%; */
+	align-self:flex-end;
+}
+
+
+/* BREAD CRUMBS */
+
+
+/* Panel that contains the list of breadcrumbs created */
 #breadcrumb_panel {
 	position: relative;
-	height: 40%;
-	width: 100%;
-	overflow: auto;
-	background-color: #88c;
+    width: 49%; /* Adjust the width to fit side by side */
+    height: 100%; /* Take up full height of the parent container */
+    overflow: auto; /* Make it scrollable */
+    background-color: rgb(116, 116, 175);
+
+    /* border: 0.3vh solid rgb(255, 85, 85); */
+
 }
 
+#breadcrumb_title{
+	position: sticky;
+	background-color: #88c;
+
+}
+
+#breadcrumb_list_panel{
+	height: calc(100% - 40px); /* Adjust the height based on the title's height */
+    overflow: auto; 
+
+}
+
+/* Styling of the list itself */
 #breadcrumb_list {
-	position: relative;
-	margin-top: 5%;
-	display: block;
-	margin-top: 2%;
-	background-color: #88c;
+	/* overflow: scroll; */
+	overflow: auto;
+	list-style-position: inside; /* Moves the bullet points inside the padding area */
+    padding-left: 10px; /* Adjust this value as needed */
+	
+	/* border: 0.5vh solid rgb(255, 211, 79); */
+
 }
 
+/* List of each breadcrumb item */
 #breadcrumb_list li {
 	margin-top: 2%;
 	font-family: Source Code Pro, Courier;
+	font-size: small;
 	border-bottom: 1px solid black;
+
+	/* border: 0.5vh solid rgb(255, 255, 134); */
+
 }
 
+/* Minimap panel */
 #panel_minimap {
 	top: 0%;
 	right: 0%;
@@ -110,6 +202,7 @@
 	background-position: center;
 }
 
+/* Minimap dot styling */
 .mapdot {
 	position: absolute;
 	height: 5px;

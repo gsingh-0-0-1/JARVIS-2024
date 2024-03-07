@@ -15,6 +15,8 @@ button {
 	position: fixed;
 	border: 0.5vh solid black;
 	box-sizing: border-box;
+	/* display: flex; */
+	/* flex-direction: column; */
 }
 
 
@@ -36,8 +38,10 @@ button {
 
 .paneltitle {
 	text-align: center;
-	margin-top: 1%;
+	padding-top: 3%;	
+	padding-bottom: 3%;
 	left: 50%;
+	font-weight: 600;
 }
 
 .user_input {
@@ -48,7 +52,7 @@ button {
 	font-family: Source Code Pro, Courier;
 	width: 40%;
 	margin-top: 5%;
-	display: inline-block;
+	/* display: inline-block; */
 }
 
 
