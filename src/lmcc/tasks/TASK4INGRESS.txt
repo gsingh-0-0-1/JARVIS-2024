@@ -1,0 +1,3 @@
+SWITCH: UIA EMU POWER -> OFF
+UNPLUG: Disonnect UIA and DCU via the cable
+powerStat, powerStat2
