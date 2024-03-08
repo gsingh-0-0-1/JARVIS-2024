@@ -28,13 +28,13 @@ navigator.mediaDevices.getUserMedia({ audio: true, video: false })
         madiaRecorder.start();
         setTimeout(function () {
             madiaRecorder.stop();
-        }, 1000);
+        }, 100);
     });
 
     madiaRecorder.start();
     setTimeout(function () {
         madiaRecorder.stop();
-    }, 1000);
+    }, 100);
 })
 .catch((error) => {
     console.error('Error capturing audio.', error);
