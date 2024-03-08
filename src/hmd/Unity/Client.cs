@@ -55,7 +55,10 @@ public class Client : MonoBehaviour
             Debug.Log($"IMU posx: {posx}");
 
             SendGEOPin(posx, 1, "hi");
-            SendBreadcrumbs(-0.14f, posx, "bread");
+
+            // Why are we sending breadcrumbs? This is the responsibility of the LMCC!
+            // We need to receiving them so we can display them!
+            // SendBreadcrumbs(-0.14f, posx, "bread");
 
         }
 
