@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs')
+const socketIO = require('socket.io');
 
 
 const CONFIG = JSON.parse(fs.readFileSync('../config.json'));
@@ -15,8 +16,11 @@ const HOST = CONFIG['GATEWAY']['HOST']
 const app = express();
 const server = http.createServer(app);
 
+const io = socketIO(server);
+
 const wss = new WebSocket.Server({ port : PORT_SOC, host : HOST });
 
+server.listen(PORT_WEB, HOST, () => console.log(`Server running on port ${PORT_WEB}`));
 
 let subscribers = [];
 
@@ -45,5 +49,17 @@ app.get('/', (req, res) => {
   res.send('JARVIS Inter-Device Gateway (what are you doing here?)');
 });
 
+// Handle new socket connections
+io.on('connection', (socket) => {
+	console.log("voice conn")
+	socket.broadcast.emit("connection")
 
-server.listen(PORT_WEB, HOST, () => console.log(`Server running on port ${PORT_WEB}`));
+    // Handle incoming audio stream
+    socket.on('audioStream', (audioData) => {
+        socket.broadcast.emit('audioStream', audioData);
+    });
+
+    socket.on('disconnect', () => {
+    });
+});
+
