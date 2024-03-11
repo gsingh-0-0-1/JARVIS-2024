@@ -5,40 +5,42 @@ let socket = io("http://localhost:4762", {
 
 //socket.on('connection', () => {
     //alert("conn")
-navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-.then((stream) => {
+if (window.location.href.includes("right")) {
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+    .then((stream) => {
 
-    var madiaRecorder = new MediaRecorder(stream);
-    var audioChunks = [];
+        var madiaRecorder = new MediaRecorder(stream);
+        var audioChunks = [];
 
-    madiaRecorder.addEventListener("dataavailable", function (event) {
-        audioChunks.push(event.data);
-    });
+        madiaRecorder.addEventListener("dataavailable", function (event) {
+            audioChunks.push(event.data);
+        });
 
-    madiaRecorder.addEventListener("stop", function () {
-        var audioBlob = new Blob(audioChunks);
-        audioChunks = [];
-        var fileReader = new FileReader();
-        fileReader.readAsDataURL(audioBlob);
-        fileReader.onloadend = function () {
-            var base64String = fileReader.result;
-            socket.emit("audioStream", base64String);
-        };
+        madiaRecorder.addEventListener("stop", function () {
+            var audioBlob = new Blob(audioChunks);
+            audioChunks = [];
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(audioBlob);
+            fileReader.onloadend = function () {
+                var base64String = fileReader.result;
+                socket.emit("audioStream", base64String);
+            };
+
+            madiaRecorder.start();
+            setTimeout(function () {
+                madiaRecorder.stop();
+            }, 100);
+        });
 
         madiaRecorder.start();
         setTimeout(function () {
             madiaRecorder.stop();
         }, 100);
+    })
+    .catch((error) => {
+        console.error('Error capturing audio.', error);
     });
-
-    madiaRecorder.start();
-    setTimeout(function () {
-        madiaRecorder.stop();
-    }, 100);
-})
-.catch((error) => {
-    console.error('Error capturing audio.', error);
-});
+}
 //});
 
 socket.on('audioStream', (audioData) => {
@@ -49,6 +51,8 @@ socket.on('audioStream', (audioData) => {
     newData = newData[0] + newData[1];
 
     var audio = new Audio(newData);
+    audio.play();
+    /*
     if (window.location.href.includes("right")) {
         console.log("playing")
         setTimeout(function() {
@@ -59,6 +63,7 @@ socket.on('audioStream', (audioData) => {
     else {
         audio.play()
     }
+    */
     if (!audio || document.hidden) {
         return;
     }

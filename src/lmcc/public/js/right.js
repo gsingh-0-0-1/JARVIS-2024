@@ -120,20 +120,6 @@ function addGeoPin(content) {
     geo_pin_list.appendChild(li)
 }
 
-function createTask() {
-    const taskName = document.getElementById('taskSelector').value;
-
-    fetch('/createTask', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ taskName: taskName })
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Failed to create task');
-    })
-    .catch(error => console.error('Error creating task:', error));
-}
-
 
 
 //function toggleTaskState() {

@@ -12,21 +12,34 @@
 </head>
 <body>
     <div id="task_panel" class="panel">
-        <div class="paneltitle">Tasks</div>
-        <select id="taskSelector">
-            <option value="task1">Task 1 (test)</option>
-            <option value="TASK1EGRESS">Task 1 EGRESS</option>
-            <option value="TASK1INGRESS">Task 1 INGRESS</option>
-            <option value="TASK2INGRESS">Task 2 INGRESS</option>
-            <option value="TASK3INGRESS">Task 3 INGRESS</option>
-            <option value="TASK4INGRESS">Task 4 INGRESS</option>
+        <div class="paneltitle">EVA Tasks</div>
+
+        <select id="taskCategorySelector" onchange="fetchAllTasks()">
+            <option value="cat_egress">Egress</option>
+            <option value="cat_ingress">Ingress</option>
             <!-- Add more tasks as needed -->
         </select>
-        <button onclick="createTask()">Create Task</button>
+        <label for="taskCategorySelector">
+        	Task Category
+        </label>
+
+        <br><br>
+
+        <select id="taskSelector">
+            <!-- Add more tasks as needed -->
+        </select>
+        <label for="taskSelector">
+        	Subtask
+        </label>
+
+        <br><br>
+
+        <button onclick="createTask()">Send Task</button>
     </div>
 
     <audio autoplay id="micstream"></audio>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
+<!--<script src="/js/voice.js"></script>-->
 <script src="/js/left.js"></script>
 </html>

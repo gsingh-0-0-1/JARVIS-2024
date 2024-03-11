@@ -319,38 +319,38 @@ function generateBreadcrumbs() {
 }
 
 
-	ws.onopen = function (event) {
-		generateBreadcrumbs();
-	};
-	
+ws.onopen = function (event) {
+	generateBreadcrumbs();
+};
 
 
-	async function createTask(taskName) {
-		const filePath = `tasks/${taskName}.txt`;
-	
-		try {
-			const data = fs.readFileSync(filePath, 'utf8');
-			const lines = data.split('\n');
-			const tssInfo = lines.pop().split(', ');
-			const taskDesc = lines.join('\n');
-	
-			const taskJson = {
-				content: {
-					taskName: taskName,
-					taskDesc: taskDesc,
-					tssInfo: tssInfo,
-					status: "Not started"
-				},
-				sender: "LMCC",
-				type: "TASK",
-				timestamp: new Date().toISOString()
-			};
-	
-			ws.send(JSON.stringify(taskJson));
-		} catch (error) {
-			console.error(`Got an error trying to read the file: ${error.message}`);
-		}
+
+async function createTask(taskName) {
+	const filePath = `public/tasks/${taskName}.txt`;
+
+	try {
+		const data = fs.readFileSync(filePath, 'utf8');
+		const lines = data.split('\n');
+		const tssInfo = lines.pop().split(', ');
+		const taskDesc = lines.join('\n');
+
+		const taskJson = {
+			content: {
+				taskName: taskName,
+				taskDesc: taskDesc,
+				tssInfo: tssInfo,
+				status: "Not started"
+			},
+			sender: "LMCC",
+			type: "TASK",
+			timestamp: new Date().toISOString()
+		};
+
+		ws.send(JSON.stringify(taskJson));
+	} catch (error) {
+		console.error(`Got an error trying to read the file: ${error.message}`);
 	}
+}
 	
 
 
@@ -378,6 +378,13 @@ app.get('/breadcrumbs', (req, res) => {
 		console.log(item)
 	}
     res.json(Object.values(LOCAL_DATA["BREADCRUMBS"]));
+});
+
+app.get('/alltasks', (req, res) => {
+	var tasknames = fs.readdirSync("public/tasks");
+	console.log(tasknames)
+	// var resp = tasknames.join("\n")
+	res.send(tasknames)
 });
 
 
