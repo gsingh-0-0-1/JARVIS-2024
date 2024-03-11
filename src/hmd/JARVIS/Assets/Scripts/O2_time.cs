@@ -6,17 +6,17 @@ using TMPro;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-public class O2_time : MonoBehaviour 
+public class O2_time : MonoBehaviour
 {
     public TMP_Text text;
     public static string serverURL = "http://data.cs.purdue.edu:14141/";
     private string telemetryEndpoint = serverURL + "/json_data/teams/0/TELEMETRY.json";
+    public Image barImage;
 
     void Start()
     {
         // Call the function to fetch JSON data initially
         StartCoroutine(UpdateDataPeriodically());
-
     }
 
     IEnumerator UpdateDataPeriodically()
@@ -51,10 +51,9 @@ public class O2_time : MonoBehaviour
                 int oxy_hours = oxy_minutes / 60;
                 int oxy_min_right = oxy_minutes % 60;
                 text.SetText($"{oxy_hours}: {oxy_min_right}");
-                Debug.Log(oxy_seconds);
-                Debug.Log(oxy_minutes);
-                Debug.Log(oxy_hours);
-                Debug.Log(oxy_min_right);
+                float fillValue = (float)oxy_minutes / 70;
+
+                barImage.fillAmount = fillValue;
             }
         }
     }
