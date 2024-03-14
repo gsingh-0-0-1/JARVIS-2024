@@ -50,7 +50,7 @@ public class Client : MonoBehaviour
             string dataString = System.Text.Encoding.UTF8.GetString(dataBytes);
             JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(dataString)!;
 
-            Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + recievedInformation);
+            // Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + recievedInformation);
         };
         ws.OnError += (sender, e) => {
                 Debug.Log(e.Message);
@@ -99,15 +99,15 @@ public class Client : MonoBehaviour
     }
 
     void procAndPlay() {
-        Debug.Log("here 1");
+        // Debug.Log("here 1");
         soundClip = AudioClip.Create("sound_chunk", Convert.ToInt32(dataArrFloat.Length), 1, 48000, false);
-        Debug.Log("here 2");
+        // Debug.Log("here 2");
         soundClip.SetData(dataArrFloat, 0);
-        Debug.Log("here 3");
+        // Debug.Log("here 3");
         audioSource.clip = soundClip;
-        Debug.Log("here 4");
+        // Debug.Log("here 4");
         audioSource.Play();
-        Debug.Log("here " + audioSource.isPlaying.ToString());
+        // Debug.Log("here " + audioSource.isPlaying.ToString());
     }
 
     void Update()
