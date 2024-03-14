@@ -24,8 +24,6 @@ function fetchAllTasks() {
 	var taskCatSel = document.getElementById('taskCategorySelector');
 	var taskSel = document.getElementById('taskSelector');
 
-	taskSel.replaceChildren([]);
-
     fetch('/alltasks')
     .then(response => {
         if (!response.ok) throw new Error('Failed to fetch tasks');
@@ -33,8 +31,9 @@ function fetchAllTasks() {
     })
 	.then(data => {
 		console.log(data)
+		taskSel.replaceChildren([]);
 		for (var task of data) {
-			if (task == '\n') {
+			if (task == '\n' || task == '') {
 				continue
 			}
 
@@ -46,6 +45,23 @@ function fetchAllTasks() {
 				taskSel.appendChild(el)
 			}
 		}
+
+		displaySelectedTask()
+	})
+    .catch(error => console.error('Error creating task:', error));
+}
+
+function displaySelectedTask() {
+	var task = document.getElementById('taskSelector').value.toLowerCase()
+
+    fetch('/tasks/' + task + '.txt')
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch tasks');
+        return response.text()
+    })
+	.then(data => {
+		console.log(data)
+		document.getElementById("task_description").innerHTML = data.split("\n").slice(0, -1).join("<br>")
 	})
     .catch(error => console.error('Error creating task:', error));
 }
