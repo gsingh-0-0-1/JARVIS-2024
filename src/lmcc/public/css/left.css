@@ -4,6 +4,13 @@
 	top: 0%;
 	left: 0%;
 	height: 50%;
+	width: 30%;
 	aspect-ratio: 1 / 1;
 	background-color: #88c;
+}
+
+#task_description {
+	font-family: Source Code Pro;
+	height: 30%;
+	padding: 1% 1%;
 }

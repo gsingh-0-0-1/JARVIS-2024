@@ -25,12 +25,17 @@
 
         <br><br>
 
-        <select id="taskSelector">
+        <select id="taskSelector" onchange="displaySelectedTask()">
             <!-- Add more tasks as needed -->
         </select>
         <label for="taskSelector">
         	Subtask
         </label>
+
+        <br><br>
+
+        <div id="task_description">
+        </div>
 
         <br><br>
 
@@ -40,6 +45,6 @@
     <audio autoplay id="micstream"></audio>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
-<script src="/js/voice.js"></script>
+<!--<script src="/js/voice.js"></script>-->
 <script src="/js/left.js"></script>
 </html>

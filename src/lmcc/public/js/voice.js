@@ -66,13 +66,13 @@ if (window.location.href.includes("right")) {
             mediaRecorder.start();
             setTimeout(function () {
                 mediaRecorder.stop();
-            }, 100);
+            }, 400);
         });
 
         mediaRecorder.start();
         setTimeout(function () {
             mediaRecorder.stop();
-        }, 100);
+        }, 400);
     })
     .catch((error) => {
         console.error('Error capturing audio.', error);
