@@ -113,21 +113,6 @@ public class Client : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            Debug.Log("Right Arrow pressed");
-
-            string IMUJsonString = TSSc.GetIMUJsonString();
-            JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
-            float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
-            Debug.Log($"IMU posx: {posx}");
-
-            SendGEOPin(posx, 1, "hi");
-
-            // Why are we sending breadcrumbs? This is the responsibility of the LMCC!
-            // We need to receiving them so we can display them!
-            // SendBreadcrumbs(-0.14f, posx, "bread");
-
-        }
         if (readyToPlay) {
             procAndPlay();
             readyToPlay = false;
@@ -137,11 +122,12 @@ public class Client : MonoBehaviour
 
     public void OnButtonClick()
     {
-        string textx = textboxx.text;
-        string texty = textboxy.text;
-        string textdesc = textboxdesc.text;
+        string IMUJsonString = TSSc.GetIMUJsonString();
+        JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
+        float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
+        float posy = IMUJson["imu"]["eva1"]["posy"].GetValue<float>();
 
-        SendGEOPin(float.Parse(textx), float.Parse(texty), textdesc);
+        SendGEOPin(posx, posy, "EVA1 Coords");
 
     }
 
