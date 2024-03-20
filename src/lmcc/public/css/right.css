@@ -12,19 +12,23 @@
 	/* Adjustments for right page */
 	margin-left: 5%;
 
-	border: 0.5vh solid rgb(161, 54, 154);
+	/* border: 0.5vh solid rgb(161, 54, 154); */
 
   }
 
 /* Geo info panel */
 #panel_geo {
-	flex-direction: column;
-	position: fixed;
+	/* flex-direction: column; */
+	/* position: fixed; */
 	bottom: 0%;
+	top: 50%;
 	right: 0%;
 	height: 50%;
-	aspect-ratio: 1 / 1;
-	background-color: #88c;
+	aspect-ratio: 5 / 4;
+	/* background-color: #88c; */
+	background-image: linear-gradient(to top left,#33426b, #161c56);
+
+
 	/* align-items: center;
 	justify-content: space-around; */
 	/* border: 0.5vh solid rgb(209, 173, 173); */
@@ -47,18 +51,19 @@
 
 	position: relative;
     width: 49%; /* Adjust the width to fit side by side */
-    height: 100%; /* Take up full height of the parent container */
+    height: 95%; /* Take up full height of the parent container */
     overflow: auto; /* Make it scrollable */
-    background-color: rgb(116, 116, 175);
-
+	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
+	border: 0.2vh solid #454b8f;
 
     /* border: 0.5vh solid rgb(86, 174, 115); */
 }
 
 #geopin_title{
 	position: sticky;
-	background-color: #88c;
-	/* border: 0.1vh solid rgb(64, 59, 95); */
+	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+	border: 0.2vh solid #454b8f;
+	
 }
 
 
@@ -97,11 +102,10 @@
 	flex-flow: row wrap;
 	align-items: center;
 	justify-content:space-evenly ;
-    background-color: rgb(116, 116, 175);
+    /* background-color: rgb(116, 116, 175); */
 
 	/* align-content: flex-end; */
 	/* gap: 10px; */
-	border: 0.1vh solid rgb(64, 59, 95);
 
 	padding-bottom: 1em;
 	margin-left: 1em;
@@ -148,9 +152,12 @@
 #breadcrumb_panel {
 	position: relative;
     width: 49%; /* Adjust the width to fit side by side */
-    height: 100%; /* Take up full height of the parent container */
+    height: 95%; /* Take up full height of the parent container */
     overflow: auto; /* Make it scrollable */
-    background-color: rgb(116, 116, 175);
+    /* background-color: rgb(116, 116, 175); */
+	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
+	border: 0.2vh solid #454b8f;
+
 
     /* border: 0.3vh solid rgb(255, 85, 85); */
 
@@ -158,7 +165,8 @@
 
 #breadcrumb_title{
 	position: sticky;
-	background-color: #88c;
+	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+	border: 0.2vh solid #454b8f;
 
 }
 
@@ -195,11 +203,13 @@
 	top: 0%;
 	right: 0%;
 	height: 50%;
-	aspect-ratio: 5 / 4;
+	aspect-ratio: 5/4;
 	background-image: url('/images/rockYardMap.png');
-	background-size: contain;
+	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
+
+	
 }
 
 /* Minimap dot styling */
@@ -213,3 +223,40 @@
 }
 
 
+/* Camera Feed Panel */
+#panel_camfeed {
+	top: 0%;
+	right: 34.5%;
+	height: 50%;
+	aspect-ratio: 1 / 1;
+	/* background-color: #88c; */
+	background-image: linear-gradient(to bottom ,#33426b, #161c56);
+
+
+}
+
+
+#panel_rover {
+	bottom: 0%;
+	top: 50%;
+	left: 0%;
+	height: 50%;
+	aspect-ratio: 400 / 171;
+	/* background-color: #88c; */
+	background-image: linear-gradient(40deg ,#33426b, #161c56);
+
+
+}
+
+
+
+#panel_controlcache {
+	top: 0%;
+	left: 0%;
+	height: 50%;
+	aspect-ratio: 400 / 292;
+	/* background-color: #88c; */
+	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+
+
+}

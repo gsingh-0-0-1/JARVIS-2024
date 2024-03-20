@@ -7,17 +7,38 @@ button {
 	color: #bbb;
 	padding: 1vh 1vh;
 	background-color: #444;
-	border: none;
+	/* border-right: 0.2vh solid #aeaeae; */
+	border-right: 0.2vh solid #aeaeae;
 	font-family: Source Code Pro, Courier;
 }
 
+
+.panel-container {
+	height: 100%; 
+	width: 100%; 
+} 
+
+
 .panel {
-	position: fixed;
-	border: 0.5vh solid black;
+	position:absolute;
+	border: 0.2vh solid #454b8f;
 	box-sizing: border-box;
+	border-radius: 8px;
+	padding: 10px;
+	align-items: center ;
+	/* background-image: url('/images/background.png'); */
+	/* background-image: linear-gradient(to bottom right, #161c56,#33426b); */
+	/* background-color: #161c56; */
+
+
+
 	/* display: flex; */
-	/* flex-direction: column; */
+	/* flex-direction: column;
+	flex-wrap: wrap; */
 }
+
+
+
 
 
 
@@ -40,18 +61,25 @@ button {
 	text-align: center;
 	padding-top: 3%;	
 	padding-bottom: 3%;
-	left: 50%;
+	/* left: 50%; */
 	font-weight: 600;
+	color: #fff;
+	font-size: large;
+	/* background-color: #0a0e3d; */
+	background-image: linear-gradient(to bottom right,#10154a, #090d2f);
+	border: 0.1vh solid #4e5496;
 }
 
 .user_input {
-	color: #bbb;
+	/* color: #dcdcdc; */
 	padding: 1vh 1vh;
-	background-color: #444;
+	background-color: rgb(234, 237, 243);
 	border: none;
 	font-family: Source Code Pro, Courier;
 	width: 40%;
 	margin-top: 5%;
+	border: 0.2vh solid #aeaeae;
+
 	/* display: inline-block; */
 }
 

@@ -315,7 +315,7 @@ function generateBreadcrumbs() {
                 ws.send(JSON.stringify(breadcrumb));
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
-    }, 200000); // 10 seconds interval
+    }, 10000); // 10 seconds interval
 }
 
 
