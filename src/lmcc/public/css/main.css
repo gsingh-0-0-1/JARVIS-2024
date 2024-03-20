@@ -1,3 +1,5 @@
+@import "bourbon";
+
 body {
 	background-color: #123;
 	font-family: Source Code Pro, Courier;
@@ -25,7 +27,7 @@ button {
 	box-sizing: border-box;
 	border-radius: 8px;
 	padding: 10px;
-	align-items: center ;
+	/* align-items: center ; */
 	/* background-image: url('/images/background.png'); */
 	/* background-image: linear-gradient(to bottom right, #161c56,#33426b); */
 	/* background-color: #161c56; */
@@ -40,7 +42,42 @@ button {
 
 
 
-
+.select-dropdown {
+	position: relative;
+	background-color: #e6e6e6;
+	width: auto;
+	float: left;
+	max-width: 100%;
+	border-radius: 2px;
+	select {
+	  font-size: 1rem;
+	  font-weight: 200;
+	  max-width: 100%;
+	  padding: 8px 24px 8px 10px;
+	  border: none;
+	  background-color: transparent;
+	  -webkit-appearance: none;
+		 -moz-appearance: none;
+			  appearance: none;
+	  &:active,
+	  &:focus {
+		outline: none;
+		box-shadow: none;
+	  }
+	}
+	&:after {
+	  content: " ";
+	  position: absolute;
+	  top: 50%;
+	  margin-top: -2px;
+	  right: 8px;
+	  width: 0; 
+	  height: 0; 
+	  border-left: 5px solid transparent;
+	  border-right: 5px solid transparent;
+	  border-top: 5px solid #aaa;
+	}
+  }
 
 
 .toggle-button {
@@ -69,6 +106,9 @@ button {
 	background-image: linear-gradient(to bottom right,#10154a, #090d2f);
 	border: 0.1vh solid #4e5496;
 }
+
+
+
 
 .user_input {
 	/* color: #dcdcdc; */

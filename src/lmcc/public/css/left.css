@@ -1,6 +1,6 @@
 #task_panel {
 	flex-direction: column;
-	position: fixed;
+	/* position: fixed; */
 	top: 0%;
 	left: 0%;
 	height: 50%;
@@ -8,6 +8,8 @@
 	aspect-ratio: 1 / 1;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+	display: flex;
+	flex-wrap: wrap;
 
 }
 
@@ -16,4 +18,32 @@
 	height: 30%;
 	padding: 1% 1%;
 	color: white;
+	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
+	border: 0.2vh solid #454b8f;
+
+}
+
+
+#task_category_panel {
+	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+	border: 0.2vh solid #454b8f;
+	padding: 3%;
+	/* width: 40%; */
+	position: relative;
+
+
+
+}
+
+#taskCategorySelector{
+}
+
+#subtask_panel {
+	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+	border: 0.2vh solid #454b8f;
+	padding: 3%;
+	/* width: 40%; */
+	position: relative;
+
+
 }

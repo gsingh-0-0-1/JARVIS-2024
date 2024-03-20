@@ -11,26 +11,42 @@
     <link rel="stylesheet" href="/css/left.css">
 </head>
 <body>
+    <!-- 1. Task Interface -->
     <div id="task_panel" class="panel">
         <div class="paneltitle">EVA Tasks</div>
 
-        <select id="taskCategorySelector" onchange="fetchAllTasks()">
-            <option value="cat_egress">Egress</option>
-            <option value="cat_ingress">Ingress</option>
-            <!-- Add more tasks as needed -->
-        </select>
-        <label for="taskCategorySelector">
-        	Task Category
-        </label>
+        <div id="task_category_panel">
 
-        <br><br>
+            <div class="select-dropdown">
+                <select id="taskCategorySelector" onchange="fetchAllTasks()">
+                    <option value="cat_egress">Egress</option>
+                    <option value="cat_ingress">Ingress</option>
+                    <!-- Add more tasks as needed -->
+                </select>
+            </div>
 
-        <select id="taskSelector" onchange="displaySelectedTask()">
-            <!-- Add more tasks as needed -->
-        </select>
-        <label for="taskSelector">
-        	Subtask
-        </label>
+            <label for="taskCategorySelector">
+                Task Category
+            </label>
+
+        </div>
+
+        
+        <!-- <br><br> -->
+
+
+        <div id="subtask_panel" >
+            <div class="select-dropdown">
+                <select id="taskSelector" onchange="displaySelectedTask()">
+                    <!-- Add more tasks as needed -->
+                </select>
+            </div>
+
+            <label for="taskSelector">
+                Subtask
+            </label>
+
+        </div>
 
         <br><br>
 
