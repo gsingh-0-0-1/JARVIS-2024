@@ -16,8 +16,11 @@ button {
 
 
 .panel-container {
+	/* display: flex; */
+	/* flex-direction: column; */
 	height: 100%; 
-	width: 100%; 
+	width: 100%;
+	overflow: hidden;
 } 
 
 
@@ -31,9 +34,6 @@ button {
 	/* background-image: url('/images/background.png'); */
 	/* background-image: linear-gradient(to bottom right, #161c56,#33426b); */
 	/* background-color: #161c56; */
-
-
-
 	/* display: flex; */
 	/* flex-direction: column;
 	flex-wrap: wrap; */
@@ -111,8 +111,6 @@ button {
 
 
 
-
-
 .toggle-button {
 	position: relative;
     color: #7e4949;
@@ -139,7 +137,6 @@ button {
 	background-image: linear-gradient(to bottom right,#10154a, #090d2f);
 	border: 0.1vh solid #4e5496;
 }
-
 
 
 

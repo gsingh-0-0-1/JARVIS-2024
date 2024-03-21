@@ -5,13 +5,12 @@
 	right: 0%;
 	height: 100%;
 	width: 30%;
-	aspect-ratio: 1 / 1;
-	/* background-color: #88c; */
+	top: 0%;
 	background-image: linear-gradient(to left,#33426b, #202663);
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-
+	aspect-ratio: 5/1;
 }
 
 #task_description_panel {
@@ -56,15 +55,12 @@ height: 3%;
 #task_label {
 	color: white;
 	margin: 5%;
-
-
 }
 
 
 
 
 #subtask_panel {
-	
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
