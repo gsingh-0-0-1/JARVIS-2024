@@ -7,7 +7,7 @@
 	width: 30%;
 	aspect-ratio: 1 / 1;
 	/* background-color: #88c; */
-	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+	background-image: linear-gradient(to left,#33426b, #202663);
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -89,4 +89,27 @@ height: 3%;
 #send_task{
 	width: 80%;
 	margin-bottom: 8%;
+}
+
+
+
+#panel_mission_monitor {
+	top: 0%;
+	left: 0%;
+	height: 50%;
+	aspect-ratio: 400 / 158;
+	/* background-color: #88c; */
+	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+
+
+}
+
+#panel_geo_sampling {
+	bottom: 0%;
+	left: 0%;
+	height: 50%;
+	aspect-ratio: 400 / 158;
+	/* background-color: #88c; */
+	background-image: linear-gradient(to top right ,#33426b, #161c56);
+
 }
