@@ -11,12 +11,30 @@
     <link rel="stylesheet" href="/css/left.css">
 </head>
 <body>
+
+
+    <script>
+        document.querySelector('.custom-select input').addEventListener('click', function() {
+            var inputWrap = document.querySelector('.custom-select .input-wrap');
+            var options = document.querySelector('.custom-select .option');
+            inputWrap.classList.toggle('active');
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+        });
+    </script>
+
+    
     <!-- 1. Task Interface -->
     <div id="task_panel" class="panel">
-        <div class="paneltitle">EVA Tasks</div>
+        <div id="evatitle" div class="paneltitle">EVA Tasks</div>
 
         <div id="task_category_panel">
 
+            <label for="taskCategorySelector">
+                <div id="task_label">
+                    Task Category
+                </div>
+            </label>
+            
             <div class="select-dropdown">
                 <select id="taskCategorySelector" onchange="fetchAllTasks()">
                     <option value="cat_egress">Egress</option>
@@ -25,9 +43,7 @@
                 </select>
             </div>
 
-            <label for="taskCategorySelector">
-                Task Category
-            </label>
+          
 
         </div>
 
@@ -36,26 +52,30 @@
 
 
         <div id="subtask_panel" >
+            <label for="taskSelector">
+                <div id="subtask_label">
+                    Subtask
+                </div>
+            </label>
+
+
             <div class="select-dropdown">
                 <select id="taskSelector" onchange="displaySelectedTask()">
                     <!-- Add more tasks as needed -->
                 </select>
             </div>
 
-            <label for="taskSelector">
-                Subtask
-            </label>
-
         </div>
 
-        <br><br>
+        <!-- <br><br> -->
+        <div id="task_description_panel">
+            <div id="task_description"> 
 
-        <div id="task_description">
+            </div>
         </div>
 
-        <br><br>
-
-        <button onclick="createTask()">Send Task</button>
+        <!-- <br><br> -->
+            <button id="send_task" onclick="createTask()">Send Task</button>
     </div>
 
     <audio autoplay id="micstream"></audio>

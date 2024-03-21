@@ -41,43 +41,76 @@ button {
 
 
 
+/* dropdown initial*/
+.custom-select {
+    position: relative;
+    background-color: #e6e6e6;
+    width: auto;
+    float: left;
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 50px auto;
+    cursor: pointer;
+}
 
-.select-dropdown {
-	position: relative;
-	background-color: #e6e6e6;
-	width: auto;
-	float: left;
-	max-width: 100%;
-	border-radius: 2px;
-	select {
-	  font-size: 1rem;
-	  font-weight: 200;
-	  max-width: 100%;
-	  padding: 8px 24px 8px 10px;
-	  border: none;
-	  background-color: transparent;
-	  -webkit-appearance: none;
-		 -moz-appearance: none;
-			  appearance: none;
-	  &:active,
-	  &:focus {
-		outline: none;
-		box-shadow: none;
-	  }
-	}
-	&:after {
-	  content: " ";
-	  position: absolute;
-	  top: 50%;
-	  margin-top: -2px;
-	  right: 8px;
-	  width: 0; 
-	  height: 0; 
-	  border-left: 5px solid transparent;
-	  border-right: 5px solid transparent;
-	  border-top: 5px solid #aaa;
-	}
-  }
+.custom-select .input-wrap {
+    position: relative;
+    border: 1px solid #000;
+}
+
+.custom-select .input-wrap::after {
+    content: "";
+    position: absolute;
+    z-index: 200;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    width: 18px;
+    height: 9px;
+    background-color: #000;
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+}
+
+.custom-select .input-wrap.active::after {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.custom-select input {
+    font-size: 1rem;
+    font-weight: 200;
+    width: 100%;
+    padding: 8px 24px 8px 10px;
+    border: none;
+    background-color: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.custom-select .option {
+    display: none; /* Change to block when active */
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-top: none;
+    z-index: 200;
+    overflow: hidden;
+}
+
+.custom-select .option p:hover {
+    background-color: aliceBlue;
+    cursor: pointer;
+}
+
+.border-bottom-n {
+    border-bottom-color: transparent!important;
+}
+
+
+
 
 
 .toggle-button {

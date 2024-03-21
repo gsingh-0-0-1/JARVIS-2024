@@ -1,49 +1,92 @@
 #task_panel {
-	flex-direction: column;
+	flex-direction: row;
 	/* position: fixed; */
-	top: 0%;
-	left: 0%;
-	height: 50%;
+	/* top: 0%; */
+	right: 0%;
+	height: 100%;
 	width: 30%;
 	aspect-ratio: 1 / 1;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: center;
+
+}
+
+#task_description_panel {
+	height: 50%;
+	padding: 1% 1%;
+	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
+	border: 0.2vh solid #454b8f;
+	margin-top: 5%;
+	width: 85%;
 
 }
 
 #task_description {
 	font-family: Source Code Pro;
-	height: 30%;
-	padding: 1% 1%;
 	color: white;
-	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
-	border: 0.2vh solid #454b8f;
 
+}
+
+#evatitle {
+width: 100%;
+height: 3%;
 }
 
 
 #task_category_panel {
-	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+	display: flex;
+	flex-direction: column;
+	background-image: linear-gradient(to top right,#33426b, #161c56);
 	border: 0.2vh solid #454b8f;
-	padding: 3%;
-	/* width: 40%; */
+	padding-left: 5%;
+	padding-right: 5%;
+
 	position: relative;
-
+	width: 30%;
+	/* margin-top: 5%; */
+	margin-bottom: 5%;
+	justify-content: center;
 
 
 }
 
-#taskCategorySelector{
+#task_label {
+	color: white;
+	margin: 5%;
+
+
 }
+
+
+
 
 #subtask_panel {
-	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-image: linear-gradient(to top left,#33426b, #161c56);
 	border: 0.2vh solid #454b8f;
-	padding: 3%;
-	/* width: 40%; */
-	position: relative;
+	padding-left: 5%;
+	padding-right: 5%;
+	width: 30%;
+	/* margin-top: 5%; */
+	margin-bottom: 5%;
+	margin-left: 5%;
 
 
+}
+
+#subtask_label{
+	color: white;
+	margin: 5%;
+
+}
+
+#send_task{
+	width: 80%;
+	margin-bottom: 8%;
 }
