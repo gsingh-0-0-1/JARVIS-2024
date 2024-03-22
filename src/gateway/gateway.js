@@ -2,6 +2,11 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs')
+const socketIO = require('socket.io');
+
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 
 const CONFIG = JSON.parse(fs.readFileSync('../config.json'));
@@ -15,8 +20,11 @@ const HOST = CONFIG['GATEWAY']['HOST']
 const app = express();
 const server = http.createServer(app);
 
+const io = socketIO(server);
+
 const wss = new WebSocket.Server({ port : PORT_SOC, host : HOST });
 
+server.listen(PORT_WEB, HOST, () => console.log(`Server running on port ${PORT_WEB}`));
 
 let subscribers = [];
 
@@ -46,4 +54,57 @@ app.get('/', (req, res) => {
 });
 
 
-server.listen(PORT_WEB, HOST, () => console.log(`Server running on port ${PORT_WEB}`));
+function convert(input, output, callback) {
+    ffmpeg(input)
+        .output(output)
+        .on('end', function() {                    
+            //console.log('conversion ended');
+            callback(null);
+        }).on('error', function(err){
+            //console.log('error: ', err.code, err.msg);
+            callback(err);
+        }).run();
+}
+
+// Handle new socket connections
+io.on('connection', (socket) => {
+	console.log("voice conn")
+	socket.broadcast.emit("connection")
+
+    // Handle incoming audio stream
+    socket.on('audioStream', (audioData) => {
+
+    	//console.log(rawdata)
+
+    	fs.writeFileSync("./input.webm", audioData.split("base64,")[1], 'base64')
+
+    	
+		convert('./input.webm', './output.wav', function(err){
+			if(!err) {
+				var file_content = fs.readFileSync('./output.wav', 'binary');
+				//var headerbytes = 44
+				//var int8a = new Int8Array(file_content.buffer, headerbytes, file_content.length - headerbytes);
+				//var decoder = new TextDecoder('utf8');
+				//var b64encoded = btoa(decoder.decode(int8a));
+				var b64encoded = btoa(file_content);
+				//console.log(b64encoded);
+				socket.broadcast.emit('audioStream', b64encoded);
+				//console.log(int16a)
+		   		//var buf = new Buffer(fs.readFileSync('./output.wav', encoding1), encoding2);
+		   		//console.log('conversion complete');
+		   }
+		   else {
+		   	console.log(err)
+		   }
+		});
+		
+    	// console.log()
+    	// console.log(audioData);
+    	//console.log(audioData.length)
+        //socket.broadcast.emit('audioStream', audioData);
+    });
+
+    socket.on('disconnect', () => {
+    });
+});
+

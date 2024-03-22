@@ -1,102 +1,106 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JARVIS LMCC | Right</title>
-	
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <title>JARVIS LMCC | Right</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 
-	<link rel="stylesheet" href="/css/main.css">
-	<link rel="stylesheet" href="/css/right.css">
-
-
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/right.css">
 </head>
 <body>
-	<div id="panel_geo" class="panel">
-		<div class="paneltitle">
-			Geo Info
-		</div>
 
-		<input type="text" id="pindesc" placeholder="Description...">
+    <!-- Geo info panel -->
+    <div id="panel_geo" class="panel">
+        <div class="paneltitle">
+            Geo Info
+        </div>
+		
+        <div id="geopin_input_panel">
+            <input class="user_input" type="number" id="pinX" placeholder="X coordinate">
+            <input class="user_input" type="number" id="pinY" placeholder="Y coordinate">
+            <input class="user_input" type="text" id="pindesc" placeholder="Description...">
 
-		<button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
-			Create Geo Pin
-		</button>
+            <button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
+                Create Geo Pin
+            </button>
+        </div>
+
+        <div id="button_panels">
+
+        </div>
 
 
-		<ul id="geo_pin_list">
-			
-		</ul>
-	</div>
+        <div id="panel_lists">
+
+            <!-- List for geopins -->
+            <div id="custom_pin_panel">
+
+                <div id="geopin_title" class="paneltitle">
+                    Geo Pins
+                </div>
+
+                <div id="geo_pin_list_panel">
+                    <ul id="geo_pin_list"></ul>
+                </div>
+            </div>
+
+            <!-- List for breadcrumbs -->
+            <div id="breadcrumb_panel">
+                
+                <div id ="breadcrumb_title" class="paneltitle">
+                    BreadCrumbs
+                        <!-- Our switches -->
+                    <!-- <label class="switch">
+                        <input type="checkbox" id="breadcrumbToggle" onchange="toggleBreadcrumbs()">
+                        <span class="slider">
+                            <span class="slider-text">Toggle Breadcrumbs</span>
+                            <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+                            <path fill="none" d="m4 16.5 8 8 16-16"></path>
+                        </svg>
+                        </span>
+                    </label> -->
+                </div>
+
+
+                <!--
+                <button id="begin_call" onclick='javascript:beginCall("lmcc_left")'>
+                    Begin Audio Call
+                </button>
+                -->
+
+                <div hidden id="breadcrumb_list_panel">
+                    <ul id="breadcrumb_list"></ul>
+                </div>
+            </div>
+        
+
+          
+        </div>
+          
+
+    </div>
+
+    <!-- minimap panel -->
+    <div id="panel_minimap" class="panel">
+
+    </div>
+    
+
+    <!-- <button id="button_task_toggle" onclick="toggleTaskState()">
+        Task: Not Started
+    </button> -->
+
+
+    <audio autoplay id="micstream"></audio>
+
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
+<script src="/js/voice.js"></script>
+<script src="/js/right.js"></script>
 <script>
-
-	var LOCAL_DATA = {}
-	LOCAL_DATA["GEOPINS"] = [];
-
-	var geo_pin_list = document.getElementById("geo_pin_list")
-
-	// we need to keep this port value fixed, I guess
-	const ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
-
-	function requestGeoPinCreation() {
-		var req = new XMLHttpRequest();
-		let val = document.getElementById("pindesc").value
-		req.open("GET", "/creategeopin/" + val)
-		req.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 201) {
-				// created
-			}
-		}
-		req.send()
-	}
-
-	function addGeoPin(content) {
- 		LOCAL_DATA["GEOPINS"].push(content)
-
-		var li = document.createElement('li');
-
-		var EVA1_x = Math.round(Number(content["EVA1"]["x"]) * 100) / 100
-		var EVA1_y = Math.round(Number(content["EVA1"]["y"]) * 100) / 100
-
-		var EVA2_x = Math.round(Number(content["EVA2"]["x"]) * 100) / 100
-		var EVA2_y = Math.round(Number(content["EVA2"]["y"]) * 100) / 100
-
-
-		li.appendChild(document.createTextNode(content["desc"]));
-		li.appendChild(document.createElement("br"))
-		li.appendChild(document.createTextNode("-: EVA1 (" + EVA1_x + ", " + EVA1_y + ")"))
-		li.appendChild(document.createElement("br"))
-		li.appendChild(document.createTextNode("-: EVA2 (" + EVA2_x + ", " + EVA2_y + ")"))
-
-		geo_pin_list.appendChild(li)
-	}
-
-	ws.onmessage = async function (event, isBinary) {
-		var data = await event.data.text();
-		var message = JSON.parse(data)
-		var message_type = message["type"];
-	 	console.log('Received ' + message_type + ' from ' + message["sender"]);
-	 	if (message_type == "GEOPIN") {
-	 		console.log(message["content"])
-	 		addGeoPin(message["content"])
-	 	}
-	};
-
-	// when we load, check with the server for existing pins
-	var load_existing_geopins_req = new XMLHttpRequest();
-	load_existing_geopins_req.open("GET", "/localdata/GEOPINS")
-	load_existing_geopins_req.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			var raw_data = this.responseText
-			var data_json = JSON.parse(raw_data)
-			for (var pin_num of Object.keys(data_json)) {
-				addGeoPin(data_json[pin_num])
-			}
-		}
-	}
-	load_existing_geopins_req.send()
 
 </script>
 </html>

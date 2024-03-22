@@ -1,0 +1,5 @@
+SWITCH: DCU PUMP -> OPEN
+SWITCH: UIA WATER WASTE -> ON/OPEN
+WAIT UNTIL COOLANT TANK IS EMPTY
+SWITCH: UIA WATER WASTE -> OFF
+eva1_pump, eva2_pump, eva1water_waste, eva2water_waste

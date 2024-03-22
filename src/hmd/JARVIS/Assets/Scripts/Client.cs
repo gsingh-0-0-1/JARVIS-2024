@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,7 @@ using System.Text.Json.Nodes;
 using UnityEngine.UI;
 using TMPro;
 using UnityEditor.AssetImporters;
+using SocketIOClass = SocketIOClient.SocketIO;
 
 public class Client : MonoBehaviour
 {
@@ -19,10 +22,24 @@ public class Client : MonoBehaviour
     public TMP_InputField textboxx;
     public TMP_InputField textboxy;
     public TMP_InputField textboxdesc;
+    public Boolean readyToPlay;
+    public float[] dataArrFloat;
+
+    UnicodeEncoding uniEncoding = new UnicodeEncoding();
+
+    public AudioClip soundClip;
+    public AudioSource audioSource;
 
     void Start()
     {
-        ws = new WebSocket("ws://localhost:4761");
+        // soundClip = AudioClip.Create("sound_chunk", 10000, 1, 44100, false);
+
+        TSSc = new TSScConnection();
+        string host = "data.cs.purdue.edu";
+        // TSSc.ConnectToHost(host, 7);
+
+        // TSSc = new TSScConnection();
+        ws = new WebSocket("ws://192.168.86.23:4761");
         ws.ConnectAsync();
         ws.OnOpen += (sender, e) => {
                Debug.Log("Connected");
@@ -33,14 +50,64 @@ public class Client : MonoBehaviour
             string dataString = System.Text.Encoding.UTF8.GetString(dataBytes);
             JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(dataString)!;
 
-            Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + recievedInformation);
+            // Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + recievedInformation);
         };
         ws.OnError += (sender, e) => {
                 Debug.Log(e.Message);
         };
 
-        string host = "data.cs.purdue.edu";
-        TSSc.ConnectToHost(host, 7);
+        var socketio_client = new SocketIOClass("http://192.168.86.23:4762");
+
+        socketio_client.OnConnected += async (sender, e) => {
+            Debug.Log("socket io connected");
+        };
+
+        audioSource = GetComponent<AudioSource>();
+
+        socketio_client.On("audioStream", response => {
+            // Debug.Log("got audio");
+            
+            var audioData = response.GetValue<string>();//.Split("base64,")[1];
+            // Debug.Log(response.GetValue<string>());
+            // Debug.Log(audioData);
+            // memStream.Write(audioData, 0, audioData.Length);
+            // AudioClip audioClip = WavUtility.ToAudioClip(memStream);
+            // AudioSource audioSource;
+
+            byte[] dataArrByte = Convert.FromBase64String(audioData);//memStream.ToArray();
+
+            //float[] 
+            dataArrFloat = new float[dataArrByte.Length / 2];
+
+            for (int i = 44; i < dataArrFloat.Length; i++) {
+                short sample = BitConverter.ToInt16(dataArrByte, i * 2);
+                dataArrFloat[i] = sample / 32768f;
+            }
+
+            readyToPlay = true;
+
+            //soundClip = new AudioClip();
+
+            // SoundPlayer soundPlayer = new SoundPlayer();
+            // soundPlayer.Stream = memStream;
+            // soundPlayer.Play();
+            // memStream.position = 0;
+            // Debug.Log(response);
+        });
+
+        socketio_client.ConnectAsync();
+    }
+
+    void procAndPlay() {
+        // Debug.Log("here 1");
+        soundClip = AudioClip.Create("sound_chunk", Convert.ToInt32(dataArrFloat.Length), 1, 48000, false);
+        // Debug.Log("here 2");
+        soundClip.SetData(dataArrFloat, 0);
+        // Debug.Log("here 3");
+        audioSource.clip = soundClip;
+        // Debug.Log("here 4");
+        audioSource.Play();
+        // Debug.Log("here " + audioSource.isPlaying.ToString());
     }
 
     void Update()
@@ -60,6 +127,10 @@ public class Client : MonoBehaviour
             // We need to receiving them so we can display them!
             // SendBreadcrumbs(-0.14f, posx, "bread");
 
+        }
+        if (readyToPlay) {
+            procAndPlay();
+            readyToPlay = false;
         }
 
     }

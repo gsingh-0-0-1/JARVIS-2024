@@ -1,2 +1,5 @@
 .DS_Store
 node_modules
+input.webm
+output.wav
+output.pcm
