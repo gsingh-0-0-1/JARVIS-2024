@@ -23,7 +23,9 @@ public class bioDataPanel : MonoBehaviour
         // Call the function to fetch JSON data initially
         StartCoroutine(UpdateDataPeriodically());
 
-        var socketio_client = new SocketIOClass("http://192.168.86.23:4762");
+        TextAsset gateway_ip = Resources.Load("gateway") as TextAsset;
+
+        var socketio_client = new SocketIOClass("http://" + gateway_ip.ToString() + ":4762");
 
         socketio_client.OnConnected += async (sender, e) => {
             Debug.Log("socket io connected");
@@ -35,7 +37,7 @@ public class bioDataPanel : MonoBehaviour
         });
 
 
-        ws = new WebSocket("ws://192.168.86.23:4761");
+        ws = new WebSocket("ws://" + gateway_ip.ToString() + ":4761");
         ws.ConnectAsync();
         ws.OnOpen += (sender, e) => {
             Debug.Log("Connected");

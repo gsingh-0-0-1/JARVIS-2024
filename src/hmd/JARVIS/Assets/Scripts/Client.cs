@@ -38,8 +38,10 @@ public class Client : MonoBehaviour
         string host = "data.cs.purdue.edu";
         // TSSc.ConnectToHost(host, 7);
 
+        TextAsset gateway_ip = Resources.Load("gateway") as TextAsset;
+
         // TSSc = new TSScConnection();
-        ws = new WebSocket("ws://192.168.86.23:4761");
+        ws = new WebSocket("ws://" + gateway_ip.ToString() + ":4761");
         ws.ConnectAsync();
         ws.OnOpen += (sender, e) => {
                Debug.Log("Connected");
@@ -56,7 +58,7 @@ public class Client : MonoBehaviour
                 Debug.Log(e.Message);
         };
 
-        var socketio_client = new SocketIOClass("http://192.168.86.23:4762");
+        var socketio_client = new SocketIOClass("http://" + gateway_ip.ToString() + ":4762");
 
         socketio_client.OnConnected += async (sender, e) => {
             Debug.Log("socket io connected");
