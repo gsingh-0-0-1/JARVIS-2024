@@ -39,7 +39,7 @@ public class Client : MonoBehaviour
         // TSSc.ConnectToHost(host, 7);
 
         TextAsset gateway = Resources.Load("gateway") as TextAsset;
-        String gateway_ip = gateway.ToString().split("\n")[0];
+        String gateway_ip = gateway.ToString().Split("\n")[0];
 
         // TSSc = new TSScConnection();
         ws = new WebSocket("ws://" + gateway_ip.ToString() + ":4761");

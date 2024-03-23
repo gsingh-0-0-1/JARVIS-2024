@@ -24,7 +24,7 @@ public class bioDataPanel : MonoBehaviour
         StartCoroutine(UpdateDataPeriodically());
 
         TextAsset gateway = Resources.Load("gateway") as TextAsset;
-        String gateway_ip = gateway.ToString().split("\n")[0];
+        String gateway_ip = gateway.ToString().Split("\n")[0];
 
         var socketio_client = new SocketIOClass("http://" + gateway_ip.ToString() + ":4762");
 
