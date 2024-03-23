@@ -93,6 +93,8 @@ function addBreadCrumb(content) {
 
     // 4251 and 3453 are the dimensions of the image. this is just a dumb
     // hardcoding that I (Gurmehar) am doing for now
+
+    //ily gurmehar <3 - michael
     dot.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%"
     dot.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%"
 

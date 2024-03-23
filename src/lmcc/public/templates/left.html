@@ -11,38 +11,70 @@
     <link rel="stylesheet" href="/css/left.css">
 </head>
 <body>
-    <div id="task_panel" class="panel">
-        <div class="paneltitle">EVA Tasks</div>
+    <!-- <div class="panel-container"> -->
 
-        <select id="taskCategorySelector" onchange="fetchAllTasks()">
-            <option value="cat_egress">Egress</option>
-            <option value="cat_ingress">Ingress</option>
-            <!-- Add more tasks as needed -->
-        </select>
-        <label for="taskCategorySelector">
-        	Task Category
-        </label>
+        
+        <!-- 1. Task Interface Panel -->
+        <div id="task_panel" class="panel">
+            <div id="evatitle" div class="paneltitle">EVA Tasks</div>
 
-        <br><br>
+            <div id="task_category_panel">
+                <label for="taskCategorySelector">
+                    <div id="task_label">
+                        Task Category
+                    </div>
+                </label>
+                
+                <div class="select-dropdown">
+                    <select id="taskCategorySelector" onchange="fetchAllTasks()">
+                        <option value="cat_egress">Egress</option>
+                        <option value="cat_ingress">Ingress</option>
+                        <!-- Add more tasks as needed -->
+                    </select>
+                </div>
+            </div>
+            
+            <div id="subtask_panel">
+                <label for="taskSelector">
+                    <div id="subtask_label">
+                        Subtask
+                    </div>
+                </label>
 
-        <select id="taskSelector" onchange="displaySelectedTask()">
-            <!-- Add more tasks as needed -->
-        </select>
-        <label for="taskSelector">
-        	Subtask
-        </label>
 
-        <br><br>
+                <div class="select-dropdown">
+                    <select id="taskSelector" onchange="displaySelectedTask()">
+                        <!-- Add more tasks as needed -->
+                    </select>
+                </div>
 
-        <div id="task_description">
+            </div>
+
+            <!-- <br><br> -->
+            <div id="task_description_panel">
+                <div id="task_description"> 
+                </div>
+            </div>
+
+            <!-- <br><br> -->
+            <button id="send_task" onclick="createTask()">
+                Send Task
+            </button>
         </div>
 
-        <br><br>
 
-        <button onclick="createTask()">Send Task</button>
-    </div>
+        <!-- 2. Mission Monitoring Panel -->
+        <div id="panel_mission_monitor" class="panel">
+            Mission Monitoring
+        </div>
 
-    <audio autoplay id="micstream"></audio>
+        <!-- 3. Mission Monitoring Panel -->
+        <div id="panel_geo_sampling" class="panel">
+            Geological Sampling
+        </div>
+
+        <audio autoplay id="micstream"></audio>
+    <!-- </div> -->
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
 <!--<script src="/js/voice.js"></script>-->
