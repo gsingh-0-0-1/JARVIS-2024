@@ -23,7 +23,8 @@ public class bioDataPanel : MonoBehaviour
         // Call the function to fetch JSON data initially
         StartCoroutine(UpdateDataPeriodically());
 
-        TextAsset gateway_ip = Resources.Load("gateway") as TextAsset;
+        TextAsset gateway = Resources.Load("gateway") as TextAsset;
+        String gateway_ip = gateway.ToString().split("\n")[0];
 
         var socketio_client = new SocketIOClass("http://" + gateway_ip.ToString() + ":4762");
 

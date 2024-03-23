@@ -38,7 +38,8 @@ public class Client : MonoBehaviour
         string host = "data.cs.purdue.edu";
         // TSSc.ConnectToHost(host, 7);
 
-        TextAsset gateway_ip = Resources.Load("gateway") as TextAsset;
+        TextAsset gateway = Resources.Load("gateway") as TextAsset;
+        String gateway_ip = gateway.ToString().split("\n")[0];
 
         // TSSc = new TSScConnection();
         ws = new WebSocket("ws://" + gateway_ip.ToString() + ":4761");
