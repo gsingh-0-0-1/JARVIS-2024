@@ -30,6 +30,7 @@ button {
 	box-sizing: border-box;
 	border-radius: 8px;
 	padding: 10px;
+	color: white;
 	/* align-items: center ; */
 	/* background-image: url('/images/background.png'); */
 	/* background-image: linear-gradient(to bottom right, #161c56,#33426b); */
