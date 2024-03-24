@@ -224,9 +224,20 @@
 
 
 /* Camera Feed Panel */
-#panel_camfeed {
+#panel_camfeed_1 {
 	top: 0%;
-	right: 34.5%;
+	right: 33.75%;
+	height: 50%;
+	aspect-ratio: 1 / 1;
+	/* background-color: #88c; */
+	background-image: linear-gradient(to bottom ,#33426b, #161c58);
+
+
+}
+
+#panel_camfeed_2 {
+	top: 50%;
+	right: 33.75%;
 	height: 50%;
 	aspect-ratio: 1 / 1;
 	/* background-color: #88c; */
@@ -241,7 +252,7 @@
 	top: 50%;
 	left: 0%;
 	height: 50%;
-	aspect-ratio: 400 / 169;
+	aspect-ratio: 250 / 169;
 	/* background-color: #88c; */
 	background-image: linear-gradient(45deg ,#293966, #161c56);
 
@@ -253,7 +264,7 @@
 	top: 0%;
 	left: 0%;
 	height: 50%;
-	aspect-ratio: 400 / 292;
+	aspect-ratio: 250 / 169;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
 
