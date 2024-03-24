@@ -28,6 +28,7 @@ const USER = "LMCC";
 const TSS_FULL_HTTP = "http://" + TSS_ADDR + ":" + TSS_PORT
 const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
 const CHECK_STATUIA = TSS_FULL_HTTP + "/json_data/UIA.json"
+const BIOMETRICS = 	TSS_FULL_HTTP + "json_data/teams/0/TELEMETRY.json"
 const CHECK_STATDCU = TSS_FULL_HTTP + "/json_data/DCU.json"
 
 
@@ -49,6 +50,7 @@ LOCAL_DATA["BREADCRUMBS1"] = [];
 LOCAL_DATA["BREADCRUMBS2"] = [];
 
 LOCAL_DATA["TASKS"] = [];
+LOCAL_DATA["BIOMETRICS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -162,19 +164,75 @@ ws.onopen = function (event) {
 	switchdictionary["eva2_waterwaste"] = eva2water_waste
 	switchdictionary["eva1_watersupply"] = eva1water_supply
 	switchdictionary["eva2_watersupply"] = eva2water_supply
-	DCU_EVA(function(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump) { //can add stats to this function to save room?
+	DCU_EVA(function(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump, eva1_co2, eva2_co2, eva1_comm, eva2_comm, eva1_fan, eva2_fan) { //can add stats to this function to save room?
 		switchdictionary["eva1_battstat"] = eva1_battstat
 		switchdictionary["eva2_battstat"] = eva2_battstat
 		switchdictionary["eva1_oxyfill"] = eva1_oxyfill
 		switchdictionary["eva2_oxyfill"] = eva2_oxyfill
 		switchdictionary["eva1_pump"] = eva1_pump
 		switchdictionary["eva2_pump"] = eva2_pump
+		switchdictionary["eva1_co2"] = eva1_co2
+		switchdictionary["eva2_co2"] = eva2_co2
+		switchdictionary["eva1_comm"] = eva1_comm
+		switchdictionary["eva2_comm"] = eva2_comm
+		switchdictionary["eva1_fan"] = eva1_fan
+		switchdictionary["eva2_fan"] = eva2_fan
 
 		console.log(Object.keys(switchdictionary))
 		Switches(switchdictionary); // would need to call switches function HERE 
 	  });
 	});
 
+// Creating a dict for bio data
+let biodictionary = {};
+
+EVA_BIO(function(batt_time_left, batt_time_left2, oxy_pri_storage, oxy_pri_storage2, oxy_sec_storage, oxy_sec_storage2, oxy_pri_pressure, oxy_pri_pressure2, oxy_sec_pressure, oxy_sec_pressure2, oxy_time_left, oxy_time_left2, heart_rate, heart_rate2, oxy_consumption, oxy_consumption2, co2_production, co2_production2, suit_pressure_oxy, suit_pressure_oxy2, suit_pressure_co2,suit_pressure_co22, suit_pressure_other, suit_pressure_other2, suit_pressure_total, suit_pressure_total2, fan_pri_rpm, fan_pri_rpm2, fan_sec_rpm, fan_sec_rpm2, helmet_pressure_co2, helmet_pressure_co22, scrubber_a_co2_storage, scrubber_a_co2_storage2, scrubber_b_co2_storage, scrubber_b_co2_storage2, temperature, temperature2, coolant_ml, coolant_ml2, coolant_gas_pressure, coolant_gas_pressure2, coolant_liquid_pressure, coolant_liquid_pressure2){
+biodictionary['eva1_batteryTime'] = batt_time_left
+biodictionary['eva2_batteryTime'] = batt_time_left2
+biodictionary['eva1_oxy_pri_storage'] = oxy_pri_storage
+biodictionary['eva2_oxy_pri_storage'] = oxy_pri_storage2
+biodictionary['eva1_oxy_sec_storage'] = oxy_sec_storage
+biodictionary['ava2_oxy_sec_storage'] = oxy_sec_storage2
+biodictionary['eva1_oxy_pri_pressure'] = oxy_pri_pressure
+biodictionary['eva2_oxy_pri_pressure'] = oxy_pri_pressure2
+biodictionary['eva1_oxy_sec_pressure'] = oxy_sec_pressure
+biodictionary['eva2_oxy_sec_pressure'] = oxy_sec_pressure2
+biodictionary['eva1_oxy_time_left'] = oxy_time_left
+biodictionary['eva2_oxy_time_left'] = oxy_time_left2
+biodictionary['eva1_heart_rate'] = heart_rate
+biodictionary['eva1_heart_rate'] = heart_rate2
+biodictionary['eva1_oxy_consumption'] = oxy_consumption
+biodictionary['eva2_oxy_consumption'] = oxy_consumption2
+biodictionary['eva1_co2_production'] = co2_production
+biodictionary['eva2_co2_production'] = co2_production2
+biodictionary['eva1_suit_pressure_oxy'] = suit_pressure_oxy
+biodictionary['eva2_suit_pressure_oxy'] = suit_pressure_oxy2
+biodictionary['eva1_suit_pressure_co2'] = suit_pressure_co2
+biodictionary['eva2_suit_pressure_co2'] = suit_pressure_co22
+biodictionary['eva1_suit_pressure_other'] = suit_pressure_other
+biodictionary['eva2_suit_pressure_other'] = suit_pressure_other2
+biodictionary['eva1_suit_pressure_total'] = suit_pressure_total
+biodictionary['eva2_suit_pressure_total'] = suit_pressure_total2
+biodictionary['eva1_fan_pri_rpm'] = fan_pri_rpm
+biodictionary['eva2_fan_pri_rpm'] = fan_pri_rpm2
+biodictionary['eva1_fan_sec_rpm'] = fan_sec_rpm
+biodictionary['eva2_fan_sec_rpm'] = fan_sec_rpm2
+biodictionary['eva1_helmet_pressure_co2'] = helmet_pressure_co2
+biodictionary['eva2_helmet_pressure_co2'] = helmet_pressure_co22
+biodictionary['ava1_scrubber_a_co2_storage'] = scrubber_a_co2_storage
+biodictionary['eva2_scrubber_a_co2_storage'] = scrubber_a_co2_storage2
+biodictionary['eva1_scrubber_b_co2_storage'] = scrubber_b_co2_storage
+biodictionary['eva2_scrubber_b_co2_storage'] = scrubber_b_co2_storage2
+biodictionary['eva1_temperature'] = temperature
+biodictionary['eva2_temperature'] = temperature2
+biodictionary['eva1_coolant_ml'] = coolant_ml
+biodictionary['eva2_coolant_ml'] = coolant_ml2
+biodictionary['eva1_coolant_gas_pressure'] = coolant_gas_pressure
+biodictionary['eva2_coolant_gas_pressure'] = coolant_gas_pressure2
+biodictionary['eva1_coolant_liquid_pressure'] = coolant_liquid_pressure
+biodictionary['eva2_coolant_liquid_pressure'] = coolant_liquid_pressure2
+//BIO_Switches (biodictionary);
+});
 //--------FUNCTION DEFS--------
 
 function UIA_EVA(callback) {
@@ -218,7 +276,13 @@ function DCU_EVA(callback) {
             const eva2_oxyfill = data["dcu"]["eva2"]["oxy"];
             const eva1_pump = data["dcu"]["eva1"]["pump"];
             const eva2_pump = data["dcu"]["eva2"]["pump"];
-            callback(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump);
+			const eva1_co2 = data["dcu"]["eva1"]["co2"];
+			const eva2_co2 = data["dcu"]["eva2"]["co2"];
+			const eva1_comm = data["dcu"]["eva1"]["comm"];
+			const eva2_comm = data["dcu"]["eva2"]["comm"];
+			const eva1_fan = data["dcu"]["eva1"]["fan"];
+			const eva2_fan = data["dcu"]["eva2"]["fan"];
+            callback(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump, eva1_co2, eva2_co2, eva1_comm, eva2_comm, eva1_fan, eva2_fan);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
@@ -232,6 +296,66 @@ function Switches(switchdictionary){
 }
 
 //end of my addition
+
+function EVA_BIO(callback){
+	fetch (BIOMETRICS)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}batt_time_left
+			return response.json();
+		})
+		.then(data => {
+			const batt_time_left = data['eva1']['batt_time_left'];
+			const batt_time_left2 = data['eva2']['batt_time_left'];
+			const oxy_pri_storage = data['eva1']['oxy_pri_storage'];
+			const oxy_pri_storage2 = data['eva2']['oxy_pri_storage'];
+			const oxy_sec_storage = data['eva1']['oxy_sec_storage']['value'];
+			const oxy_sec_storage2 = data['eva2']['oxy_sec_storage']['value'];
+			const oxy_pri_pressure = data['eva1']['oxy_pri_pressure'];
+			const oxy_pri_pressure2 = data['eva2']['oxy_pri_pressure'];
+			const oxy_sec_pressure = data['eva1']['oxy_sec_pressure']['value'];
+			const oxy_sec_pressure2 = data['eva2']['oxy_sec_pressure']['value'];
+			const oxy_time_left = data['eva1']['oxy_time_left'];
+			const oxy_time_left2 = data['eva2']['oxy_time_left'];
+			const heart_rate = data['eva1']['heart_rate']['value'];
+			const heart_rate2 = data['eva1']['heart_rate']['value'];
+			const oxy_consumption = data['eva1']['oxy_consumption'];
+			const oxy_consumption2 = data['eva2']['oxy_consumption2'];
+			const co2_production = data['eva1']['co2_production'];
+			const co2_production2 = data['eva2']['co2_production'];
+			const suit_pressure_oxy = data['eva1']['suit_pressure_oxy'];
+			const suit_pressure_oxy2 = data['eva2']['suit_pressure_oxy'];
+			const suit_pressure_co2 = data['eva1']['suit_pressure_co2'];
+			const suit_pressure_co22 = data['eva2']['suit_pressure_co2'];
+			const suit_pressure_other = data['eva1']['suit_pressure_other']['value'];
+			const suit_pressure_other2 = data['eva2']['suit_pressure_other']['value'];
+			const suit_pressure_total = data['eva1']['suit_pressure_total'];
+			const suit_pressure_total2 = data['eva2']['suit_pressure_total'];
+			const fan_pri_rpm = data['eva1']['fan_pri_rpm']['vaule'];
+			const fan_pri_rpm2 = data['eva2']['fan_pri_rpm']['value'];
+			const fan_sec_rpm = data['eva1']['fan_sec_rpm']['value'];
+			const fan_sec_rpm2 = data['eva12']['fan_sec_rpm']['value'];
+			const helmet_pressure_co2 = data['eva1']['helmet_pressure_co2'];
+			const helmet_pressure_co22 = data['eva2']['helmet_pressure_co2'];
+			const scrubber_a_co2_storage = data['eva1']['scrubber_a_co2_storage']['value'];
+			const scrubber_a_co2_storage2 = data['eva2']['scrubber_a_co2_storage']['value'];
+			const scrubber_b_co2_storage = data['eva1']['scrubber_b_co2_storage'];
+			const scrubber_b_co2_storage2 = data['eva2']['scrubber_b_co2_storage'];
+			const temperature = data['eva1']['temperature']['value'];
+			const temperature2 = data['eva2']['temperature']['value'];
+			const coolant_ml = data['eva1']['coolant_ml'];
+			const coolant_ml2 = data['eva2']['coolant_ml'];
+			const coolant_gas_pressure = data['eva1']['coolant_gas_pressure']['value'];
+			const coolant_gas_pressure2 = data['eva2']['coolant_gas_pressure']['value'];
+			const coolant_liquid_pressure = data['eva1']['coolant_liquid_pressure'];
+			const coolant_liquid_pressure2 = data['eva2']['coolant_liquid_pressure'];
+			callback(batt_time_left, batt_time_left2, oxy_pri_storage, oxy_pri_storage2, oxy_sec_storage, oxy_sec_storage2, oxy_pri_pressure, oxy_pri_pressure2, oxy_sec_pressure, oxy_sec_pressure2, oxy_time_left, oxy_time_left2, heart_rate, heart_rate2, oxy_consumption, oxy_consumption2, co2_production, co2_production2, suit_pressure_oxy, suit_pressure_oxy2, suit_pressure_co2,suit_pressure_co22, suit_pressure_other, suit_pressure_other2, suit_pressure_total, suit_pressure_total2, fan_pri_rpm, fan_pri_rpm2, fan_sec_rpm, fan_sec_rpm2, helmet_pressure_co2, helmet_pressure_co22, scrubber_a_co2_storage, scrubber_a_co2_storage2, scrubber_b_co2_storage, scrubber_b_co2_storage2, temperature, temperature2, coolant_ml, coolant_ml2, coolant_gas_pressure, coolant_gas_pressure2, coolant_liquid_pressure, coolant_liquid_pressure2)
+		})
+		.catch(error => {
+			console.error('There was a problem with the fetch operation:', error);
+	});
+}
 
 async function createGeoPin(data) {
 	// TODO: Ask NASA about how to properly pull GeoData. The TSS
@@ -339,9 +463,6 @@ function generateBreadcrumbs() {
 }
 
 
-ws.onopen = function (event) {
-	generateBreadcrumbs();
-};
 
 
 
@@ -371,7 +492,17 @@ async function createTask(taskName) {
 		console.error(`Got an error trying to read the file: ${error.message}`);
 	}
 }
-	
+
+function updateBiometrics(){
+	setInterval(() => {
+		LOCAL_DATA["BIOMETRICS"] = {'heart_rate' : 13}
+    }, 1000); // 1 second interval
+}
+
+ws.onopen = function (event) {
+	generateBreadcrumbs()
+	updateBiometrics()
+};
 
 
 /*
