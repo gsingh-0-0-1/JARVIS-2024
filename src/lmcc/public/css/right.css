@@ -214,25 +214,59 @@
 
 /* Minimap dot styling */
 .mapdot {
-	position: absolute;
-	height: 5px;
-	width: 5px;
-	background-color: #08d;
-	border-radius: 50%;
-	display: inline-block;
+    position: absolute;
+    height: 5px;
+    width: 5px;
+    background-color: rgb(255, 50, 241);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 1; /* Default opacity for new dots */
+}
+
+.current-dot {
+    width: 0;
+    height: 0;
+    /* border-left: 5px solid transparent;
+    border-right: 5px solid transparent; */
+	border: 0.5vh solid rgb(255, 0, 0);
+    border-radius: 0;
+    opacity: 1; /* Ensure the current dot is fully opaque */
 }
 
 
+
 /* Camera Feed Panel */
-#panel_camfeed {
+#panel_camfeed_1 {
 	top: 0%;
 	right: 34.5%;
 	height: 50%;
-	aspect-ratio: 1 / 1;
+	aspect-ratio: 250 / 281;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to bottom ,#33426b, #161c58);
+	justify-content: center;
 
 
+}
+
+#panel_camfeed_2 {
+	top: 50%;
+	right: 34.5%;
+	height: 50%;
+	aspect-ratio: 250 / 281;	
+	/* background-color: #88c; */
+	background-image: linear-gradient(to top ,#253254, #161c58);
+
+
+
+}
+
+
+#camfeed_2_element {
+	width: 95%;
+	height: 90%;
+	margin-top: 5%;
+	margin-left: 3%;
+	border-radius: 5%;
 }
 
 
@@ -241,7 +275,7 @@
 	top: 50%;
 	left: 0%;
 	height: 50%;
-	aspect-ratio: 400 / 169;
+	aspect-ratio: 250 / 169;
 	/* background-color: #88c; */
 	background-image: linear-gradient(45deg ,#293966, #161c56);
 
@@ -253,7 +287,7 @@
 	top: 0%;
 	left: 0%;
 	height: 50%;
-	aspect-ratio: 400 / 292;
+	aspect-ratio: 250 / 169;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
 

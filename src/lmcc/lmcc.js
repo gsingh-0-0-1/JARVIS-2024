@@ -48,6 +48,7 @@ let LOCAL_DATA = {}
 LOCAL_DATA["GEOPINS"] = [];
 LOCAL_DATA["BREADCRUMBS"] = [];
 LOCAL_DATA["TASKS"] = [];
+LOCAL_DATA["BIOMETRICS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -159,13 +160,19 @@ ws.onopen = function (event) {
 	switchdictionary["eva2_waterwaste"] = eva2water_waste
 	switchdictionary["eva1_watersupply"] = eva1water_supply
 	switchdictionary["eva2_watersupply"] = eva2water_supply
-	DCU_EVA(function(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump) { //can add stats to this function to save room?
+	DCU_EVA(function(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump, eva1_co2, eva2_co2, eva1_comm, eva2_comm, eva1_fan, eva2_fan) { //can add stats to this function to save room?
 		switchdictionary["eva1_battstat"] = eva1_battstat
 		switchdictionary["eva2_battstat"] = eva2_battstat
 		switchdictionary["eva1_oxyfill"] = eva1_oxyfill
 		switchdictionary["eva2_oxyfill"] = eva2_oxyfill
 		switchdictionary["eva1_pump"] = eva1_pump
 		switchdictionary["eva2_pump"] = eva2_pump
+		switchdictionary["eva1_co2"] = eva1_co2
+		switchdictionary["eva2_co2"] = eva2_co2
+		switchdictionary["eva1_comm"] = eva1_comm
+		switchdictionary["eva2_comm"] = eva2_comm
+		switchdictionary["eva1_fan"] = eva1_fan
+		switchdictionary["eva2_fan"] = eva2_fan
 
 		console.log(Object.keys(switchdictionary))
 		Switches(switchdictionary); // would need to call switches function HERE 
@@ -265,7 +272,13 @@ function DCU_EVA(callback) {
             const eva2_oxyfill = data["dcu"]["eva2"]["oxy"];
             const eva1_pump = data["dcu"]["eva1"]["pump"];
             const eva2_pump = data["dcu"]["eva2"]["pump"];
-            callback(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump);
+			const eva1_co2 = data["dcu"]["eva1"]["co2"];
+			const eva2_co2 = data["dcu"]["eva2"]["co2"];
+			const eva1_comm = data["dcu"]["eva1"]["comm"];
+			const eva2_comm = data["dcu"]["eva2"]["comm"];
+			const eva1_fan = data["dcu"]["eva1"]["fan"];
+			const eva2_fan = data["dcu"]["eva2"]["fan"];
+            callback(eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump, eva1_co2, eva2_co2, eva1_comm, eva2_comm, eva1_fan, eva2_fan);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
@@ -426,13 +439,10 @@ function generateBreadcrumbs() {
                 ws.send(JSON.stringify(breadcrumb));
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
-    }, 10000); // 10 seconds interval
+    }, 8000); // 10 seconds interval
 }
 
 
-ws.onopen = function (event) {
-	generateBreadcrumbs();
-};
 
 
 
@@ -462,7 +472,17 @@ async function createTask(taskName) {
 		console.error(`Got an error trying to read the file: ${error.message}`);
 	}
 }
-	
+
+function updateBiometrics(){
+	setInterval(() => {
+		LOCAL_DATA["BIOMETRICS"] = {'heart_rate' : 13}
+    }, 1000); // 1 second interval
+}
+
+ws.onopen = function (event) {
+	generateBreadcrumbs()
+	updateBiometrics()
+};
 
 
 /*

@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Listener
-build_property.ProjectDir = /Users/ming/Projects/JARVIS-2024/src/hmd/Listener/
+build_property.ProjectDir = C:\Users\Owner\JARVIS-2024\src\hmd\Listener\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
