@@ -76,35 +76,46 @@ function toggleBreadcrumbs() {
 var MAPDOTS = []
 
 function addBreadCrumb(content) {
-    // console.log(content)
-    LOCAL_DATA["BREADCRUMBS"].push(content)
+    LOCAL_DATA["BREADCRUMBS"].push(content);
 
     var li = document.createElement('li');
-
     var coords = content.coords;
     var desc = content.desc;
-
     li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-
     breadcrumbList.appendChild(li);
 
-    var dot = document.createElement("span")
-    dot.classList.add("mapdot")
+    var dot = document.createElement("span");
+    dot.classList.add("mapdot", "current-dot"); // Add "current-dot" class to the new dot
+    dot.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
+    dot.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
+    
 
-    // 4251 and 3453 are the dimensions of the image. this is just a dumb
-    // hardcoding that I (Gurmehar) am doing for now
+    // Add the new dot to the beginning of the array
+    MAPDOTS.unshift(dot);
+    document.getElementById("panel_minimap").appendChild(dot);
 
-    //ily gurmehar <3 - michael
-    dot.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%"
-    dot.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%"
+    // Update the appearance of existing dots
+    for (let i = 0; i < MAPDOTS.length; i++) {
+        let opacity;
+        if (i <= 5) {
+            // Rapidly decrease opacity for the first 5 dots
+            opacity = 1 - (i * 0.12);
+        } else {
+            // Set a low, fixed opacity for the trailing dots
+            opacity = 0.4;
+        }
+        MAPDOTS[i].style.opacity = opacity;
 
-    if (MAPDOTS.length != 0) {
-        MAPDOTS[MAPDOTS.length - 1].style.backgroundColor = "#f00"
+        // Remove the "current-dot" class from the trailing dots
+        if (i > 0) {
+            MAPDOTS[i].classList.remove("current-dot");
+        }
     }
-
-    MAPDOTS.push(dot)
-    document.getElementById("panel_minimap").appendChild(dot)
 }
+
+
+
+
 
 
 function addGeoPin(content) {

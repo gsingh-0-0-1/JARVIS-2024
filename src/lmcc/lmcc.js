@@ -47,6 +47,7 @@ let LOCAL_DATA = {}
 LOCAL_DATA["GEOPINS"] = [];
 LOCAL_DATA["BREADCRUMBS"] = [];
 LOCAL_DATA["TASKS"] = [];
+LOCAL_DATA["BIOMETRICS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -327,13 +328,10 @@ function generateBreadcrumbs() {
                 ws.send(JSON.stringify(breadcrumb));
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
-    }, 10000); // 10 seconds interval
+    }, 8000); // 10 seconds interval
 }
 
 
-ws.onopen = function (event) {
-	generateBreadcrumbs();
-};
 
 
 
@@ -363,7 +361,17 @@ async function createTask(taskName) {
 		console.error(`Got an error trying to read the file: ${error.message}`);
 	}
 }
-	
+
+function updateBiometrics(){
+	setInterval(() => {
+		LOCAL_DATA["BIOMETRICS"] = {'heart_rate' : 13}
+    }, 1000); // 1 second interval
+}
+
+ws.onopen = function (event) {
+	generateBreadcrumbs()
+	updateBiometrics()
+};
 
 
 /*

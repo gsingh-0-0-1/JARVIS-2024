@@ -214,13 +214,25 @@
 
 /* Minimap dot styling */
 .mapdot {
-	position: absolute;
-	height: 5px;
-	width: 5px;
-	background-color: #08d;
-	border-radius: 50%;
-	display: inline-block;
+    position: absolute;
+    height: 5px;
+    width: 5px;
+    background-color: rgb(255, 50, 241);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 1; /* Default opacity for new dots */
 }
+
+.current-dot {
+    width: 0;
+    height: 0;
+    /* border-left: 5px solid transparent;
+    border-right: 5px solid transparent; */
+	border: 0.5vh solid rgb(255, 0, 0);
+    border-radius: 0;
+    opacity: 1; /* Ensure the current dot is fully opaque */
+}
+
 
 
 /* Camera Feed Panel */
@@ -242,7 +254,7 @@
 	height: 50%;
 	aspect-ratio: 250 / 281;	
 	/* background-color: #88c; */
-	background-image: linear-gradient(to top ,#33426b, #161c58);
+	background-image: linear-gradient(to top ,#253254, #161c58);
 
 
 
