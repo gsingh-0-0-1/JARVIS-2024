@@ -226,30 +226,35 @@
 /* Camera Feed Panel */
 #panel_camfeed_1 {
 	top: 0%;
-	right: 33.75%;
+	right: 34.5%;
 	height: 50%;
-	aspect-ratio: 1 / 1;
+	aspect-ratio: 250 / 281;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to bottom ,#33426b, #161c58);
+	justify-content: center;
 
 
 }
 
 #panel_camfeed_2 {
 	top: 50%;
-	right: 33.75%;
+	right: 34.5%;
 	height: 50%;
-	aspect-ratio: 1 / 1;
+	aspect-ratio: 250 / 281;	
 	/* background-color: #88c; */
-	background-image: linear-gradient(to bottom ,#33426b, #161c58);
+	background-image: linear-gradient(to top ,#33426b, #161c58);
+
 
 
 }
 
 
 #camfeed_2_element {
-	width: 90%;
+	width: 95%;
 	height: 90%;
+	margin-top: 5%;
+	margin-left: 3%;
+	border-radius: 5%;
 }
 
 
