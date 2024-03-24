@@ -150,6 +150,8 @@
 
 /* Panel that contains the list of breadcrumbs created */
 #breadcrumb_panel {
+	display: flex;
+	flex-direction: column;
 	position: relative;
     width: 49%; /* Adjust the width to fit side by side */
     height: 95%; /* Take up full height of the parent container */
@@ -157,6 +159,8 @@
     /* background-color: rgb(116, 116, 175); */
 	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
 	border: 0.2vh solid #454b8f;
+
+	
 
 
     /* border: 0.3vh solid rgb(255, 85, 85); */
@@ -170,34 +174,137 @@
 
 }
 
-#breadcrumb_list_panel{
+/* holds both eva 1 and eva2 lists within the breadcrumbs panel*/
+#breadcrumb_list_inner_panel{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content:center;	
+	overflow: hidden;
+	
+
+
+}
+#eva1_breadcrumb_list_panel{
 	height: calc(100% - 40px); /* Adjust the height based on the title's height */
     overflow: auto; 
+	overflow-x: hidden;
+	width: 45%;	
+	/* padding-right: 0.5%; */
+	border-right: 0.1vh solid #000000;
+
+
+	/* border: 0.1vh solid rgb(27, 167, 41); */
+
+}
+
+#eva2_breadcrumb_list_panel{
+	height: calc(100% - 40px); /* Adjust the height based on the title's height */
+    overflow: auto; 
+	overflow-x: hidden;
+	width: 45%;
+	border-left: 0.1vh solid #000000;
+	padding-left: 0.5%;
+
+	/* border: 0.1vh solid rgb(255, 211, 79); */
+
+
 
 }
 
 /* Styling of the list itself */
-#breadcrumb_list {
+#eva1_breadcrumb_list {
 	/* overflow: scroll; */
 	overflow: auto;
 	list-style-position: inside; /* Moves the bullet points inside the padding area */
-    padding-left: 10px; /* Adjust this value as needed */
+    padding-left: 0; /* Remove default padding */
+
 	
 	/* border: 0.5vh solid rgb(255, 211, 79); */
+	/* border: 0.1vh solid rgb(27, 167, 41); */
+
+
+
+}
+
+#eva2_breadcrumb_list {
+	/* overflow: scroll; */
+	overflow: auto;
+	list-style-position: inside;
+    padding-left: 5%; /* Remove default padding */
+
+	/* border: 0.5vh solid rgb(198, 255, 189); */
+	/* border: 0.1vh solid rgb(94, 79, 255); */
 
 }
 
 /* List of each breadcrumb item */
-#breadcrumb_list li {
+#eva1_breadcrumb_list li {
 	margin-top: 2%;
 	font-family: Source Code Pro, Courier;
-	font-size: small;
+	font-size: smaller;
 	border-bottom: 1px solid black;
+	/* border: 0.1vh solid rgb(27, 167, 41); */
+	
+
+
 
 	/* border: 0.5vh solid rgb(255, 255, 134); */
 
 }
 
+#eva2_breadcrumb_list li {
+	margin-top: 2%;
+	font-family: Source Code Pro, Courier;
+	font-size: smaller;
+	border-bottom: 1px solid black;
+
+	/* border: 0.5vh solid rgb(255, 255, 134); */
+	/* border: 0.1vh solid rgb(255, 211, 79); */
+	/* width: max-content; */
+
+}
+
+
+#eva1_legend{
+	width: 50%;
+	height: 15%;
+	border-bottom: 0.5vh solid rgb(255, 0, 0);
+	text-align: center;
+	padding-bottom: 3%;
+
+	/* background-color: rgb(255, 0, 0); */
+	font-weight: 500;
+	padding-left: 0; /* Remove default padding */
+	background-image: linear-gradient(to top,#627ecb, #38418e);
+	box-sizing: border-box; 
+	border-right: 0.1vh solid #000000;
+
+
+
+}
+
+
+#eva2_legend{
+	width: 50%;
+	height: 15%;
+	padding-bottom: 3%;
+
+	/* background-color: rgb(0, 68, 255); */
+	border-bottom: 0.5vh solid rgb(0, 68, 255);
+	font-weight: 500;
+	text-align: center;
+
+	padding-left: 0; /* Remove default padding */
+	background-image: linear-gradient(to top,#627ecb, #38418e);
+
+	box-sizing: border-box; 
+	border-left: 0.1vh solid #000000;
+
+
+
+
+}
 /* Minimap panel */
 #panel_minimap {
 	top: 0%;
@@ -213,7 +320,7 @@
 }
 
 /* Minimap dot styling */
-.mapdot {
+.mapdot1 {
     position: absolute;
     height: 5px;
     width: 5px;
@@ -223,12 +330,34 @@
     opacity: 1; /* Default opacity for new dots */
 }
 
-.current-dot {
+.current-dot1 {
     width: 0;
     height: 0;
     /* border-left: 5px solid transparent;
     border-right: 5px solid transparent; */
 	border: 0.5vh solid rgb(255, 0, 0);
+    border-radius: 0;
+    opacity: 1; /* Ensure the current dot is fully opaque */
+}
+
+
+/* Minimap dot styling */
+.mapdot2 {
+    position: absolute;
+    height: 5px;
+    width: 5px;
+    background-color: rgb(50, 248, 255);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 1; /* Default opacity for new dots */
+}
+
+.current-dot2 {
+    width: 0;
+    height: 0;
+    /* border-left: 5px solid transparent;
+    border-right: 5px solid transparent; */
+	border: 0.5vh solid rgb(0, 68, 255);
     border-radius: 0;
     opacity: 1; /* Ensure the current dot is fully opaque */
 }

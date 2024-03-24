@@ -1,6 +1,8 @@
 var LOCAL_DATA = {}
 LOCAL_DATA["GEOPINS"] = [];
-LOCAL_DATA["BREADCRUMBS"] = [];
+LOCAL_DATA["BREADCRUMBS1"] = [];
+LOCAL_DATA["BREADCRUMBS2"] = [];
+
 
 var geo_pin_list = document.getElementById("geo_pin_list")
 
@@ -39,11 +41,15 @@ function requestGeoPinCreation() {
 }
 
 
-var breadcrumbList = document.getElementById("breadcrumb_list");
+var breadcrumbList1 = document.getElementById("eva1_breadcrumb_list");
+var breadcrumbList2 = document.getElementById("eva2_breadcrumb_list");
+
 var breadcrumbsVisible = true;
 
 function toggleBreadcrumbs() {
-    var breadcrumbList = document.getElementById("breadcrumb_list");
+    var breadcrumbList1 = document.getElementById("eva1_breadcrumb_list");
+    var breadcrumbList2 = document.getElementById("eva2_breadcrumb_list");
+
     var toggleCheckbox = document.getElementById("breadcrumbToggle");
   
     if (toggleCheckbox.checked) {
@@ -63,9 +69,13 @@ function toggleBreadcrumbs() {
 			})
 			.catch(error => console.error('Error fetching breadcrumbs:', error));
             */
-        breadcrumbList.style.display = "block"
+        breadcrumbList1.style.display = "block"
+        breadcrumbList2.style.display = "block"
+
 	} else {
-        breadcrumbList.style.display = "none"
+        breadcrumbList1.style.display = "none"
+        breadcrumbList2.style.display = "none"
+
 		//breadcrumbList.innerHTML = '';
 		// toggleButton.classList.remove("active");
 	}
@@ -73,29 +83,30 @@ function toggleBreadcrumbs() {
 }
 
 
-var MAPDOTS = []
+var MAPDOTS1 = []
 
-function addBreadCrumb(content) {
-    LOCAL_DATA["BREADCRUMBS"].push(content);
+function addBreadCrumb1(content) {
+    LOCAL_DATA["BREADCRUMBS1"].push(content);
 
-    var li = document.createElement('li');
+
+    var li1 = document.createElement('li');
     var coords = content.coords;
     var desc = content.desc;
-    li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-    breadcrumbList.appendChild(li);
+    li1.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    breadcrumbList1.appendChild(li1);
 
-    var dot = document.createElement("span");
-    dot.classList.add("mapdot", "current-dot"); // Add "current-dot" class to the new dot
-    dot.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
-    dot.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
+    var dot1 = document.createElement("span");
+    dot1.classList.add("mapdot1", "current-dot1"); // Add "current-dot" class to the new dot
+    dot1.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
+    dot1.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
     
 
     // Add the new dot to the beginning of the array
-    MAPDOTS.unshift(dot);
-    document.getElementById("panel_minimap").appendChild(dot);
+    MAPDOTS1.unshift(dot1);
+    document.getElementById("panel_minimap").appendChild(dot1);
 
     // Update the appearance of existing dots
-    for (let i = 0; i < MAPDOTS.length; i++) {
+    for (let i = 0; i < MAPDOTS1.length; i++) {
         let opacity;
         if (i <= 5) {
             // Rapidly decrease opacity for the first 5 dots
@@ -104,11 +115,53 @@ function addBreadCrumb(content) {
             // Set a low, fixed opacity for the trailing dots
             opacity = 0.4;
         }
-        MAPDOTS[i].style.opacity = opacity;
+        MAPDOTS1[i].style.opacity = opacity;
 
         // Remove the "current-dot" class from the trailing dots
         if (i > 0) {
-            MAPDOTS[i].classList.remove("current-dot");
+            MAPDOTS1[i].classList.remove("current-dot1");
+        }
+    }
+}
+
+
+var MAPDOTS2 = []
+
+function addBreadCrumb2(content) {
+    LOCAL_DATA["BREADCRUMBS2"].push(content);
+
+
+    var li2 = document.createElement('li');
+    var coords = content.coords;
+    var desc = content.desc;
+    li2.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    breadcrumbList2.appendChild(li2);
+
+    var dot2 = document.createElement("span");
+    dot2.classList.add("mapdot2", "current-dot2"); // Add "current-dot" class to the new dot
+    dot2.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
+    dot2.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
+    
+
+    // Add the new dot to the beginning of the array
+    MAPDOTS2.unshift(dot2);
+    document.getElementById("panel_minimap").appendChild(dot2);
+
+    // Update the appearance of existing dots
+    for (let i = 0; i < MAPDOTS2.length; i++) {
+        let opacity;
+        if (i <= 5) {
+            // Rapidly decrease opacity for the first 5 dots
+            opacity = 1 - (i * 0.12);
+        } else {
+            // Set a low, fixed opacity for the trailing dots
+            opacity = 0.4;
+        }
+        MAPDOTS2[i].style.opacity = opacity;
+
+        // Remove the "current-dot" class from the trailing dots
+        if (i > 0) {
+            MAPDOTS2[i].classList.remove("current-dot2");
         }
     }
 }
@@ -166,12 +219,12 @@ ws.onmessage = async function (event, isBinary) {
 	if (message_type == "GEOPIN") {
 		// console.log(message["content"]);
 		addGeoPin(message["content"]);
-	} else if (message_type == "BREADCRUMBS") {
+	} else if (message_type == "BREADCRUMBS1") {
 		// Display the list of breadcrumbs
 		// breadcrumbList.innerHTML = '';
         // console.log(message.content)
 		// message.content.forEach(breadcrumb => {
-        addBreadCrumb(message.content)
+        addBreadCrumb1(message.content)
 		/*
         var li = document.createElement('li');
 		var coords = message.content.coords;
@@ -180,7 +233,10 @@ ws.onmessage = async function (event, isBinary) {
 		breadcrumbList.appendChild(li);
         */
 		// });
-	}
+	}  else if (message_type == "BREADCRUMBS2") {
+        addBreadCrumb2(message.content)
+
+    }
 };
 
 
@@ -199,18 +255,36 @@ fetch('/localdata/GEOPINS')
 .catch(error => console.error('Error loading existing geopins:', error));
 
 // when we load, check with the server for existing breadcrumbs
-fetch('/localdata/BREADCRUMBS')
+fetch('/localdata/BREADCRUMBS1')
 .then(response => {
-    if (!response.ok) throw new Error('Failed to load existing breadcrumbs');
+    if (!response.ok) throw new Error('Failed to load existing breadcrumbs1');
     return response.json();
 })
 .then(data => {
     for (let pin_num of Object.keys(data)) {
         console.log("load/creating bcrumb", data[pin_num])
-        addBreadCrumb(data[pin_num]["content"]);
+        addBreadCrumb1(data[pin_num]["content"]);
     }
 })
-.catch(error => console.error('Error loading existing breadcrumbs:', error));
+.catch(error => console.error('Error loading existing breadcrumbs1:', error));
+
+
+
+
+//EVA 2
+// when we load, check with the server for existing breadcrumbs
+fetch('/localdata/BREADCRUMBS2')
+.then(response => {
+    if (!response.ok) throw new Error('Failed to load existing breadcrumbs2');
+    return response.json();
+})
+.then(data => {
+    for (let pin_num of Object.keys(data)) {
+        console.log("load/creating bcrumb", data[pin_num])
+        addBreadCrumb2(data[pin_num]["content"]);
+    }
+})
+.catch(error => console.error('Error loading existing breadcrumbs2:', error));
 
 
 // initPeer("lmcc_right")

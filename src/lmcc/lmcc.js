@@ -45,21 +45,25 @@ app.use(express.static('public'))
 //store local data
 let LOCAL_DATA = {}
 LOCAL_DATA["GEOPINS"] = [];
-LOCAL_DATA["BREADCRUMBS"] = [];
+LOCAL_DATA["BREADCRUMBS1"] = [];
+LOCAL_DATA["BREADCRUMBS2"] = [];
+
 LOCAL_DATA["TASKS"] = [];
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
     let message = JSON.parse(event.data);
     let message_type = message["type"];
-    console.log('Received ' + message_type + ' from ' + message["sender"]);
+    console.log('LMCC: Received ' + message_type + ' from ' + message["sender"]);
     console.log(message); // Log the full message only once
 
     if (message_type == "GEOPIN") {
         LOCAL_DATA["GEOPINS"].push(message);
-    } else if (message_type == "BREADCRUMBS") {
-        LOCAL_DATA["BREADCRUMBS"].push(message);
-    } else if (message_type == "TASKS")
+    } else if (message_type == "BREADCRUMBS1") {
+        LOCAL_DATA["BREADCRUMBS1"].push(message);
+	}else if (message_type == "BREADCRUMBS2") {
+		LOCAL_DATA["BREADCRUMBS2"].push(message);
+	} else if (message_type == "TASKS")
 	LOCAL_DATA["TASKS"].push(message);
 
 };
@@ -295,24 +299,40 @@ function generateBreadcrumbs() {
             .then(response => response.json())
             .then(data => {
                 // Create a breadcrumb based on the IMU data
-                const breadcrumb = {
+                const eva1breadcrumb = {
                     content: {
                         coords: {
                             x: data["imu"]["eva1"]["posx"],
                             y: data["imu"]["eva1"]["posy"]
                         },
-						desc: "Breadcrumb",
+						desc: "Eva1",
 
                     },
                     sender: "LMCC",
-                    type: "BREADCRUMBS",
+                    type: "BREADCRUMBS1",
+                    timestamp: new Date().toISOString()
+                };
+
+				const eva2breadcrumb = {
+                    content: {
+                        coords: {
+                            x: data["imu"]["eva2"]["posx"],
+                            y: data["imu"]["eva2"]["posy"]
+                        },
+						desc: "Eva2",
+
+                    },
+                    sender: "LMCC",
+                    type: "BREADCRUMBS2",
                     timestamp: new Date().toISOString()
                 };
 
 
              	// Add the breadcrumb to LOCAL_DATA and send it via WebSocket
                 //LOCAL_DATA["BREADCRUMBS"].push(breadcrumb);
-                ws.send(JSON.stringify(breadcrumb));
+                ws.send(JSON.stringify(eva1breadcrumb));
+				ws.send(JSON.stringify(eva2breadcrumb));
+
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
     }, 8000); // 10 seconds interval
@@ -373,11 +393,18 @@ app.get('/left', (req, res) => {
 	res.sendFile("public/templates/left.html", {root: __dirname});
 });
 
-app.get('/breadcrumbs', (req, res) => {
-	for (let item of Object.values(LOCAL_DATA["BREADCRUMBS"])) {
+app.get('/eva1breadcrumbs', (req, res) => {
+	for (let item of Object.values(LOCAL_DATA["BREADCRUMBS1"])) {
 		console.log(item)
 	}
-    res.json(Object.values(LOCAL_DATA["BREADCRUMBS"]));
+    res.json(Object.values(LOCAL_DATA["BREADCRUMBS1"]));
+});
+
+app.get('/eva2breadcrumbs', (req, res) => {
+	for (let item of Object.values(LOCAL_DATA["BREADCRUMBS2"])) {
+		console.log(item)
+	}
+    res.json(Object.values(LOCAL_DATA["BREADCRUMBS2"]));
 });
 
 app.get('/alltasks', (req, res) => {
