@@ -28,7 +28,7 @@ const USER = "LMCC";
 const TSS_FULL_HTTP = "http://" + TSS_ADDR + ":" + TSS_PORT
 const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
 const CHECK_STATUIA = TSS_FULL_HTTP + "/json_data/UIA.json"
-const BIOMETRICS = 	TSS_FULL_HTTP + "json_data/teams/0/TELEMETRY.json"
+const BIOMETRICS = 	TSS_FULL_HTTP + "/json_data/teams/0/TELEMETRY.json"
 const CHECK_STATDCU = TSS_FULL_HTTP + "/json_data/DCU.json"
 
 
@@ -200,7 +200,7 @@ biodictionary['eva2_oxy_sec_pressure'] = oxy_sec_pressure2
 biodictionary['eva1_oxy_time_left'] = oxy_time_left
 biodictionary['eva2_oxy_time_left'] = oxy_time_left2
 biodictionary['eva1_heart_rate'] = heart_rate
-biodictionary['eva1_heart_rate'] = heart_rate2
+biodictionary['eva2_heart_rate'] = heart_rate2
 biodictionary['eva1_oxy_consumption'] = oxy_consumption
 biodictionary['eva2_oxy_consumption'] = oxy_consumption2
 biodictionary['eva1_co2_production'] = co2_production
@@ -319,7 +319,7 @@ function EVA_BIO(callback){
 			const oxy_time_left = data['eva1']['oxy_time_left'];
 			const oxy_time_left2 = data['eva2']['oxy_time_left'];
 			const heart_rate = data['eva1']['heart_rate']['value'];
-			const heart_rate2 = data['eva1']['heart_rate']['value'];
+			const heart_rate2 = data['eva2']['heart_rate']['value'];
 			const oxy_consumption = data['eva1']['oxy_consumption'];
 			const oxy_consumption2 = data['eva2']['oxy_consumption2'];
 			const co2_production = data['eva1']['co2_production'];
@@ -335,7 +335,7 @@ function EVA_BIO(callback){
 			const fan_pri_rpm = data['eva1']['fan_pri_rpm']['vaule'];
 			const fan_pri_rpm2 = data['eva2']['fan_pri_rpm']['value'];
 			const fan_sec_rpm = data['eva1']['fan_sec_rpm']['value'];
-			const fan_sec_rpm2 = data['eva12']['fan_sec_rpm']['value'];
+			const fan_sec_rpm2 = data['eva2']['fan_sec_rpm']['value'];
 			const helmet_pressure_co2 = data['eva1']['helmet_pressure_co2'];
 			const helmet_pressure_co22 = data['eva2']['helmet_pressure_co2'];
 			const scrubber_a_co2_storage = data['eva1']['scrubber_a_co2_storage']['value'];
@@ -495,7 +495,17 @@ async function createTask(taskName) {
 
 function updateBiometrics(){
 	setInterval(() => {
-		LOCAL_DATA["BIOMETRICS"] = {'heart_rate' : 13}
+		fetch(BIOMETRICS)
+		.then(response => response.json())
+		.then(data => {
+//			console.log(data)
+			LOCAL_DATA["BIOMETRICS"] = {
+				'Heart Rate' : data['telemetry']['eva1']['heart_rate'],
+				'Temperature' : data['telemetry']['eva1']['temperature'],
+				'Battery time left' : data['telemetry']['eva1']['batt_time_left'],
+			}
+		})
+		.catch(error => console.error('Error generating biometrics:', error));
     }, 1000); // 1 second interval
 }
 

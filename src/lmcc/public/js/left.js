@@ -69,19 +69,22 @@ function displaySelectedTask() {
 fetchAllTasks()
 
 function displayBiometrics(){
-	console.log("start")
-
     fetch('/localdata/BIOMETRICS')
     .then(response => {
         if (!response.ok) throw new Error('Failed to fetch biometrics');
         return response.text()
     })
 	.then(data => {
-		console.log(data)
-		document.getElementById("biometrics").innerHTML = data
+        const jsonObject = JSON.parse(data)
+        let result = ''
+        for (const key in jsonObject) {
+            result += `${key}: ${jsonObject[key]}<br>`
+        }
+		document.getElementById("biometrics").innerHTML = result
 	})
     .catch(error => console.error('Error creating task:', error));
 
 }
 
+displayBiometrics()
 window.setInterval(displayBiometrics, 1000)
