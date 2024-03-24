@@ -10,8 +10,9 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.AssetImporters;
+// using UnityEditor.AssetImporters;
 using SocketIOClass = SocketIOClient.SocketIO;
+
 
 public class Client : MonoBehaviour
 {
@@ -34,9 +35,9 @@ public class Client : MonoBehaviour
     {
         // soundClip = AudioClip.Create("sound_chunk", 10000, 1, 44100, false);
 
-        TSSc = new TSScConnection();
+        // TSSc = new TSScConnection();
         string host = "data.cs.purdue.edu";
-        // TSSc.ConnectToHost(host, 7);
+        TSSc.ConnectToHost(host, 7);
 
         TextAsset gateway = Resources.Load("gateway") as TextAsset;
         string gateway_ip = gateway.ToString().Split("\n")[0];
@@ -125,6 +126,7 @@ public class Client : MonoBehaviour
 
     public void OnButtonClick()
     {
+        Debug.Log("geo button clicked");
         string IMUJsonString = TSSc.GetIMUJsonString();
         JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
         float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
