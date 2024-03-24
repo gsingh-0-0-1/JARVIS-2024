@@ -103,7 +103,7 @@ public class bioDataPanel : MonoBehaviour
 
     IEnumerator FetchBioJSONData()
     {
-        Debug.Log("updating panel text");
+        // Debug.Log("updating panel text");
         text.SetText(panelText);
         yield break;
         

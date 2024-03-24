@@ -535,7 +535,7 @@ GameObject:
   - component: {fileID: 468516782}
   - component: {fileID: 468516784}
   - component: {fileID: 468516783}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: UX.Button.Icon.Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,7 +619,8 @@ GameObject:
   - component: {fileID: 529593940}
   - component: {fileID: 529593939}
   - component: {fileID: 529593941}
-  m_Layer: 5
+  - component: {fileID: 529593942}
+  m_Layer: 0
   m_Name: Marker_EVA1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -695,7 +696,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21fa6d889b5e7f479c452408648b0a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TSSc: {fileID: 529593942}
   text: {fileID: 0}
+--- !u!114 &529593942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529593937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d31442d6270f5d4a97f0b8a3a7c07a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &534167672
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,7 +753,7 @@ GameObject:
   - component: {fileID: 646663754}
   - component: {fileID: 646663756}
   - component: {fileID: 646663755}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: button canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1804,7 +1818,7 @@ GameObject:
   - component: {fileID: 1036940625}
   - component: {fileID: 1036940624}
   - component: {fileID: 1036940623}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: map canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2092,7 +2106,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2214983309579704792, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214983309579704792, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244558827848552956, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2244558827848552956, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
@@ -2128,12 +2150,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2828958437994488772, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828958437994488772, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3358038249354970442, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3358038249354970442, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2142,6 +2168,10 @@ PrefabInstance:
     - target: {fileID: 3705378105823492738, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_Name
       value: geopin button
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705378105823492738, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3705378105823492738, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2292,6 +2322,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8506661438646884078, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8506661438646884078, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -2358,6 +2392,10 @@ PrefabInstance:
     - target: {fileID: 9026472854072389794, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -2.0999703
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026472854072389795, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9026472854072389795, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2498,7 +2536,7 @@ GameObject:
   - component: {fileID: 1441370687}
   - component: {fileID: 1441370689}
   - component: {fileID: 1441370688}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3022,7 +3060,8 @@ GameObject:
   - component: {fileID: 1627325941}
   - component: {fileID: 1627325940}
   - component: {fileID: 1627325942}
-  m_Layer: 5
+  - component: {fileID: 1627325943}
+  m_Layer: 0
   m_Name: Marker_EVA2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3098,7 +3137,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21fa6d889b5e7f479c452408648b0a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TSSc: {fileID: 1627325943}
   text: {fileID: 0}
+--- !u!114 &1627325943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627325938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d31442d6270f5d4a97f0b8a3a7c07a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1655716983
 GameObject:
   m_ObjectHideFlags: 0
@@ -3480,7 +3532,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.28750002, y: 0}
   m_AnchorMax: {x: 0.75000006, y: 0.0911145}
-  m_AnchoredPosition: {x: 0.083496094, y: -20.704071}
+  m_AnchoredPosition: {x: 0.083496094, y: -20.704102}
   m_SizeDelta: {x: -10.938, y: -14.192}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1718156020

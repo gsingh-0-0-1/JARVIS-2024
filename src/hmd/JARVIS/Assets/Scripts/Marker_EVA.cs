@@ -8,6 +8,9 @@ using System.Text.Json.Nodes;
 
 public class Marker_EVA : MonoBehaviour
 {
+
+    public TSScConnection TSSc;
+
     public TMP_Text text;
     public static string serverURL = "http://data.cs.purdue.edu:14141/";
     private string telemetryEndpoint = serverURL + "/json_data/IMU.json";
@@ -15,6 +18,8 @@ public class Marker_EVA : MonoBehaviour
     void Start()
     {
         // Call the function to fetch JSON data initially
+        string host = "data.cs.purdue.edu";
+        TSSc.ConnectToHost(host, 7);
         StartCoroutine(UpdateEVLocs());
 
     }
@@ -30,9 +35,29 @@ public class Marker_EVA : MonoBehaviour
 
     IEnumerator FetchEVLocs()
     {
+        string IMUJsonString = TSSc.GetIMUJsonString();
+        Debug.Log(IMUJsonString);
+        JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
+
+        float x = 0.0f;
+        float y = 0.0f;
+        if (gameObject.name == "Marker_EVA1") {
+            x = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
+            y = IMUJson["imu"]["eva1"]["posy"].GetValue<float>();
+        }
+        if (gameObject.name == "Marker_EVA2") {
+            x = IMUJson["imu"]["eva2"]["posx"].GetValue<float>();
+            y = IMUJson["imu"]["eva2"]["posy"].GetValue<float>();
+        }
+
+        transform.localPosition = new Vector3((0.11f * (x / 3000f)) - 0.055f, (0.11f * (y / 3000f)) - 0.055f, -0.002f);
+        yield break;
+
+        /*
+
         using (UnityWebRequest request = UnityWebRequest.Get(telemetryEndpoint))
         {
-            yield return request.SendWebRequest();
+            request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -63,6 +88,9 @@ public class Marker_EVA : MonoBehaviour
                 // int hr_int = (int)hr_float;
                 // text.SetText($"{hr_int}");
             }
+
+            yield break;
         }
+        */
     }
 }
