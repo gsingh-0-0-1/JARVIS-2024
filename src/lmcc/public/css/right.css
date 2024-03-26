@@ -176,20 +176,23 @@
 
 /* holds both eva 1 and eva2 lists within the breadcrumbs panel*/
 #breadcrumb_list_inner_panel{
+	height: 100%;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content:center;	
 	overflow: hidden;
+	/* border: 0.3vh solid rgb(255, 85, 85); */
+
 	
 
 
 }
 #eva1_breadcrumb_list_panel{
-	height: calc(100% - 40px); /* Adjust the height based on the title's height */
+	height: 100%;
     overflow: auto; 
 	overflow-x: hidden;
-	width: 45%;	
+	width: 45.5%;	
 	/* padding-right: 0.5%; */
 	border-right: 0.1vh solid #000000;
 
@@ -199,11 +202,13 @@
 }
 
 #eva2_breadcrumb_list_panel{
-	height: calc(100% - 40px); /* Adjust the height based on the title's height */
+	/* height: calc(100% - 40px); */
+	height: 100%;
+
     overflow: auto; 
 	overflow-x: hidden;
 	width: 45%;
-	border-left: 0.1vh solid #000000;
+
 	padding-left: 0.5%;
 
 	/* border: 0.1vh solid rgb(255, 211, 79); */
@@ -216,8 +221,10 @@
 #eva1_breadcrumb_list {
 	/* overflow: scroll; */
 	overflow: auto;
+	height: 100%;
+
 	list-style-position: inside; /* Moves the bullet points inside the padding area */
-    padding-left: 0; /* Remove default padding */
+    padding-left: 0; 
 
 	
 	/* border: 0.5vh solid rgb(255, 211, 79); */
@@ -231,10 +238,11 @@
 	/* overflow: scroll; */
 	overflow: auto;
 	list-style-position: inside;
-    padding-left: 5%; /* Remove default padding */
+    padding-left: 5%; 
 
 	/* border: 0.5vh solid rgb(198, 255, 189); */
 	/* border: 0.1vh solid rgb(94, 79, 255); */
+	height: 100%;
 
 }
 
@@ -267,18 +275,21 @@
 
 
 #eva1_legend{
+	position: sticky;
 	width: 50%;
-	height: 15%;
+	height: 20px;
 	border-bottom: 0.5vh solid rgb(255, 0, 0);
 	text-align: center;
-	padding-bottom: 3%;
+	padding-bottom: 8px;
+	padding-top: 5px;
 
 	/* background-color: rgb(255, 0, 0); */
 	font-weight: 500;
 	padding-left: 0; /* Remove default padding */
 	background-image: linear-gradient(to top,#627ecb, #38418e);
-	box-sizing: border-box; 
-	border-right: 0.1vh solid #000000;
+	/* box-sizing: border-box; */
+	/* border-right: 0.1vh solid #000000; */
+	/* border: 0.1vh solid rgb(255, 211, 79); */
 
 
 
@@ -286,9 +297,13 @@
 
 
 #eva2_legend{
+	position: sticky;
+
 	width: 50%;
-	height: 15%;
-	padding-bottom: 3%;
+	height: 20px;
+	padding-bottom: 8px;
+	padding-top: 5px;
+
 
 	/* background-color: rgb(0, 68, 255); */
 	border-bottom: 0.5vh solid rgb(0, 68, 255);
@@ -297,10 +312,11 @@
 
 	padding-left: 0; /* Remove default padding */
 	background-image: linear-gradient(to top,#627ecb, #38418e);
-
+/* 
 	box-sizing: border-box; 
-	border-left: 0.1vh solid #000000;
+	border-left: 0.1vh solid #000000; */
 
+	/* border: 0.1vh solid rgb(255, 211, 79); */
 
 
 

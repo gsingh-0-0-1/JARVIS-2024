@@ -459,7 +459,7 @@ function generateBreadcrumbs() {
 
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
-    }, 8000); // 10 seconds interval
+    }, 100000); // 10 seconds interval
 }
 
 
