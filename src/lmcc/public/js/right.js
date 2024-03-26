@@ -93,7 +93,7 @@ function addBreadCrumb1(content) {
     var coords = content.coords;
     var desc = content.desc;
     li1.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-    breadcrumbList1.appendChild(li1);
+    breadcrumbList1.prepend(li1);
 
     var dot1 = document.createElement("span");
     dot1.classList.add("mapdot1", "current-dot1"); // Add "current-dot" class to the new dot
@@ -108,12 +108,12 @@ function addBreadCrumb1(content) {
     // Update the appearance of existing dots
     for (let i = 0; i < MAPDOTS1.length; i++) {
         let opacity;
-        if (i <= 5) {
+        if (i <= 10) {
             // Rapidly decrease opacity for the first 5 dots
-            opacity = 1 - (i * 0.12);
+            opacity = 1 - (i * 0.07);
         } else {
             // Set a low, fixed opacity for the trailing dots
-            opacity = 0.4;
+            opacity = 0.3;
         }
         MAPDOTS1[i].style.opacity = opacity;
 
@@ -135,7 +135,7 @@ function addBreadCrumb2(content) {
     var coords = content.coords;
     var desc = content.desc;
     li2.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-    breadcrumbList2.appendChild(li2);
+    breadcrumbList2.prepend(li2);
 
     var dot2 = document.createElement("span");
     dot2.classList.add("mapdot2", "current-dot2"); // Add "current-dot" class to the new dot
@@ -150,12 +150,12 @@ function addBreadCrumb2(content) {
     // Update the appearance of existing dots
     for (let i = 0; i < MAPDOTS2.length; i++) {
         let opacity;
-        if (i <= 5) {
+        if (i <= 10) {
             // Rapidly decrease opacity for the first 5 dots
-            opacity = 1 - (i * 0.12);
+            opacity = 1 - (i * 0.07);
         } else {
             // Set a low, fixed opacity for the trailing dots
-            opacity = 0.4;
+            opacity = 0.3;
         }
         MAPDOTS2[i].style.opacity = opacity;
 
