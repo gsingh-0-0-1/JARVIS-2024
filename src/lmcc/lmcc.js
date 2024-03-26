@@ -500,9 +500,12 @@ function updateBiometrics(){
 		.then(data => {
 //			console.log(data)
 			LOCAL_DATA["BIOMETRICS"] = {
-				'Heart Rate' : data['telemetry']['eva1']['heart_rate'],
-				'Temperature' : data['telemetry']['eva1']['temperature'],
-				'Battery time left' : data['telemetry']['eva1']['batt_time_left'],
+				'Heart Rate EV1' : data['telemetry']['eva1']['heart_rate'],
+				'Temperature EV1' : data['telemetry']['eva1']['temperature'],
+				'Battery time left EV1' : data['telemetry']['eva1']['batt_time_left'],
+				'Heart Rate EV2' : data['telemetry']['eva2']['heart_rate'],
+				'Temperature EV2' : data['telemetry']['eva2']['temperature'],
+				'Battery time left EV2' : data['telemetry']['eva2']['batt_time_left'],
 			}
 		})
 		.catch(error => console.error('Error generating biometrics:', error));
