@@ -171,6 +171,10 @@ height: 3%;
     color: rgb(82, 242, 42);
 }
 
+.yellow-text {
+    color: rgb(238, 255, 49);
+}
+
 .red-text {
     color: rgb(128, 18, 18);
 	font-weight: bold;

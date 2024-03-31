@@ -122,8 +122,7 @@ function displayAlerts(){
         const jsonObject = JSON.parse(data)
         let result = ''
         for (const key in jsonObject) {
-//            result += `${key}: ${jsonObject[key]}<br>`
-            result += `<span class="red-text">${key}: ${jsonObject[key]}</span><br>`;
+            result += `<span class="${jsonObject[key]['color']}">${key}: ${jsonObject[key]['val']}</span><br>`;
         }
 		document.getElementById("alerts").innerHTML = result
 	})
