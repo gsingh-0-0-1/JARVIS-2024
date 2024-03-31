@@ -57,7 +57,7 @@ public class Marker_EVA : MonoBehaviour
         // ypos = ypos + 2;
 
         transform.localPosition = new Vector3((0.11f * (x / 3000f)) - 0.055f, (0.11f * (y / 3000f)) - 0.055f, -0.002f);
- 
+        yield break;
 
         /*
 
@@ -95,7 +95,7 @@ public class Marker_EVA : MonoBehaviour
                 // text.SetText($"{hr_int}");
             }
 
-            // yield break;
+            //yield break;
         }
         */
     }
