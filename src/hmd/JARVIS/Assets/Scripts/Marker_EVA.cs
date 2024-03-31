@@ -14,6 +14,9 @@ public class Marker_EVA : MonoBehaviour
     public TMP_Text text;
     public static string serverURL = "http://data.cs.purdue.edu:14141/";
     private string telemetryEndpoint = serverURL + "/json_data/IMU.json";
+    
+    public int xpos = 1000;
+    public int ypos = 1000;
 
     void Start()
     {
@@ -50,14 +53,17 @@ public class Marker_EVA : MonoBehaviour
             y = IMUJson["imu"]["eva2"]["posy"].GetValue<float>();
         }
 
+        // xpos = xpos + 2;
+        // ypos = ypos + 2;
+
         transform.localPosition = new Vector3((0.11f * (x / 3000f)) - 0.055f, (0.11f * (y / 3000f)) - 0.055f, -0.002f);
-        yield break;
+ 
 
         /*
 
         using (UnityWebRequest request = UnityWebRequest.Get(telemetryEndpoint))
         {
-            request.SendWebRequest();
+            yield request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -89,7 +95,7 @@ public class Marker_EVA : MonoBehaviour
                 // text.SetText($"{hr_int}");
             }
 
-            yield break;
+            // yield break;
         }
         */
     }

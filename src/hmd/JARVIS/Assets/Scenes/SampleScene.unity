@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &65284395 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5727148871348114050, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
-  m_PrefabInstance: {fileID: 1476205174}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &172257629
 GameObject:
   m_ObjectHideFlags: 0
@@ -1556,7 +1551,7 @@ MonoBehaviour:
   orientationType: 2
   faceTrackedObjectWhileClamped: 1
   faceUserDefinedTargetTransform: 1
-  targetToFace: {fileID: 65284395}
+  targetToFace: {fileID: 725866422}
   pivotAxis: 7
   minDistance: 0.3
   maxDistance: 0.9
