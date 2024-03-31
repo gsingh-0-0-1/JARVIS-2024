@@ -4,10 +4,6 @@ const WebSocket = require('ws');
 const fs = require('fs')
 const socketIO = require('socket.io');
 
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffmpeg = require('fluent-ffmpeg');
-ffmpeg.setFfmpegPath(ffmpegPath);
-
 
 const CONFIG = JSON.parse(fs.readFileSync('../config.json'));
 
@@ -53,7 +49,7 @@ app.get('/', (req, res) => {
   res.send('JARVIS Inter-Device Gateway (what are you doing here?)');
 });
 
-
+/*
 function convert(input, output, callback) {
     ffmpeg(input)
         .output(output)
@@ -65,6 +61,7 @@ function convert(input, output, callback) {
             callback(err);
         }).run();
 }
+
 
 // Handle new socket connections
 io.on('connection', (socket) => {
@@ -107,4 +104,4 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
     });
 });
-
+*/

@@ -15,11 +15,12 @@
 
 #task_description_panel {
 	height: 50%;
-	padding: 1% 1%;
-	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
+	padding: 5% 5%;
+	background-image: radial-gradient(#737f9d, #5e6394);
 	border: 0.2vh solid #454b8f;
 	margin-top: 5%;
 	width: 85%;
+	border-radius: 10px;
 
 }
 
@@ -38,7 +39,7 @@ height: 3%;
 #task_category_panel {
 	display: flex;
 	flex-direction: column;
-	background-image: linear-gradient(to top right,#33426b, #161c56);
+	background-image: radial-gradient(#33426b, #161c56);
 	border: 0.2vh solid #454b8f;
 	padding-left: 5%;
 	padding-right: 5%;
@@ -48,6 +49,7 @@ height: 3%;
 	/* margin-top: 5%; */
 	margin-bottom: 5%;
 	justify-content: center;
+	border-radius: 10px;
 
 
 }
@@ -64,7 +66,7 @@ height: 3%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	background-image: linear-gradient(to top left,#33426b, #161c56);
+	background-image: radial-gradient(#33426b, #161c56);
 	border: 0.2vh solid #454b8f;
 	padding-left: 5%;
 	padding-right: 5%;
@@ -72,6 +74,7 @@ height: 3%;
 	/* margin-top: 5%; */
 	margin-bottom: 5%;
 	margin-left: 5%;
+	border-radius: 10px; 
 
 
 }
@@ -96,6 +99,7 @@ height: 3%;
 	aspect-ratio: 400 / 158;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
+	border-radius: 10px;
 
 
 }
@@ -108,30 +112,33 @@ height: 3%;
 #timers_panel {
 	height: 70%;
 	padding: 1% 1%;
-	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
+	background-image: radial-gradient(#737f9d, #5e6394);
 	border: 0.2vh solid #454b8f;
 	margin-top: 1%;
 	width: 20%;
 	display: inline-block; /* Display the panels inline */
 	vertical-align: top; /* Align them to the top */
+	border-radius: 10px;
 
 }
 
 #timers {
 	font-family: Source Code Pro;
 	color: white;
+	
 
 }
 
 #biometrics_panel {
 	height: 70%;
 	padding: 1% 1%;
-	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
+	background-image: radial-gradient(#737f9d, #5e6394);
 	border: 0.2vh solid #454b8f;
 	margin-top: 1%;
 	width: 50%;
 	display: inline-block; /* Display the panels inline */
 	vertical-align: top; /* Align them to the top */
+	border-radius: 10px;
 
 }
 
@@ -144,12 +151,13 @@ height: 3%;
 #alerts_panel {
 	height: 70%;
 	padding: 1% 1%;
-	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
+	background-image: radial-gradient(#737f9d, #5e6394);
 	border: 0.2vh solid #454b8f;
 	margin-top: 1%;
 	width: 20%;
 	display: inline-block; /* Display the panels inline */
 	vertical-align: top; /* Align them to the top */
+	border-radius: 10px;
 
 }
 

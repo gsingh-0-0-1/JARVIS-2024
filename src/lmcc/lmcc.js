@@ -28,7 +28,7 @@ const USER = "LMCC";
 const TSS_FULL_HTTP = "http://" + TSS_ADDR + ":" + TSS_PORT
 const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
 const CHECK_STATUIA = TSS_FULL_HTTP + "/json_data/UIA.json"
-const BIOMETRICS = 	TSS_FULL_HTTP + "/json_data/teams/0/TELEMETRY.json"
+const TELEMTRY = 	TSS_FULL_HTTP + "/json_data/teams/0/TELEMETRY.json"
 const CHECK_STATDCU = TSS_FULL_HTTP + "/json_data/DCU.json"
 
 
@@ -51,6 +51,7 @@ LOCAL_DATA["BREADCRUMBS2"] = [];
 
 LOCAL_DATA["TASKS"] = [];
 LOCAL_DATA["BIOMETRICS"] = {};
+LOCAL_DATA["TIMERS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -298,7 +299,7 @@ function Switches(switchdictionary){
 //end of my addition
 
 function EVA_BIO(callback){
-	fetch (BIOMETRICS)
+	fetch (TELEMTRY)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error('Network response was not ok');
@@ -495,17 +496,34 @@ async function createTask(taskName) {
 
 function updateBiometrics(){
 	setInterval(() => {
-		fetch(BIOMETRICS)
+		fetch(TELEMTRY)
 		.then(response => response.json())
 		.then(data => {
 //			console.log(data)
 			LOCAL_DATA["BIOMETRICS"] = {
-				'Heart Rate EV1' : data['telemetry']['eva1']['heart_rate'],
-				'Temperature EV1' : data['telemetry']['eva1']['temperature'],
-				'Battery time left EV1' : data['telemetry']['eva1']['batt_time_left'],
-				'Heart Rate EV2' : data['telemetry']['eva2']['heart_rate'],
-				'Temperature EV2' : data['telemetry']['eva2']['temperature'],
-				'Battery time left EV2' : data['telemetry']['eva2']['batt_time_left'],
+				'EV1 - Heart Rate' : data['telemetry']['eva1']['heart_rate'],
+				'EV1 - Temperature' : data['telemetry']['eva1']['temperature'],
+				// 'EV1 - O2 Time Left' : data['telemetry']['eva1']['oxy_time_left'],
+				'EV2 - Heart Rate' : data['telemetry']['eva2']['heart_rate'],
+				'EV2 - Temperature' : data['telemetry']['eva2']['temperature'],
+				// 'EV2 - O2 Time Left' : data['telemetry']['eva2']['oxy_time_left'],
+			}
+		})
+		.catch(error => console.error('Error generating biometrics:', error));
+    }, 1000); // 1 second interval
+}
+
+function updateTimers(){
+	setInterval(() => {
+		fetch(TELEMTRY)
+		.then(response => response.json())
+		.then(data => {
+//			console.log(data)
+			LOCAL_DATA["TIMERS"] = {
+				'EV1 - Oxygen time left' : data['telemetry']['eva1']['oxy_time_left'],
+				'EV1 - Battery time left' : data['telemetry']['eva1']['batt_time_left'],
+				'EV2 - Oxygen time left' : data['telemetry']['eva2']['oxy_time_left'],
+				'EV2 - Battery time left' : data['telemetry']['eva2']['batt_time_left'],
 			}
 		})
 		.catch(error => console.error('Error generating biometrics:', error));
@@ -514,6 +532,7 @@ function updateBiometrics(){
 
 ws.onopen = function (event) {
 	generateBreadcrumbs()
+	updateTimers()
 	updateBiometrics()
 };
 
