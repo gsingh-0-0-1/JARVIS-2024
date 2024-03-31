@@ -378,7 +378,15 @@
     opacity: 1; /* Ensure the current dot is fully opaque */
 }
 
-
+.mapdot3 {
+    position: absolute;
+    height: 5px;
+    width: 5px;
+    background-color: rgb(9, 255, 0);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 1; /* Default opacity for new dots */
+}
 
 /* Camera Feed Panel */
 #panel_camfeed_1 {

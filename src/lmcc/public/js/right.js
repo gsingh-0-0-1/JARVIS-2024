@@ -44,6 +44,7 @@ function requestGeoPinCreation() {
 var breadcrumbList1 = document.getElementById("eva1_breadcrumb_list");
 var breadcrumbList2 = document.getElementById("eva2_breadcrumb_list");
 
+
 var breadcrumbsVisible = true;
 
 function toggleBreadcrumbs() {
@@ -167,8 +168,8 @@ function addBreadCrumb2(content) {
 }
 
 
-
-
+//custom Geopin
+var MAPDOTSGEOPIN = []
 
 
 function addGeoPin(content) {
@@ -183,7 +184,30 @@ function addGeoPin(content) {
     li.appendChild(document.createElement("br"))
     li.appendChild(document.createTextNode("-: (" + EVA1_x + ", " + EVA1_y + ")"))
 
-    geo_pin_list.appendChild(li)
+    geo_pin_list.prepend(li)
+
+    var dot3 = document.createElement("span");
+    dot3.classList.add("mapdot3"); // Add "current-dot" class to the new dot
+    dot3.style.left = String(100 * EVA1_x / 4251) + "%";
+    dot3.style.top = String(100 * EVA1_y / 3543) + "%";
+
+    // dot.title = `${desc}: (${EVA1_x}, ${EVA1_y})`; // Tooltip text on hover
+
+  
+
+      // Add the new dot to the beginning of the array
+      MAPDOTSGEOPIN.unshift(dot3);
+      document.getElementById("panel_minimap").appendChild(dot3);
+
+        // Add event listener for click event
+    dot3.addEventListener('click', function() {
+        // Highlight the corresponding list item
+        li.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        li.style.background = 'rgba(255, 255, 0, 0.5)'; // Yellow with 80% opacity
+
+        setTimeout(() => li.style.background = '', 3000); // Remove highlight after 3 seconds
+    });
+
 }
 
 
