@@ -78,9 +78,19 @@ function displayBiometrics(){
         const jsonObject = JSON.parse(data)
         let result = ''
         for (const key in jsonObject) {
-            result += `${key}: ${jsonObject[key]}<br>`
+            //Checking if the key is the temperature
+            if (key === 'Temperature EV1') {
+                result += `<span id = "ev1_temp">${key}: ${jsonObject[key]}</span><br>`;
+            } else {
+                result += `${key}: ${jsonObject[key]}<br>`;
+            }
         }
+        
 		document.getElementById("biometrics").innerHTML = result
+        if (jsonObject["Temperature EV1"] > 65) {
+            document.getElementById("ev1_temp").style.color = "red";
+        }
+    
 	})
     .catch(error => console.error('Error creating task:', error));
 
