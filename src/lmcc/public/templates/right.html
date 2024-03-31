@@ -41,7 +41,7 @@
                 <div id="breadcrumb_panel">
                     
                     <div id ="breadcrumb_title" class="paneltitle">
-                        BreadCrumbs
+                        EVA Path
                             <!-- Our switches -->
                         <!-- <label class="switch">
                             <input type="checkbox" id="breadcrumbToggle" onchange="toggleBreadcrumbs()">
@@ -109,11 +109,14 @@
         <!-- 3. Camera Feed -->
         <div id="panel_camfeed_1" class="panel">
             Camera Feed 1
+            <video id="camfeed_2_element" controls poster="/images/moonsurface.gif">
+                <source src="https://100.69.33.190/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
+            </video>
         </div>
 
         <div id="panel_camfeed_2" class="panel">
             Camera Feed 2
-            <video id="camfeed_2_element" controls>
+            <video id="camfeed_2_element" controls poster="/images/moonsurface.gif">
                 <source src="https://100.69.33.190/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
             </video>
         </div>

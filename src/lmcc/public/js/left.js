@@ -98,3 +98,24 @@ function displayBiometrics(){
 
 displayBiometrics()
 window.setInterval(displayBiometrics, 1000)
+
+function displayTimers(){
+    fetch('/localdata/TIMERS')
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch biometrics');
+        return response.text()
+    })
+	.then(data => {
+        const jsonObject = JSON.parse(data)
+        let result = ''
+        for (const key in jsonObject) {
+            result += `${key}: ${jsonObject[key]}<br>`
+        }
+		document.getElementById("timers").innerHTML = result
+	})
+    .catch(error => console.error('Error creating task:', error));
+
+}
+
+displayTimers()
+window.setInterval(displayTimers, 1000)
