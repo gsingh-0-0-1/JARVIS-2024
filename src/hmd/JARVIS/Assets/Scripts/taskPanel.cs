@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -20,6 +21,9 @@ public class bioDataPanel : MonoBehaviour
     public string panelText;
 
     WebSocket ws;
+    //WebSocket websocket;
+
+    public int i = 0;
 
     void Start()
     {
@@ -35,16 +39,7 @@ public class bioDataPanel : MonoBehaviour
             Debug.Log("socket io connected");
         };
 
-        /*
-        socketio_client.On("taskUpdate", (task) => {
-            var taskString = task.GetValue<string>();
-            remainingTasks.Add(taskString);
-            StartCoroutine(RenderNextTask());
-            // text.SetText(taskString);
-        });
-        */
-
-
+        
         ws = new WebSocket("ws://" + gateway_ip.ToString() + ":4761");
         ws.ConnectAsync();
         ws.OnOpen += (sender, e) => {
@@ -52,6 +47,7 @@ public class bioDataPanel : MonoBehaviour
         };
         ws.OnMessage += (sender, e) =>
         {
+            i = i + 1;
             byte[] dataBytes = e.RawData;
             string dataString = System.Text.Encoding.UTF8.GetString(dataBytes);
             JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(dataString)!;
@@ -77,6 +73,7 @@ public class bioDataPanel : MonoBehaviour
         ws.OnError += (sender, e) => {
             Debug.Log(e.Message);
         };
+        
     }
 
     IEnumerator RenderNextTask()
@@ -97,7 +94,8 @@ public class bioDataPanel : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.25f); // Adjust the interval as needed
-            yield return StartCoroutine(FetchBioJSONData());
+            text.SetText(i.ToString());
+            // yield return StartCoroutine(FetchBioJSONData());
         }
     }
 
