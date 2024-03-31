@@ -503,8 +503,10 @@ function updateBiometrics(){
 			LOCAL_DATA["BIOMETRICS"] = {
 				'EV1 - Heart Rate' : data['telemetry']['eva1']['heart_rate'],
 				'EV1 - Temperature' : data['telemetry']['eva1']['temperature'],
+				'EV1 - O2 Time Left' : data['telemetry']['eva1']['oxy_time_left'],
 				'EV2 - Heart Rate' : data['telemetry']['eva2']['heart_rate'],
 				'EV2 - Temperature' : data['telemetry']['eva2']['temperature'],
+				'EV2 - O2 Time Left' : data['telemetry']['eva2']['oxy_time_left'],
 			}
 		})
 		.catch(error => console.error('Error generating biometrics:', error));
