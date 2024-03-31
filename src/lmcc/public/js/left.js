@@ -78,19 +78,11 @@ function displayBiometrics(){
         const jsonObject = JSON.parse(data)
         let result = ''
         for (const key in jsonObject) {
-            //Checking if the key is the temperature
-            if (key === 'Temperature EV1') {
-                result += `<span id = "ev1_temp">${key}: ${jsonObject[key]}</span><br>`;
-            } else {
-                result += `${key}: ${jsonObject[key]}<br>`;
-            }
+            result += `<span class="${jsonObject[key]['color']}">${key}: ${jsonObject[key]['val']}</span><br>`;
         }
-        
+
 		document.getElementById("biometrics").innerHTML = result
-        if (jsonObject["Temperature EV1"] > 65) {
-            document.getElementById("ev1_temp").style.color = "red";
-        }
-    
+
 	})
     .catch(error => console.error('Error creating task:', error));
 
@@ -119,3 +111,25 @@ function displayTimers(){
 
 displayTimers()
 window.setInterval(displayTimers, 1000)
+
+function displayAlerts(){
+    fetch('/localdata/ALERTS')
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch biometrics');
+        return response.text()
+    })
+	.then(data => {
+        const jsonObject = JSON.parse(data)
+        let result = ''
+        for (const key in jsonObject) {
+//            result += `${key}: ${jsonObject[key]}<br>`
+            result += `<span class="red-text">${key}: ${jsonObject[key]}</span><br>`;
+        }
+		document.getElementById("alerts").innerHTML = result
+	})
+    .catch(error => console.error('Error creating task:', error));
+
+}
+
+displayAlerts()
+window.setInterval(displayAlerts, 1000)

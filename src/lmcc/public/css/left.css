@@ -167,6 +167,15 @@ height: 3%;
 
 }
 
+.green-text {
+    color: rgb(82, 242, 42);
+}
+
+.red-text {
+    color: rgb(128, 18, 18);
+	font-weight: bold;
+}
+
 #panel_geo_sampling {
 	bottom: 0%;
 	left: 0%;

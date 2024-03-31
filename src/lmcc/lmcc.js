@@ -52,6 +52,7 @@ LOCAL_DATA["BREADCRUMBS2"] = [];
 LOCAL_DATA["TASKS"] = [];
 LOCAL_DATA["BIOMETRICS"] = {};
 LOCAL_DATA["TIMERS"] = {};
+LOCAL_DATA["ALERTS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -494,6 +495,17 @@ async function createTask(taskName) {
 	}
 }
 
+
+function isNomial(metricName, metric) {
+	if (metricName == 'heart_rate') {
+		return 50 <= metric  && metric <= 160
+	} else if (metricName == 'temperature') {
+		return 50 <= metric && metric <= 90
+	}
+}
+
+
+
 function updateBiometrics(){
 	setInterval(() => {
 		fetch(TELEMTRY)
@@ -501,12 +513,22 @@ function updateBiometrics(){
 		.then(data => {
 //			console.log(data)
 			LOCAL_DATA["BIOMETRICS"] = {
-				'EV1 - Heart Rate' : data['telemetry']['eva1']['heart_rate'],
-				'EV1 - Temperature' : data['telemetry']['eva1']['temperature'],
-				// 'EV1 - O2 Time Left' : data['telemetry']['eva1']['oxy_time_left'],
-				'EV2 - Heart Rate' : data['telemetry']['eva2']['heart_rate'],
-				'EV2 - Temperature' : data['telemetry']['eva2']['temperature'],
-				// 'EV2 - O2 Time Left' : data['telemetry']['eva2']['oxy_time_left'],
+				'EV1 - Heart Rate' : {
+					'val' : data['telemetry']['eva1']['heart_rate'],
+					'color' : isNomial('heart_rate', data['telemetry']['eva1']['heart_rate']) ? 'green-text' : 'red-text'
+				},
+				'EV1 -  Temperature' : {
+					'val' : data['telemetry']['eva1']['temperature'],
+					'color' : isNomial('temperature', data['telemetry']['eva1']['temperature']) ? 'green-text' : 'red-text'
+				},
+				'EV2 - Heart Rate' : {
+					'val' : data['telemetry']['eva2']['heart_rate'],
+					'color' : isNomial('heart_rate', data['telemetry']['eva2']['heart_rate']) ? 'green-text' : 'red-text'
+				},
+				'EV2 -  Temperature' : {
+					'val' : data['telemetry']['eva2']['temperature'],
+					'color' : isNomial('temperature', data['telemetry']['eva2']['temperature']) ? 'green-text' : 'red-text'
+				},
 			}
 		})
 		.catch(error => console.error('Error generating biometrics:', error));
@@ -530,10 +552,31 @@ function updateTimers(){
     }, 1000); // 1 second interval
 }
 
+function updateAlerts(){
+	setInterval(() => {
+		fetch(TELEMTRY)
+		.then(response => response.json())
+		.then(data => {
+
+			heart_rate = data['telemetry']['eva1']['heart_rate']
+			alerts = {}
+
+			heart_rate = 30
+			if (heart_rate < 50 || heart_rate > 160) {
+				alerts['EV1 - Heart Rate'] = `${heart_rate}`
+			}
+
+			LOCAL_DATA["ALERTS"] = alerts
+		})
+		.catch(error => console.error('Error generating biometrics:', error));
+    }, 1000); // 1 second interval
+}
+
 ws.onopen = function (event) {
 	generateBreadcrumbs()
-	updateTimers()
 	updateBiometrics()
+	updateTimers()
+	updateAlerts()
 };
 
 
