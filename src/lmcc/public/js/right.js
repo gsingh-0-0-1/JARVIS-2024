@@ -12,7 +12,7 @@ var ws;
 fetch('/gatewayhost')
 .then(response => {
     if (!response.ok) throw new Error('Failed to load gateway host');
-    return response.json();
+    return response.text();
 })
 .then(data => {
     ws = new WebSocket('ws://' + data + ':' + "4761");
@@ -197,18 +197,39 @@ function addGeoPin(content) {
 
     geo_pin_list.prepend(li)
 
-    var dot3 = document.createElement("span");
-    dot3.classList.add("mapdot3"); // Add "current-dot" class to the new dot
+    var dot3 = document.createElement("img");
+    dot3.src = "/images/geopin_3.png"
+    dot3.style.zIndex = 2;
+    dot3.width = String(document.getElementById("panel_minimap").clientHeight * 0.03)
+
+    // we need the geo pin to have the bottom point be centered on the location
+    // by default the position we give css/html will control the position of the top-left
+    // corner of the image. thus we need to subtract the image height from the y
+    // and half the image width from the x
+
     dot3.style.left = String(100 * EVA1_x / 4251) + "%";
     dot3.style.top = String(100 * EVA1_y / 3543) + "%";
+    dot3.style.position = "absolute"
+    // dot3.style.width = "5%"
+    // dot3.style.height = "5%"
 
     // dot.title = `${desc}: (${EVA1_x}, ${EVA1_y})`; // Tooltip text on hover
 
   
 
-      // Add the new dot to the beginning of the array
-      MAPDOTSGEOPIN.unshift(dot3);
-      document.getElementById("panel_minimap").appendChild(dot3);
+    // Add the new dot to the beginning of the array
+    MAPDOTSGEOPIN.unshift(dot3);
+    document.getElementById("panel_minimap").appendChild(dot3);
+
+    dot3.onload = function() {
+        var imgHeight = dot3.height;
+        var imgWidth = dot3.width;
+
+        console.log("height", imgHeight, imgWidth)
+
+        dot3.style.left = String((100 * EVA1_x / 4251) - (100 * imgWidth / document.getElementById("panel_minimap").clientWidth)) + "%";
+        dot3.style.top = String((100 * EVA1_y / 3543) - (100 * imgHeight / document.getElementById("panel_minimap").clientHeight)) + "%";
+    }
 
         // Add event listener for click event
     dot3.addEventListener('click', function() {
