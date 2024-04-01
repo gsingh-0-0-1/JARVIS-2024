@@ -7,7 +7,17 @@ LOCAL_DATA["BREADCRUMBS2"] = [];
 var geo_pin_list = document.getElementById("geo_pin_list")
 
 // we need to keep this port value fixed, I guess
-const ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
+var ws;
+
+fetch('/gatewayhost')
+.then(response => {
+    if (!response.ok) throw new Error('Failed to load gateway host');
+    return response.json();
+})
+.then(data => {
+    ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
+})
+.catch(error => console.error('Error loading gateway host:', error));
 
 function requestGeoPinCreation() {
     const x = document.getElementById('pinX').value;

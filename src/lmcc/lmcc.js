@@ -17,7 +17,7 @@ const HOST = CONFIG['LMCC']['HOST'];
 const PORT_WEB = CONFIG['LMCC']['PORT_WEB'];
 
 // the gateway and LMCC will be on the same machine
-const GATEWAY_HOST = '0.0.0.0'; //'localhost';
+const GATEWAY_HOST = process.argv.slice(2) || '0.0.0.0'; //'localhost';
 const GATEWAY_PORT = CONFIG['GATEWAY']['PORT_SOC'];
 
 const TSS_PORT = CONFIG['TSS']['PORT_WEB'];
@@ -872,6 +872,10 @@ app.get('/localdata/:item', (req, res) => {
 	}
 	*/
 	res.send(LOCAL_DATA[req.params.item]);
+})
+
+app.get('/gatewayhost', (req, res) => {
+	res.send(GATEWAY_HOST)
 })
 
 // create api endpoint 
