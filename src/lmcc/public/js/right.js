@@ -15,7 +15,7 @@ fetch('/gatewayhost')
     return response.json();
 })
 .then(data => {
-    ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
+    ws = new WebSocket('ws://' + data + ':' + "4761");
     defineWebSocketHandlers();
 })
 .catch(error => console.error('Error loading gateway host:', error));
