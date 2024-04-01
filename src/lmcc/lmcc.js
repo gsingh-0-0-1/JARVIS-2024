@@ -496,7 +496,7 @@ async function createTask(taskName) {
 }
 
 
-function isNomial(metricName, metric) {
+function isNominal(metricName, metric) {
 	if (metricName == 'batt_time_left') {
 		return 3600 <= metric && metric <= 10800
 	}
@@ -573,19 +573,19 @@ function updateBiometrics(){
 			LOCAL_DATA["BIOMETRICS"] = {
 				'EV1 - Heart Rate' : {
 					'val' : data['telemetry']['eva1']['heart_rate'],
-					'color' : isNomial('heart_rate', data['telemetry']['eva1']['heart_rate']) ? 'green-text' : 'red-text'
+					'color' : isNominal('heart_rate', data['telemetry']['eva1']['heart_rate']) ? 'green-text' : 'red-text'
 				},
 				'EV1 -  Temperature' : {
 					'val' : data['telemetry']['eva1']['temperature'],
-					'color' : isNomial('temperature', data['telemetry']['eva1']['temperature']) ? 'green-text' : 'red-text'
+					'color' : isNominal('temperature', data['telemetry']['eva1']['temperature']) ? 'green-text' : 'red-text'
 				},
 				'EV2 - Heart Rate' : {
 					'val' : data['telemetry']['eva2']['heart_rate'],
-					'color' : isNomial('heart_rate', data['telemetry']['eva2']['heart_rate']) ? 'green-text' : 'red-text'
+					'color' : isNominal('heart_rate', data['telemetry']['eva2']['heart_rate']) ? 'green-text' : 'red-text'
 				},
 				'EV2 -  Temperature' : {
 					'val' : data['telemetry']['eva2']['temperature'],
-					'color' : isNomial('temperature', data['telemetry']['eva2']['temperature']) ? 'green-text' : 'red-text'
+					'color' : isNominal('temperature', data['telemetry']['eva2']['temperature']) ? 'green-text' : 'red-text'
 				},
 			}
 		})
@@ -625,7 +625,7 @@ function updateAlerts(){
 
 			for (const eva of evas) {
 				let batt_time_left = data['telemetry'][eva]['batt_time_left'];
-				if (!isNomial('batt_time_left', batt_time_left)) {
+				if (!isNominal('batt_time_left', batt_time_left)) {
 					alerts[`${eva.toUpperCase()} - Batt Time Left`] = {
 						'val': batt_time_left,
 						'color': 'yellow-text'
@@ -633,7 +633,7 @@ function updateAlerts(){
 				}
 
 				let oxy_pri_storage = data['telemetry'][eva]['oxy_pri_storage'];
-				if (!isNomial('oxy_pri_storage', oxy_pri_storage)) {
+				if (!isNominal('oxy_pri_storage', oxy_pri_storage)) {
 					alerts[`${eva.toUpperCase()} - Oxy Pri Storage`] = {
 						'val': oxy_pri_storage,
 						'color': 'yellow-text'
@@ -641,7 +641,7 @@ function updateAlerts(){
 				}
 
 				let oxy_sec_storage = data['telemetry'][eva]['oxy_sec_storage'];
-				if (!isNomial('oxy_sec_storage', oxy_sec_storage)) {
+				if (!isNominal('oxy_sec_storage', oxy_sec_storage)) {
 					alerts[`${eva.toUpperCase()} - Oxy Sec Storage`] = {
 						'val': oxy_sec_storage,
 						'color': 'yellow-text'
@@ -649,7 +649,7 @@ function updateAlerts(){
 				}
 
 				let oxy_pri_pressure = data['telemetry'][eva]['oxy_pri_pressure'];
-				if (!isNomial('oxy_pri_pressure', oxy_pri_pressure)) {
+				if (!isNominal('oxy_pri_pressure', oxy_pri_pressure)) {
 					alerts[`${eva.toUpperCase()} - Oxy Pri Pressure`] = {
 						'val': oxy_pri_pressure,
 						'color': 'yellow-text'
@@ -657,7 +657,7 @@ function updateAlerts(){
 				}
 
 				let oxy_sec_pressure = data['telemetry'][eva]['oxy_sec_pressure'];
-				if (!isNomial('oxy_sec_pressure', oxy_sec_pressure)) {
+				if (!isNominal('oxy_sec_pressure', oxy_sec_pressure)) {
 					alerts[`${eva.toUpperCase()} - Oxy Sec Pressure`] = {
 						'val': oxy_sec_pressure,
 						'color': 'yellow-text'
@@ -665,7 +665,7 @@ function updateAlerts(){
 				}
 
 				let oxy_time_left = data['telemetry'][eva]['oxy_time_left'];
-				if (!isNomial('oxy_time_left', oxy_time_left)) {
+				if (!isNominal('oxy_time_left', oxy_time_left)) {
 					alerts[`${eva.toUpperCase()} - Oxy Time Left`] = {
 						'val': oxy_time_left,
 						'color': 'yellow-text'
@@ -673,7 +673,7 @@ function updateAlerts(){
 				}
 
 				let heart_rate = data['telemetry'][eva]['heart_rate'];
-				if (!isNomial('heart_rate', heart_rate)) {
+				if (!isNominal('heart_rate', heart_rate)) {
 					alerts[`${eva.toUpperCase()} - Heart Rate`] = {
 						'val': heart_rate,
 						'color': 'red-text'
@@ -681,7 +681,7 @@ function updateAlerts(){
 				}
 
 				let oxy_consumption = data['telemetry'][eva]['oxy_consumption'];
-				if (!isNomial('oxy_consumption', oxy_consumption)) {
+				if (!isNominal('oxy_consumption', oxy_consumption)) {
 					alerts[`${eva.toUpperCase()} - Oxy Consumption`] = {
 						'val': oxy_consumption,
 						'color': 'yellow-text'
@@ -689,7 +689,7 @@ function updateAlerts(){
 				}
 
 				let co2_production = data['telemetry'][eva]['co2_production'];
-				if (!isNomial('co2_production', co2_production)) {
+				if (!isNominal('co2_production', co2_production)) {
 					alerts[`${eva.toUpperCase()} - CO2 Production`] = {
 						'val': co2_production,
 						'color': 'yellow-text'
@@ -697,7 +697,7 @@ function updateAlerts(){
 				}
 
 				let suit_pressure_oxy = data['telemetry'][eva]['suit_pressure_oxy'];
-				if (!isNomial('suit_pressure_oxy', suit_pressure_oxy)) {
+				if (!isNominal('suit_pressure_oxy', suit_pressure_oxy)) {
 					alerts[`${eva.toUpperCase()} - Suit Pressure Oxy`] = {
 						'val': suit_pressure_oxy,
 						'color': 'red-text'
@@ -705,7 +705,7 @@ function updateAlerts(){
 				}
 
 				let suit_pressure_co2 = data['telemetry'][eva]['suit_pressure_co2'];
-				if (!isNomial('suit_pressure_co2', suit_pressure_co2)) {
+				if (!isNominal('suit_pressure_co2', suit_pressure_co2)) {
 					alerts[`${eva.toUpperCase()} - Suit Pressure CO2`] = {
 						'val': suit_pressure_co2,
 						'color': 'red-text'
@@ -713,7 +713,7 @@ function updateAlerts(){
 				}
 
 				let suit_pressure_other = data['telemetry'][eva]['suit_pressure_other'];
-				if (!isNomial('suit_pressure_other', suit_pressure_other)) {
+				if (!isNominal('suit_pressure_other', suit_pressure_other)) {
 					alerts[`${eva.toUpperCase()} - Suit Pressure Other`] = {
 						'val': suit_pressure_other,
 						'color': 'red-text'
@@ -721,7 +721,7 @@ function updateAlerts(){
 				}
 
 				let suit_pressure_total = data['telemetry'][eva]['suit_pressure_total'];
-				if (!isNomial('suit_pressure_total', suit_pressure_total)) {
+				if (!isNominal('suit_pressure_total', suit_pressure_total)) {
 					alerts[`${eva.toUpperCase()} - Suit Pressure Total`] = {
 						'val': suit_pressure_total,
 						'color': 'red-text'
@@ -729,7 +729,7 @@ function updateAlerts(){
 				}
 
 				let helmet_pressure_co2 = data['telemetry'][eva]['helmet_pressure_co2'];
-				if (!isNomial('helmet_pressure_co2', helmet_pressure_co2)) {
+				if (!isNominal('helmet_pressure_co2', helmet_pressure_co2)) {
 					alerts[`${eva.toUpperCase()} - Helmet Pressure CO2`] = {
 						'val': helmet_pressure_co2,
 						'color': 'red-text'
@@ -737,7 +737,7 @@ function updateAlerts(){
 				}
 
 				let fan_pri_rpm = data['telemetry'][eva]['fan_pri_rpm'];
-				if (!isNomial('fan_pri_rpm', fan_pri_rpm)) {
+				if (!isNominal('fan_pri_rpm', fan_pri_rpm)) {
 					alerts[`${eva.toUpperCase()} - Fan Pri RPM`] = {
 						'val': fan_pri_rpm,
 						'color': 'red-text'
@@ -745,7 +745,7 @@ function updateAlerts(){
 				}
 
 				let fan_sec_rpm = data['telemetry'][eva]['fan_sec_rpm'];
-				if (!isNomial('fan_sec_rpm', fan_sec_rpm)) {
+				if (!isNominal('fan_sec_rpm', fan_sec_rpm)) {
 					alerts[`${eva.toUpperCase()} - Fan Sec RPM`] = {
 						'val': fan_sec_rpm,
 						'color': 'red-text'
@@ -753,7 +753,7 @@ function updateAlerts(){
 				}
 
 				let scrubber_a_co2_storage = data['telemetry'][eva]['scrubber_a_co2_storage'];
-				if (!isNomial('scrubber_a_co2_storage', scrubber_a_co2_storage)) {
+				if (!isNominal('scrubber_a_co2_storage', scrubber_a_co2_storage)) {
 					alerts[`${eva.toUpperCase()} - Scrubber A CO2 Storage`] = {
 						'val': scrubber_a_co2_storage,
 						'color': 'red-text'
@@ -761,7 +761,7 @@ function updateAlerts(){
 				}
 
 				let scrubber_b_co2_storage = data['telemetry'][eva]['scrubber_b_co2_storage'];
-				if (!isNomial('scrubber_b_co2_storage', scrubber_b_co2_storage)) {
+				if (!isNominal('scrubber_b_co2_storage', scrubber_b_co2_storage)) {
 					alerts[`${eva.toUpperCase()} - Scrubber B CO2 Storage`] = {
 						'val': scrubber_b_co2_storage,
 						'color': 'red-text'
@@ -769,7 +769,7 @@ function updateAlerts(){
 				}
 
 				let temperature = data['telemetry'][eva]['temperature'];
-				if (!isNomial('temperature', temperature)) {
+				if (!isNominal('temperature', temperature)) {
 					alerts[`${eva.toUpperCase()} - Temperature`] = {
 						'val': temperature,
 						'color': 'red-text'
@@ -777,7 +777,7 @@ function updateAlerts(){
 				}
 
 				let coolant_liquid_pressure = data['telemetry'][eva]['coolant_liquid_pressure'];
-				if (!isNomial('coolant_liquid_pressure', coolant_liquid_pressure)) {
+				if (!isNominal('coolant_liquid_pressure', coolant_liquid_pressure)) {
 					alerts[`${eva.toUpperCase()} - Coolant Liquid Pressure`] = {
 						'val': coolant_liquid_pressure,
 						'color': 'yellow-text'
@@ -785,7 +785,7 @@ function updateAlerts(){
 				}
 
 				let coolant_gas_pressure = data['telemetry'][eva]['coolant_gas_pressure'];
-				if (!isNomial('coolant_gas_pressure', coolant_gas_pressure)) {
+				if (!isNominal('coolant_gas_pressure', coolant_gas_pressure)) {
 					alerts[`${eva.toUpperCase()} - Coolant Gas Pressure`] = {
 						'val': coolant_gas_pressure,
 						'color': 'yellow-text'
