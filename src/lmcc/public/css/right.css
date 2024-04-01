@@ -101,7 +101,7 @@
 	display: flex;
 	flex-flow: row wrap;
 	align-items: center;
-	justify-content:space-evenly ;
+	justify-content: left;
     /* background-color: rgb(116, 116, 175); */
 
 	/* align-content: flex-end; */
@@ -142,6 +142,7 @@
 	/* margin-top: 5%;
 	left: 5%; */
 	align-self:flex-end;
+    margin-left: 3%;
 }
 
 

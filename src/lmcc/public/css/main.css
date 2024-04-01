@@ -150,6 +150,7 @@ button {
 	font-family: Source Code Pro, Courier;
 	width: 40%;
 	margin-top: 5%;
+    margin-left: 3%;
 	border: 0.2vh solid #aeaeae;
 
 	/* display: inline-block; */

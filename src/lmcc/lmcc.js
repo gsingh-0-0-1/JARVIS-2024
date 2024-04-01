@@ -464,7 +464,7 @@ function generateBreadcrumbs() {
 
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
-    }, 10000); // 10 seconds interval
+    }, 4000); // 2 seconds interval
 }
 
 
@@ -575,19 +575,19 @@ function updateBiometrics(){
 //			console.log(data)
 			LOCAL_DATA["BIOMETRICS"] = {
 				'EV1 - Heart Rate' : {
-					'val' : data['telemetry']['eva1']['heart_rate'],
+					'val' : data['telemetry']['eva1']['heart_rate'] + " bpm",
 					'color' : isNominal('heart_rate', data['telemetry']['eva1']['heart_rate']) ? 'green-text' : 'red-text'
 				},
 				'EV1 -  Temperature' : {
-					'val' : data['telemetry']['eva1']['temperature'],
+					'val' : String(Math.round(Number(data['telemetry']['eva1']['temperature']) * 100) / 100) + " F",
 					'color' : isNominal('temperature', data['telemetry']['eva1']['temperature']) ? 'green-text' : 'red-text'
 				},
 				'EV2 - Heart Rate' : {
-					'val' : data['telemetry']['eva2']['heart_rate'],
+					'val' : data['telemetry']['eva2']['heart_rate'] + " bpm",
 					'color' : isNominal('heart_rate', data['telemetry']['eva2']['heart_rate']) ? 'green-text' : 'red-text'
 				},
 				'EV2 -  Temperature' : {
-					'val' : data['telemetry']['eva2']['temperature'],
+					'val' : String(Math.round(Number(data['telemetry']['eva2']['temperature']) * 100) / 100) + " F",
 					'color' : isNominal('temperature', data['telemetry']['eva2']['temperature']) ? 'green-text' : 'red-text'
 				},
 			}
@@ -603,14 +603,50 @@ function updateTimers(){
 		.then(data => {
 //			console.log(data)
 			LOCAL_DATA["TIMERS"] = {
-				'EV1 - Oxygen time left' : data['telemetry']['eva1']['oxy_time_left'],
-				'EV1 - Battery time left' : data['telemetry']['eva1']['batt_time_left'],
-				'EV2 - Oxygen time left' : data['telemetry']['eva2']['oxy_time_left'],
-				'EV2 - Battery time left' : data['telemetry']['eva2']['batt_time_left'],
+				'EV1: O2 left' : data['telemetry']['eva1']['oxy_time_left'] + "s",
+				'EV1: Battery' : Math.round(Number(data['telemetry']['eva1']['batt_time_left'])) + "s",
+				'EV2: O2 left' : data['telemetry']['eva2']['oxy_time_left'] + "s",
+				'EV3: Battery' : Math.round(Number(data['telemetry']['eva2']['batt_time_left'])) + "s",
 			}
 		})
 		.catch(error => console.error('Error generating biometrics:', error));
     }, 1000); // 1 second interval
+}
+
+
+var alert_keys_yellow = ['batt_time_left', 
+    'oxy_pri_storage',
+    'oxy_sec_storage',
+    'oxy_pri_pressure', 
+    'oxy_sec_pressure', 
+    'oxy_time_left', 
+    'oxy_consumption', 
+    'co2_production', 
+    'coolant_liquid_pressure', 
+    'coolant_gas_pressure']
+
+var alerts_pretty = {
+    'batt_time_left' : 'Battery Left',
+    'oxy_pri_storage' : 'Primary O2 Storage',
+    'oxy_sec_storage' : 'Secondary O2 Storage',
+    'oxy_pri_pressure' : 'Primary O2 Pressure',
+    'oxy_sec_pressure' : 'Secondary O2 Pressure',
+    'oxy_time_left' : 'O2 Time Left',
+    'oxy_consumption' : 'O2 Consumption',
+    'co2_production' : 'CO2 Production',
+    'coolant_liquid_pressure' : 'Coolant Liquid Pressure',
+    'coolant_gas_pressure' : 'Coolant Gas Pressure',
+    'heart_rate' : 'Heart Rate',
+    'suit_pressure_oxy' : 'Suit O2 Pressure', 
+    'suit_pressure_co2' : 'Suit CO2 Pressure',
+    'suit_pressure_other' : 'Suit Pressure (Other)', 
+    'suit_pressure_total' : 'Suit Total Pressure', 
+    'helmet_pressure_co2' : 'Helmet CO2 Pressure', 
+    'fan_pri_rpm' : 'Primary Fan RPM',
+    'fan_sec_rpm' : 'Secondary Fan RPM', 
+    'scrubber_a_co2_storage' : 'Scrubber A CO2 Storage', 
+    'scrubber_b_co2_storage' : 'Scrubber B CO2 Storage', 
+    'temperature' : 'Temperature'
 }
 
 function updateAlerts(){
@@ -627,6 +663,22 @@ function updateAlerts(){
 
 
 			for (const eva of evas) {
+                for (var key of Object.keys(data['telemetry'][eva])) {
+                    let value = data['telemetry'][eva][key]
+                    if (!isNominal(key, value)) {
+                        var color = 'red-text';
+                        if (alert_keys_yellow.includes(key)) {
+                            color = 'yellow-text'
+                        }
+                        alerts[`${eva.toUpperCase()}: ${alerts_pretty[key]}`] = {
+                            'val' : value,
+                            'color' : color
+                        }
+                    }
+                }
+
+                /*
+
 				let batt_time_left = data['telemetry'][eva]['batt_time_left'];
 				if (!isNominal('batt_time_left', batt_time_left)) {
 					alerts[`${eva.toUpperCase()} - Batt Time Left`] = {
@@ -794,6 +846,7 @@ function updateAlerts(){
 						'color': 'yellow-text'
 					}
 				}
+                */
 
 			}
 

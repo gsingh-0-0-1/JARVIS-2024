@@ -3,6 +3,7 @@ LOCAL_DATA["GEOPINS"] = [];
 LOCAL_DATA["BREADCRUMBS1"] = [];
 LOCAL_DATA["BREADCRUMBS2"] = [];
 
+var this_sender = "LMCC" + String(new Date().getTime())
 
 var geo_pin_list = document.getElementById("geo_pin_list")
 
@@ -21,16 +22,21 @@ fetch('/gatewayhost')
 .catch(error => console.error('Error loading gateway host:', error));
 
 function requestGeoPinCreation() {
-    const x = document.getElementById('pinX').value;
-    const y = document.getElementById('pinY').value;
-    const desc = document.getElementById('pindesc').value;
+    var x = document.getElementById('pinX').value;
+    var y = document.getElementById('pinY').value;
+    var desc = document.getElementById('pindesc').value;
+
+    if (x == '' || y == '' || desc == '') {
+        alert("Please enter a valid x-coord, y-coord, and description")
+        return
+    }
 
     const geopinData = {
         content: {
             coords: { x: x || undefined, y: y || undefined },
         }, // Will be ignored if undefined
         desc: desc,
-        sender: "LMCC", // Automatically set; adjust if needed for HMD
+        sender: this_sender, // Automatically set; adjust if needed for HMD
         type: "GEOPIN",
         timestamp: new Date().toISOString()
     };
@@ -273,7 +279,7 @@ function defineWebSocketHandlers() {
     	var message_type = message["type"];
     	// console.log('Received ' + message_type + ' from ' + message["sender"]);
 
-    	if (message_type == "GEOPIN") {
+    	if (message_type == "GEOPIN" && message["sender"] == this_sender) {
     		// console.log(message["content"]);
     		addGeoPin(message["content"]);
     	} else if (message_type == "BREADCRUMBS1") {
@@ -307,7 +313,9 @@ fetch('/localdata/GEOPINS')
 .then(data => {
     for (let pin_num of Object.keys(data)) {
         console.log("load/creating geopin", data[pin_num])
-        addGeoPin(data[pin_num]["content"]);
+        if (data[pin_num]["sender"] == this_sender) {
+            addGeoPin(data[pin_num]["content"]);
+        }
     }
 })
 .catch(error => console.error('Error loading existing geopins:', error));

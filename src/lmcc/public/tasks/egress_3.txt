@@ -1,4 +1,4 @@
 SWITCH: UIA OXY VENT -> ON
 Wait until Both Primary and Secondary OXY Tanks are empty for both EVAs
-SWITCH: UIA OXY VENT -> OF
+SWITCH: UIA OXY VENT -> OFF
 dummyvar
