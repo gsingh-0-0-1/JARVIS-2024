@@ -16,6 +16,7 @@ fetch('/gatewayhost')
 })
 .then(data => {
     ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
+    defineWebSocketHandlers();
 })
 .catch(error => console.error('Error loading gateway host:', error));
 
@@ -244,34 +245,36 @@ function addGeoPin(content) {
     // make function call 
 //}
 
-ws.onmessage = async function (event, isBinary) {
-	var data = await event.data.text();
-	var message = JSON.parse(data);
-	var message_type = message["type"];
-	// console.log('Received ' + message_type + ' from ' + message["sender"]);
+function defineWebSocketHandlers() {
+    ws.onmessage = async function (event, isBinary) {
+    	var data = await event.data.text();
+    	var message = JSON.parse(data);
+    	var message_type = message["type"];
+    	// console.log('Received ' + message_type + ' from ' + message["sender"]);
 
-	if (message_type == "GEOPIN") {
-		// console.log(message["content"]);
-		addGeoPin(message["content"]);
-	} else if (message_type == "BREADCRUMBS1") {
-		// Display the list of breadcrumbs
-		// breadcrumbList.innerHTML = '';
-        // console.log(message.content)
-		// message.content.forEach(breadcrumb => {
-        addBreadCrumb1(message.content)
-		/*
-        var li = document.createElement('li');
-		var coords = message.content.coords;
-		var desc = message.content.desc;
-		li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-		breadcrumbList.appendChild(li);
-        */
-		// });
-	}  else if (message_type == "BREADCRUMBS2") {
-        addBreadCrumb2(message.content)
+    	if (message_type == "GEOPIN") {
+    		// console.log(message["content"]);
+    		addGeoPin(message["content"]);
+    	} else if (message_type == "BREADCRUMBS1") {
+    		// Display the list of breadcrumbs
+    		// breadcrumbList.innerHTML = '';
+            // console.log(message.content)
+    		// message.content.forEach(breadcrumb => {
+            addBreadCrumb1(message.content)
+    		/*
+            var li = document.createElement('li');
+    		var coords = message.content.coords;
+    		var desc = message.content.desc;
+    		li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    		breadcrumbList.appendChild(li);
+            */
+    		// });
+    	}  else if (message_type == "BREADCRUMBS2") {
+            addBreadCrumb2(message.content)
 
-    }
-};
+        }
+    };
+}
 
 
 // when we load, check with the server for existing pins
