@@ -8,6 +8,9 @@ public class TaskLists : MonoBehaviour
 {
     public GameObject[] ingressButtons;
     public GameObject[] egressButtons;
+    public GameObject[] completeIngressButtons;
+    public GameObject[] completeEgressButtons;
+
     public GameObject uiaButton;
     public GameObject active;
     public GameObject complete;
@@ -21,8 +24,11 @@ public class TaskLists : MonoBehaviour
     public Color enabledColor = Color.white;
     public Color disabledColor = Color.gray;
 
-    private Dictionary<GameObject, float> originalIngressPositions = new Dictionary<GameObject, float>();
-    private Dictionary<GameObject, float> originalEgressPositions = new Dictionary<GameObject, float>();
+    private Dictionary<string, GameObject> activeIngressButtonDicts = new Dictionary<string, GameObject>();
+    private Dictionary<string, GameObject> activeEgressButtonDicts = new Dictionary<string, GameObject>();
+    private Dictionary<string, GameObject> completeIngressButtonDicts = new Dictionary<string, GameObject>();
+    private Dictionary<string, GameObject> completeEgressButtonDicts = new Dictionary<string, GameObject>();
+
     private bool isUIA = false;
     private bool isIngress = false;
     private bool isEgress = false;
@@ -35,37 +41,64 @@ public class TaskLists : MonoBehaviour
         // Store the original x positions of the buttons and optionally set them to their start positions
         foreach (GameObject button in ingressButtons)
         {
-            originalIngressPositions[button] = button.transform.position.x;
+            string buttonName = button.name;
+            activeIngressButtonDicts[buttonName] = button;
         }
         foreach (GameObject button in egressButtons)
         {
-            originalEgressPositions[button] = button.transform.position.x;
+            string buttonName = button.name;
+            activeEgressButtonDicts[buttonName] = button;
+        }
+        foreach (GameObject button in completeIngressButtons)
+        {
+            string buttonName = button.name;
+            button.GetComponent<Button>().interactable = true;
+            button.GetComponent<Image>().color = enabledColor;
+            button.SetActive(false);
+            completeIngressButtonDicts[buttonName] = button;
+        }
+        foreach (GameObject button in completeEgressButtons)
+        {
+            string buttonName = button.name;
+            button.GetComponent<Button>().interactable = true;
+            button.GetComponent<Image>().color = enabledColor;
+            button.SetActive(false);
+            completeEgressButtonDicts[buttonName] = button;
         }
     }
 
     void Update()
     {
-        if (isIngress) && (isActive)
+        if (isUIA)
         {
-            allIngressButtons.SetActive(true);
-            allEgressButtons.SetActive(false);
-        }
-        else if (isIngress) && (isComplete)
-        {
-            allIngressButtons.SetActive(false);
-            allEgressButtons.SetActive(false);
-            allCompleteIngressButtons.SetActive(true);
-        }
-        else if (isEgress) && (isActive)
-        {
-            allIngressButtons.SetActive(false);
-            allEgressButtons.SetActive(true);
-        }
-        else if (isEgress) && (isComplete)
-        {
-            allIngressButtons.SetActive(false);
-            allEgressButtons.SetActive(false);
-            allCompleteEgressButtons.SetActive(true);
+            if ((isIngress) && (isActive))
+            {
+                allIngressButtons.SetActive(true);
+                allEgressButtons.SetActive(false);
+                allCompleteIngressButtons.SetActive(false);
+                allCompleteEgressButtons.SetActive(false);
+            }
+            else if ((isIngress) && (isComplete))
+            {
+                allIngressButtons.SetActive(false);
+                allEgressButtons.SetActive(false);
+                allCompleteIngressButtons.SetActive(true);
+                allCompleteEgressButtons.SetActive(false);
+            }
+            else if ((isEgress) && (isActive))
+            {
+                allIngressButtons.SetActive(false);
+                allEgressButtons.SetActive(true);
+                allCompleteIngressButtons.SetActive(false);
+                allCompleteEgressButtons.SetActive(false);
+            }
+            else if ((isEgress) && (isComplete))
+            {
+                allIngressButtons.SetActive(false);
+                allEgressButtons.SetActive(false);
+                allCompleteIngressButtons.SetActive(false);
+                allCompleteEgressButtons.SetActive(true);
+            }
         }
     }
 
@@ -115,8 +148,6 @@ public class TaskLists : MonoBehaviour
     {
         active.GetComponent<Image>().color = enabledColor;
         complete.GetComponent<Image>().color = disabledColor;
-        allCompleteIngressButtons.SetActive(false);
-        allCompleteEgressButtons.SetActive(false);
         isActive = true;
         isComplete = false;
     }
@@ -126,8 +157,6 @@ public class TaskLists : MonoBehaviour
     {
         active.GetComponent<Image>().color = disabledColor;
         complete.GetComponent<Image>().color = enabledColor;
-        allIngressButtons.SetActive(false);
-        allEgressButtons.SetActive(false);
         isActive = false;
         isComplete = true;
     }
@@ -137,12 +166,10 @@ public class TaskLists : MonoBehaviour
         button.GetComponent<Button>().interactable = false;
         button.GetComponent<Image>().color = disabledColor;
 
-        GameObject newButton = Instantiate(button, button.transform.position, button.transform.rotation);
-        newButton.transform.SetParent(allCompleteIngressButtons.transform, false);
-
-        newButton.transform.position = new Vector3(originalIngressPositions[button] + 390, button.transform.position.y, button.transform.position.z);
-        newButton.GetComponent<Button>().interactable = true;
-        newButton.GetComponent<Image>().color = enabledColor;
+        string buttonName = button.name;
+        string completeButtonName = buttonName + "Complete";
+        GameObject newButton = completeIngressButtonDicts[completeButtonName];
+        newButton.SetActive(true);
     }
 
     public void ButtonEgressActive(GameObject button)
@@ -150,18 +177,35 @@ public class TaskLists : MonoBehaviour
         button.GetComponent<Button>().interactable = false;
         button.GetComponent<Image>().color = disabledColor;
 
-        GameObject newButton = Instantiate(button, button.transform.position, button.transform.rotation);
-        newButton.transform.SetParent(allCompleteIngressButtons.transform, false);
-
-        newButton.transform.position = new Vector3(originalEgressPositions[button] + 390, button.transform.position.y, button.transform.position.z);
-        newButton.GetComponent<Button>().interactable = true;
-        newButton.GetComponent<Image>().color = enabledColor;
+        string buttonName = button.name;
+        string completeButtonName = buttonName + "Complete";
+        GameObject newButton = completeEgressButtonDicts[completeButtonName];
+        newButton.SetActive(true);
     }
 
-    public void ButtonComplete(GameObject button)
+    public void ButtonIngressComplete(GameObject button)
     {
-        // Add some fixed value to the original position to move it right
-        // button.transform.position = new Vector3(originalIngressPositions[button] + 390, button.transform.position.y, button.transform.position.z);
-        // When the button is clicked, make it unclickable and change its color to disabled
+        // Disable the button
+        button.SetActive(false);
+
+        // Enable the button in complete column
+        string completeButtonName = button.name;
+        string buttonName = completeButtonName.Replace("Complete", "");
+        GameObject oldButton = activeIngressButtonDicts[buttonName];
+        oldButton.GetComponent<Button>().interactable = true;
+        oldButton.GetComponent<Image>().color = enabledColor;
+    }
+
+    public void ButtonEgressComplete(GameObject button)
+    {
+        // Disable the button
+        button.SetActive(false);
+
+        // Enable the button in complete column
+        string completeButtonName = button.name;
+        string buttonName = completeButtonName.Replace("Complete", "");
+        GameObject oldButton = activeEgressButtonDicts[buttonName];
+        oldButton.GetComponent<Button>().interactable = true;
+        oldButton.GetComponent<Image>().color = enabledColor;
     }
 }
