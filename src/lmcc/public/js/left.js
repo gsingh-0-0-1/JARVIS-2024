@@ -2,7 +2,8 @@
 // initPeer("lmcc_left")
 
 function createTask() {
-    var taskName = document.getElementById('taskSelector').value;
+    var activeTask = document.getElementById('taskSelector').value;
+    var taskName = document.getElementById(activeTask).textContent;
 
     fetch('/createTask', {
         method: 'POST',
@@ -10,7 +11,12 @@ function createTask() {
         body: JSON.stringify({ taskName: taskName })
     })
     .then(response => {
-        if (!response.ok) throw new Error('Failed to create task');
+        if (!response.ok) {
+            throw new Error('Failed to create task');
+        }
+        else {
+            document.getElementById("task_confirmation").innerHTML = `EV's have been sent task ${taskName}.`
+        }
     })
     .catch(error => console.error('Error creating task:', error));
 }
@@ -40,8 +46,10 @@ function fetchAllTasks() {
 			var el = document.createElement("option");
 			el.value = task.split(".")[0];
 			var this_task_cat = task.split("_")[0]
-			el.textContent = capitalizeFirstLetter(this_task_cat) + " " + task.split("_")[1].split(".")[0]
-			if ("cat_" + this_task_cat == taskCatSel.value) {
+            var formattedTaskName = capitalizeFirstLetter(this_task_cat) + " " + task.split("_")[1].split(".")[0]
+			el.textContent = formattedTaskName;
+            el.id = el.value;
+            if ("cat_" + this_task_cat == taskCatSel.value) {
 				taskSel.appendChild(el)
 			}
 		}
@@ -78,19 +86,11 @@ function displayBiometrics(){
         const jsonObject = JSON.parse(data)
         let result = ''
         for (const key in jsonObject) {
-            //Checking if the key is the temperature
-            if (key === 'Temperature EV1') {
-                result += `<span id = "ev1_temp">${key}: ${jsonObject[key]}</span><br>`;
-            } else {
-                result += `${key}: ${jsonObject[key]}<br>`;
-            }
+            result += `<span class="${jsonObject[key]['color']}">${key}: ${jsonObject[key]['val']}</span><br>`;
         }
-        
+
 		document.getElementById("biometrics").innerHTML = result
-        if (jsonObject["Temperature EV1"] > 65) {
-            document.getElementById("ev1_temp").style.color = "red";
-        }
-    
+
 	})
     .catch(error => console.error('Error creating task:', error));
 
@@ -119,3 +119,30 @@ function displayTimers(){
 
 displayTimers()
 window.setInterval(displayTimers, 1000)
+
+function displayAlerts(){
+    fetch('/localdata/ALERTS')
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch biometrics');
+        return response.text()
+    })
+	.then(data => {
+        const jsonObject = JSON.parse(data)
+        let result = ''
+        for (const key in jsonObject) {
+            var add = `<span class="${jsonObject[key]['color']}">${key}: ${jsonObject[key]['val']}</span><br><br>`;
+            if (jsonObject[key]["color"] == 'red-text') {
+                result = add + result;
+            }
+            else {
+                result = result + add;
+            }
+        }
+		document.getElementById("alerts").innerHTML = result
+	})
+    .catch(error => console.error('Error creating task:', error));
+
+}
+
+displayAlerts()
+window.setInterval(displayAlerts, 1000)

@@ -3,23 +3,40 @@ LOCAL_DATA["GEOPINS"] = [];
 LOCAL_DATA["BREADCRUMBS1"] = [];
 LOCAL_DATA["BREADCRUMBS2"] = [];
 
+var this_sender = "LMCC" + String(new Date().getTime())
 
 var geo_pin_list = document.getElementById("geo_pin_list")
 
 // we need to keep this port value fixed, I guess
-const ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
+var ws;
+
+fetch('/gatewayhost')
+.then(response => {
+    if (!response.ok) throw new Error('Failed to load gateway host');
+    return response.text();
+})
+.then(data => {
+    ws = new WebSocket('ws://' + data + ':' + "4761");
+    defineWebSocketHandlers();
+})
+.catch(error => console.error('Error loading gateway host:', error));
 
 function requestGeoPinCreation() {
-    const x = document.getElementById('pinX').value;
-    const y = document.getElementById('pinY').value;
-    const desc = document.getElementById('pindesc').value;
+    var x = document.getElementById('pinX').value;
+    var y = document.getElementById('pinY').value;
+    var desc = document.getElementById('pindesc').value;
+
+    if (x == '' || y == '' || desc == '') {
+        alert("Please enter a valid x-coord, y-coord, and description")
+        return
+    }
 
     const geopinData = {
         content: {
             coords: { x: x || undefined, y: y || undefined },
         }, // Will be ignored if undefined
         desc: desc,
-        sender: "LMCC", // Automatically set; adjust if needed for HMD
+        sender: this_sender, // Automatically set; adjust if needed for HMD
         type: "GEOPIN",
         timestamp: new Date().toISOString()
     };
@@ -186,18 +203,39 @@ function addGeoPin(content) {
 
     geo_pin_list.prepend(li)
 
-    var dot3 = document.createElement("div");
-    dot3.classList.add("pin"); // Add "current-dot" class to the new dot
+    var dot3 = document.createElement("img");
+    dot3.src = "/images/geopin_3.png"
+    dot3.style.zIndex = 2;
+    dot3.width = String(document.getElementById("panel_minimap").clientHeight * 0.03)
+
+    // we need the geo pin to have the bottom point be centered on the location
+    // by default the position we give css/html will control the position of the top-left
+    // corner of the image. thus we need to subtract the image height from the y
+    // and half the image width from the x
+
     dot3.style.left = String(100 * EVA1_x / 4251) + "%";
     dot3.style.top = String(100 * EVA1_y / 3543) + "%";
+    dot3.style.position = "absolute"
+    // dot3.style.width = "5%"
+    // dot3.style.height = "5%"
 
     // dot.title = `${desc}: (${EVA1_x}, ${EVA1_y})`; // Tooltip text on hover
 
   
 
-      // Add the new dot to the beginning of the array
+    // Add the new dot to the beginning of the array
     MAPDOTSGEOPIN.unshift(dot3);
     document.getElementById("panel_minimap").appendChild(dot3);
+
+    dot3.onload = function() {
+        var imgHeight = dot3.height;
+        var imgWidth = dot3.width;
+
+        console.log("height", imgHeight, imgWidth)
+
+        dot3.style.left = String((100 * EVA1_x / 4251) - (100 * imgWidth / document.getElementById("panel_minimap").clientWidth)) + "%";
+        dot3.style.top = String((100 * EVA1_y / 3543) - (100 * imgHeight / document.getElementById("panel_minimap").clientHeight)) + "%";
+    }
 
         // Add event listener for click event
     dot3.addEventListener('click', function() {
@@ -233,34 +271,36 @@ function addGeoPin(content) {
     // make function call 
 //}
 
-ws.onmessage = async function (event, isBinary) {
-	var data = await event.data.text();
-	var message = JSON.parse(data);
-	var message_type = message["type"];
-	// console.log('Received ' + message_type + ' from ' + message["sender"]);
+function defineWebSocketHandlers() {
+    ws.onmessage = async function (event, isBinary) {
+    	var data = await event.data.text();
+    	var message = JSON.parse(data);
+    	var message_type = message["type"];
+    	// console.log('Received ' + message_type + ' from ' + message["sender"]);
 
-	if (message_type == "GEOPIN") {
-		// console.log(message["content"]);
-		addGeoPin(message["content"]);
-	} else if (message_type == "BREADCRUMBS1") {
-		// Display the list of breadcrumbs
-		// breadcrumbList.innerHTML = '';
-        // console.log(message.content)
-		// message.content.forEach(breadcrumb => {
-        addBreadCrumb1(message.content)
-		/*
-        var li = document.createElement('li');
-		var coords = message.content.coords;
-		var desc = message.content.desc;
-		li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-		breadcrumbList.appendChild(li);
-        */
-		// });
-	}  else if (message_type == "BREADCRUMBS2") {
-        addBreadCrumb2(message.content)
+    	if (message_type == "GEOPIN" && message["sender"] == this_sender) {
+    		// console.log(message["content"]);
+    		addGeoPin(message["content"]);
+    	} else if (message_type == "BREADCRUMBS1") {
+    		// Display the list of breadcrumbs
+    		// breadcrumbList.innerHTML = '';
+            // console.log(message.content)
+    		// message.content.forEach(breadcrumb => {
+            addBreadCrumb1(message.content)
+    		/*
+            var li = document.createElement('li');
+    		var coords = message.content.coords;
+    		var desc = message.content.desc;
+    		li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    		breadcrumbList.appendChild(li);
+            */
+    		// });
+    	}  else if (message_type == "BREADCRUMBS2") {
+            addBreadCrumb2(message.content)
 
-    }
-};
+        }
+    };
+}
 
 
 // when we load, check with the server for existing pins
@@ -272,7 +312,9 @@ fetch('/localdata/GEOPINS')
 .then(data => {
     for (let pin_num of Object.keys(data)) {
         console.log("load/creating geopin", data[pin_num])
-        addGeoPin(data[pin_num]["content"]);
+        if (data[pin_num]["sender"] == this_sender) {
+            addGeoPin(data[pin_num]["content"]);
+        }
     }
 })
 .catch(error => console.error('Error loading existing geopins:', error));

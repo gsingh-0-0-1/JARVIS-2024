@@ -17,7 +17,10 @@ const HOST = CONFIG['LMCC']['HOST'];
 const PORT_WEB = CONFIG['LMCC']['PORT_WEB'];
 
 // the gateway and LMCC will be on the same machine
-const GATEWAY_HOST = '0.0.0.0'; //'localhost';
+var GATEWAY_HOST = process.argv.slice(2)[0]; //'localhost';
+if (GATEWAY_HOST == '') {
+	GATEWAY_HOST = '0.0.0.0'
+}
 const GATEWAY_PORT = CONFIG['GATEWAY']['PORT_SOC'];
 
 const TSS_PORT = CONFIG['TSS']['PORT_WEB'];
@@ -52,6 +55,7 @@ LOCAL_DATA["BREADCRUMBS2"] = [];
 LOCAL_DATA["TASKS"] = [];
 LOCAL_DATA["BIOMETRICS"] = {};
 LOCAL_DATA["TIMERS"] = {};
+LOCAL_DATA["ALERTS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -460,7 +464,7 @@ function generateBreadcrumbs() {
 
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
-    }, 10000); // 10 seconds interval
+    }, 4000); // 2 seconds interval
 }
 
 
@@ -494,6 +498,75 @@ async function createTask(taskName) {
 	}
 }
 
+
+function isNominal(metricName, metric) {
+	if (metricName == 'batt_time_left') {
+		return 3600 <= metric && metric <= 10800
+	}
+	else if (metricName == 'oxy_pri_storage') {
+		return 20 <= metric && metric <= 100
+	}
+	else if (metricName == 'oxy_sec_storage') {
+		return 20 <= metric && metric <= 100
+	}
+	else if (metricName == 'oxy_pri_pressure') {
+		return 600 <= metric && metric <= 3000
+	}
+	else if (metricName == 'oxy_sec_pressure') {
+		return 600 <= metric && metric <= 3000
+	}
+	else if (metricName == 'oxy_time_left') {
+		return 3600 <= metric && metric <= 21600
+	}
+	else if (metricName == 'heart_rate') {
+		return 50 <= metric && metric <= 160
+	}
+	else if (metricName == 'oxy_consumption') {
+		return 0.05 <= metric && metric <= 0.15
+	}
+	else if (metricName == 'co2_production') {
+		return 0.05 <= metric && metric <= 0.15
+	}
+	else if (metricName == 'suit_pressure_oxy') {
+		return 3.5 <= metric && metric <= 4.1
+	}
+	else if (metricName == 'suit_pressure_co2') {
+		return 0 <= metric && metric <= 0.1
+	}
+	else if (metricName == 'suit_pressure_other') {
+		return 0 <= metric && metric <= 0.5
+	}
+	else if (metricName == 'suit_pressure_total') {
+		return 3.5 <= metric && metric <= 4.5
+	}
+	else if (metricName == 'helmet_pressure_co2') {
+		return 0 <= metric && metric <= 0.15
+	}
+	else if (metricName == 'fan_pri_rpm') {
+		return 20000 <= metric && metric <= 30000
+	}
+	else if (metricName == 'fan_sec_rpm') {
+		return 20000 <= metric && metric <= 30000
+	}
+	else if (metricName == 'scrubber_a_co2_storage') {
+		return 0 <= metric && metric <= 60
+	}
+	else if (metricName == 'scrubber_b_co2_storage') {
+		return 0 <= metric && metric <= 60
+	}
+	else if (metricName == 'temperature') {
+		return 50 <= metric && metric <= 90
+	}
+	else if (metricName == 'coolant_liquid_pressure') {
+		return 100 <= metric && metric <= 700
+	}
+	else if (metricName == 'coolant_gas_pressure') {
+		return 0 <= metric && metric <= 700
+	}
+}
+
+
+
 function updateBiometrics(){
 	setInterval(() => {
 		fetch(TELEMTRY)
@@ -501,12 +574,22 @@ function updateBiometrics(){
 		.then(data => {
 //			console.log(data)
 			LOCAL_DATA["BIOMETRICS"] = {
-				'EV1 - Heart Rate' : data['telemetry']['eva1']['heart_rate'],
-				'EV1 - Temperature' : data['telemetry']['eva1']['temperature'],
-				// 'EV1 - O2 Time Left' : data['telemetry']['eva1']['oxy_time_left'],
-				'EV2 - Heart Rate' : data['telemetry']['eva2']['heart_rate'],
-				'EV2 - Temperature' : data['telemetry']['eva2']['temperature'],
-				// 'EV2 - O2 Time Left' : data['telemetry']['eva2']['oxy_time_left'],
+				'EV1 - Heart Rate' : {
+					'val' : data['telemetry']['eva1']['heart_rate'] + " bpm",
+					'color' : isNominal('heart_rate', data['telemetry']['eva1']['heart_rate']) ? 'green-text' : 'red-text'
+				},
+				'EV1 -  Temperature' : {
+					'val' : String(Math.round(Number(data['telemetry']['eva1']['temperature']) * 100) / 100) + " F",
+					'color' : isNominal('temperature', data['telemetry']['eva1']['temperature']) ? 'green-text' : 'red-text'
+				},
+				'EV2 - Heart Rate' : {
+					'val' : data['telemetry']['eva2']['heart_rate'] + " bpm",
+					'color' : isNominal('heart_rate', data['telemetry']['eva2']['heart_rate']) ? 'green-text' : 'red-text'
+				},
+				'EV2 -  Temperature' : {
+					'val' : String(Math.round(Number(data['telemetry']['eva2']['temperature']) * 100) / 100) + " F",
+					'color' : isNominal('temperature', data['telemetry']['eva2']['temperature']) ? 'green-text' : 'red-text'
+				},
 			}
 		})
 		.catch(error => console.error('Error generating biometrics:', error));
@@ -520,11 +603,255 @@ function updateTimers(){
 		.then(data => {
 //			console.log(data)
 			LOCAL_DATA["TIMERS"] = {
-				'EV1 - Oxygen time left' : data['telemetry']['eva1']['oxy_time_left'],
-				'EV1 - Battery time left' : data['telemetry']['eva1']['batt_time_left'],
-				'EV2 - Oxygen time left' : data['telemetry']['eva2']['oxy_time_left'],
-				'EV2 - Battery time left' : data['telemetry']['eva2']['batt_time_left'],
+				'EV1: O2 left' : data['telemetry']['eva1']['oxy_time_left'] + "s",
+				'EV1: Battery' : Math.round(Number(data['telemetry']['eva1']['batt_time_left'])) + "s",
+				'EV2: O2 left' : data['telemetry']['eva2']['oxy_time_left'] + "s",
+				'EV3: Battery' : Math.round(Number(data['telemetry']['eva2']['batt_time_left'])) + "s",
 			}
+		})
+		.catch(error => console.error('Error generating biometrics:', error));
+    }, 1000); // 1 second interval
+}
+
+
+var alert_keys_yellow = ['batt_time_left', 
+    'oxy_pri_storage',
+    'oxy_sec_storage',
+    'oxy_pri_pressure', 
+    'oxy_sec_pressure', 
+    'oxy_time_left', 
+    'oxy_consumption', 
+    'co2_production', 
+    'coolant_liquid_pressure', 
+    'coolant_gas_pressure']
+
+var alerts_pretty = {
+    'batt_time_left' : 'Battery Left',
+    'oxy_pri_storage' : 'Primary O2 Storage',
+    'oxy_sec_storage' : 'Secondary O2 Storage',
+    'oxy_pri_pressure' : 'Primary O2 Pressure',
+    'oxy_sec_pressure' : 'Secondary O2 Pressure',
+    'oxy_time_left' : 'O2 Time Left',
+    'oxy_consumption' : 'O2 Consumption',
+    'co2_production' : 'CO2 Production',
+    'coolant_liquid_pressure' : 'Coolant Liquid Pressure',
+    'coolant_gas_pressure' : 'Coolant Gas Pressure',
+    'heart_rate' : 'Heart Rate',
+    'suit_pressure_oxy' : 'Suit O2 Pressure', 
+    'suit_pressure_co2' : 'Suit CO2 Pressure',
+    'suit_pressure_other' : 'Suit Pressure (Other)', 
+    'suit_pressure_total' : 'Suit Total Pressure', 
+    'helmet_pressure_co2' : 'Helmet CO2 Pressure', 
+    'fan_pri_rpm' : 'Primary Fan RPM',
+    'fan_sec_rpm' : 'Secondary Fan RPM', 
+    'scrubber_a_co2_storage' : 'Scrubber A CO2 Storage', 
+    'scrubber_b_co2_storage' : 'Scrubber B CO2 Storage', 
+    'temperature' : 'Temperature'
+}
+
+function updateAlerts(){
+	setInterval(() => {
+		fetch(TELEMTRY)
+		.then(response => response.json())
+		.then(data => {
+
+			alerts = {}
+
+			const evas = ['eva1', 'eva2'];
+
+			// coolant_storage doesn't exist
+
+
+			for (const eva of evas) {
+                for (var key of Object.keys(data['telemetry'][eva])) {
+                    let value = data['telemetry'][eva][key]
+                    if (!isNominal(key, value)) {
+                        var color = 'red-text';
+                        if (alert_keys_yellow.includes(key)) {
+                            color = 'yellow-text'
+                        }
+                        alerts[`${eva.toUpperCase()}: ${alerts_pretty[key]}`] = {
+                            'val' : value,
+                            'color' : color
+                        }
+                    }
+                }
+
+                /*
+
+				let batt_time_left = data['telemetry'][eva]['batt_time_left'];
+				if (!isNominal('batt_time_left', batt_time_left)) {
+					alerts[`${eva.toUpperCase()} - Batt Time Left`] = {
+						'val': batt_time_left,
+						'color': 'yellow-text'
+					}
+				}
+
+				let oxy_pri_storage = data['telemetry'][eva]['oxy_pri_storage'];
+				if (!isNominal('oxy_pri_storage', oxy_pri_storage)) {
+					alerts[`${eva.toUpperCase()} - Oxy Pri Storage`] = {
+						'val': oxy_pri_storage,
+						'color': 'yellow-text'
+					}
+				}
+
+				let oxy_sec_storage = data['telemetry'][eva]['oxy_sec_storage'];
+				if (!isNominal('oxy_sec_storage', oxy_sec_storage)) {
+					alerts[`${eva.toUpperCase()} - Oxy Sec Storage`] = {
+						'val': oxy_sec_storage,
+						'color': 'yellow-text'
+					}
+				}
+
+				let oxy_pri_pressure = data['telemetry'][eva]['oxy_pri_pressure'];
+				if (!isNominal('oxy_pri_pressure', oxy_pri_pressure)) {
+					alerts[`${eva.toUpperCase()} - Oxy Pri Pressure`] = {
+						'val': oxy_pri_pressure,
+						'color': 'yellow-text'
+					}
+				}
+
+				let oxy_sec_pressure = data['telemetry'][eva]['oxy_sec_pressure'];
+				if (!isNominal('oxy_sec_pressure', oxy_sec_pressure)) {
+					alerts[`${eva.toUpperCase()} - Oxy Sec Pressure`] = {
+						'val': oxy_sec_pressure,
+						'color': 'yellow-text'
+					}
+				}
+
+				let oxy_time_left = data['telemetry'][eva]['oxy_time_left'];
+				if (!isNominal('oxy_time_left', oxy_time_left)) {
+					alerts[`${eva.toUpperCase()} - Oxy Time Left`] = {
+						'val': oxy_time_left,
+						'color': 'yellow-text'
+					}
+				}
+
+				let heart_rate = data['telemetry'][eva]['heart_rate'];
+				if (!isNominal('heart_rate', heart_rate)) {
+					alerts[`${eva.toUpperCase()} - Heart Rate`] = {
+						'val': heart_rate,
+						'color': 'red-text'
+					}
+				}
+
+				let oxy_consumption = data['telemetry'][eva]['oxy_consumption'];
+				if (!isNominal('oxy_consumption', oxy_consumption)) {
+					alerts[`${eva.toUpperCase()} - Oxy Consumption`] = {
+						'val': oxy_consumption,
+						'color': 'yellow-text'
+					}
+				}
+
+				let co2_production = data['telemetry'][eva]['co2_production'];
+				if (!isNominal('co2_production', co2_production)) {
+					alerts[`${eva.toUpperCase()} - CO2 Production`] = {
+						'val': co2_production,
+						'color': 'yellow-text'
+					}
+				}
+
+				let suit_pressure_oxy = data['telemetry'][eva]['suit_pressure_oxy'];
+				if (!isNominal('suit_pressure_oxy', suit_pressure_oxy)) {
+					alerts[`${eva.toUpperCase()} - Suit Pressure Oxy`] = {
+						'val': suit_pressure_oxy,
+						'color': 'red-text'
+					}
+				}
+
+				let suit_pressure_co2 = data['telemetry'][eva]['suit_pressure_co2'];
+				if (!isNominal('suit_pressure_co2', suit_pressure_co2)) {
+					alerts[`${eva.toUpperCase()} - Suit Pressure CO2`] = {
+						'val': suit_pressure_co2,
+						'color': 'red-text'
+					}
+				}
+
+				let suit_pressure_other = data['telemetry'][eva]['suit_pressure_other'];
+				if (!isNominal('suit_pressure_other', suit_pressure_other)) {
+					alerts[`${eva.toUpperCase()} - Suit Pressure Other`] = {
+						'val': suit_pressure_other,
+						'color': 'red-text'
+					}
+				}
+
+				let suit_pressure_total = data['telemetry'][eva]['suit_pressure_total'];
+				if (!isNominal('suit_pressure_total', suit_pressure_total)) {
+					alerts[`${eva.toUpperCase()} - Suit Pressure Total`] = {
+						'val': suit_pressure_total,
+						'color': 'red-text'
+					}
+				}
+
+				let helmet_pressure_co2 = data['telemetry'][eva]['helmet_pressure_co2'];
+				if (!isNominal('helmet_pressure_co2', helmet_pressure_co2)) {
+					alerts[`${eva.toUpperCase()} - Helmet Pressure CO2`] = {
+						'val': helmet_pressure_co2,
+						'color': 'red-text'
+					}
+				}
+
+				let fan_pri_rpm = data['telemetry'][eva]['fan_pri_rpm'];
+				if (!isNominal('fan_pri_rpm', fan_pri_rpm)) {
+					alerts[`${eva.toUpperCase()} - Fan Pri RPM`] = {
+						'val': fan_pri_rpm,
+						'color': 'red-text'
+					}
+				}
+
+				let fan_sec_rpm = data['telemetry'][eva]['fan_sec_rpm'];
+				if (!isNominal('fan_sec_rpm', fan_sec_rpm)) {
+					alerts[`${eva.toUpperCase()} - Fan Sec RPM`] = {
+						'val': fan_sec_rpm,
+						'color': 'red-text'
+					}
+				}
+
+				let scrubber_a_co2_storage = data['telemetry'][eva]['scrubber_a_co2_storage'];
+				if (!isNominal('scrubber_a_co2_storage', scrubber_a_co2_storage)) {
+					alerts[`${eva.toUpperCase()} - Scrubber A CO2 Storage`] = {
+						'val': scrubber_a_co2_storage,
+						'color': 'red-text'
+					}
+				}
+
+				let scrubber_b_co2_storage = data['telemetry'][eva]['scrubber_b_co2_storage'];
+				if (!isNominal('scrubber_b_co2_storage', scrubber_b_co2_storage)) {
+					alerts[`${eva.toUpperCase()} - Scrubber B CO2 Storage`] = {
+						'val': scrubber_b_co2_storage,
+						'color': 'red-text'
+					}
+				}
+
+				let temperature = data['telemetry'][eva]['temperature'];
+				if (!isNominal('temperature', temperature)) {
+					alerts[`${eva.toUpperCase()} - Temperature`] = {
+						'val': temperature,
+						'color': 'red-text'
+					}
+				}
+
+				let coolant_liquid_pressure = data['telemetry'][eva]['coolant_liquid_pressure'];
+				if (!isNominal('coolant_liquid_pressure', coolant_liquid_pressure)) {
+					alerts[`${eva.toUpperCase()} - Coolant Liquid Pressure`] = {
+						'val': coolant_liquid_pressure,
+						'color': 'yellow-text'
+					}
+				}
+
+				let coolant_gas_pressure = data['telemetry'][eva]['coolant_gas_pressure'];
+				if (!isNominal('coolant_gas_pressure', coolant_gas_pressure)) {
+					alerts[`${eva.toUpperCase()} - Coolant Gas Pressure`] = {
+						'val': coolant_gas_pressure,
+						'color': 'yellow-text'
+					}
+				}
+                */
+
+			}
+
+
+			LOCAL_DATA["ALERTS"] = alerts
 		})
 		.catch(error => console.error('Error generating biometrics:', error));
     }, 1000); // 1 second interval
@@ -532,8 +859,9 @@ function updateTimers(){
 
 ws.onopen = function (event) {
 	generateBreadcrumbs()
-	updateTimers()
 	updateBiometrics()
+	updateTimers()
+	updateAlerts()
 };
 
 
@@ -600,6 +928,10 @@ app.get('/localdata/:item', (req, res) => {
 	}
 	*/
 	res.send(LOCAL_DATA[req.params.item]);
+})
+
+app.get('/gatewayhost', (req, res) => {
+	res.send(GATEWAY_HOST)
 })
 
 // create api endpoint 

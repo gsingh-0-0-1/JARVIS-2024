@@ -5,7 +5,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" type="text/css">
 
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/right.css">
@@ -20,12 +20,12 @@
             </div>
             
             <div id="geopin_input_panel">
-                <input class="user_input" type="number" id="pinX" placeholder="X coordinate">
-                <input class="user_input" type="number" id="pinY" placeholder="Y coordinate">
+                <input class="user_input" type="number" id="pinX" placeholder="X-coord (0-4000)">
+                <input class="user_input" type="number" id="pinY" placeholder="Y-coord (0-3500)">
                 <input class="user_input" type="text" id="pindesc" placeholder="Description...">
 
                 <button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
-                    Create Geo Pin
+                    Create Location Pin
                 </button>
             </div>
 
@@ -62,10 +62,10 @@
                     -->
                     <div id="breadcrumb_list_inner_panel">
                         <div id="eva1_legend">
-                            Eva1
+                            EV1
                         </div>
                         <div id="eva2_legend">
-                            Eva2
+                            EV2
                         </div>
                      
                         
@@ -108,14 +108,14 @@
 
         <!-- 3. Camera Feed -->
         <div id="panel_camfeed_1" class="panel">
-            Camera Feed 1
+            Crew Camera Feed 1
             <video id="camfeed_2_element" controls poster="/images/moonsurface.gif">
                 <source src="https://100.69.33.190/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
             </video>
         </div>
 
         <div id="panel_camfeed_2" class="panel">
-            Camera Feed 2
+            Crew Camera Feed 2
             <video id="camfeed_2_element" controls poster="/images/moonsurface.gif">
                 <source src="https://100.69.33.190/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
             </video>
