@@ -8,6 +8,26 @@
 	left: 5%;
 } */
 
+.EV_minimap_text {
+    position: absolute;
+    visibility: hidden;
+    padding: 0.2vh 0.2vw;
+    background-color: #444;
+    border-radius: 20%;
+    font-size: 2vh;
+    border: #111;
+    top: 10%;
+    left: 10%;
+}
+
+.current-dot1:hover #EV1_minimap_text {
+    visibility: visible;
+}
+
+.current-dot2:hover #EV2_minimap_text {
+    visibility: visible;
+}
+
 .switch {
 	/* Adjustments for right page */
 	margin-left: 5%;
@@ -101,7 +121,7 @@
 	display: flex;
 	flex-flow: row wrap;
 	align-items: center;
-	justify-content:space-evenly ;
+	justify-content: left;
     /* background-color: rgb(116, 116, 175); */
 
 	/* align-content: flex-end; */
@@ -142,6 +162,13 @@
 	/* margin-top: 5%;
 	left: 5%; */
 	align-self:flex-end;
+    margin-left: 3%;
+
+    border: 2px solid #88c;
+    border-radius: 4px;
+    background-color: #669;
+    color: #eee;
+
 }
 
 
@@ -150,6 +177,8 @@
 
 /* Panel that contains the list of breadcrumbs created */
 #breadcrumb_panel {
+	display: flex;
+	flex-direction: column;
 	position: relative;
     width: 49%; /* Adjust the width to fit side by side */
     height: 95%; /* Take up full height of the parent container */
@@ -157,6 +186,8 @@
     /* background-color: rgb(116, 116, 175); */
 	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
 	border: 0.2vh solid #454b8f;
+
+	
 
 
     /* border: 0.3vh solid rgb(255, 85, 85); */
@@ -170,34 +201,153 @@
 
 }
 
-#breadcrumb_list_panel{
-	height: calc(100% - 40px); /* Adjust the height based on the title's height */
+/* holds both eva 1 and eva2 lists within the breadcrumbs panel*/
+#breadcrumb_list_inner_panel{
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content:center;	
+	overflow: hidden;
+	/* border: 0.3vh solid rgb(255, 85, 85); */
+
+	
+
+
+}
+#eva1_breadcrumb_list_panel{
+	height: 100%;
     overflow: auto; 
+	overflow-x: hidden;
+	width: 45.5%;	
+	/* padding-right: 0.5%; */
+	border-right: 0.1vh solid #000000;
+
+
+	/* border: 0.1vh solid rgb(27, 167, 41); */
+
+}
+
+#eva2_breadcrumb_list_panel{
+	/* height: calc(100% - 40px); */
+	height: 100%;
+
+    overflow: auto; 
+	overflow-x: hidden;
+	width: 45%;
+
+	padding-left: 0.5%;
+
+	/* border: 0.1vh solid rgb(255, 211, 79); */
+
+
 
 }
 
 /* Styling of the list itself */
-#breadcrumb_list {
+#eva1_breadcrumb_list {
 	/* overflow: scroll; */
 	overflow: auto;
+	height: 100%;
+
 	list-style-position: inside; /* Moves the bullet points inside the padding area */
-    padding-left: 10px; /* Adjust this value as needed */
+    padding-left: 0; 
+
 	
 	/* border: 0.5vh solid rgb(255, 211, 79); */
+	/* border: 0.1vh solid rgb(27, 167, 41); */
+
+
+
+}
+
+#eva2_breadcrumb_list {
+	/* overflow: scroll; */
+	overflow: auto;
+	list-style-position: inside;
+    padding-left: 5%; 
+
+	/* border: 0.5vh solid rgb(198, 255, 189); */
+	/* border: 0.1vh solid rgb(94, 79, 255); */
+	height: 100%;
 
 }
 
 /* List of each breadcrumb item */
-#breadcrumb_list li {
+#eva1_breadcrumb_list li {
 	margin-top: 2%;
 	font-family: Source Code Pro, Courier;
-	font-size: small;
+	font-size: smaller;
 	border-bottom: 1px solid black;
+	/* border: 0.1vh solid rgb(27, 167, 41); */
+	
+
+
 
 	/* border: 0.5vh solid rgb(255, 255, 134); */
 
 }
 
+#eva2_breadcrumb_list li {
+	margin-top: 2%;
+	font-family: Source Code Pro, Courier;
+	font-size: smaller;
+	border-bottom: 1px solid black;
+
+	/* border: 0.5vh solid rgb(255, 255, 134); */
+	/* border: 0.1vh solid rgb(255, 211, 79); */
+	/* width: max-content; */
+
+}
+
+
+#eva1_legend{
+	position: sticky;
+	width: 50%;
+	height: 20px;
+	border-bottom: 0.5vh solid rgb(255, 0, 0);
+	text-align: center;
+	padding-bottom: 8px;
+	padding-top: 5px;
+
+	/* background-color: rgb(255, 0, 0); */
+	font-weight: 500;
+	padding-left: 0; /* Remove default padding */
+	background-image: linear-gradient(to top,#627ecb, #38418e);
+	/* box-sizing: border-box; */
+	/* border-right: 0.1vh solid #000000; */
+	/* border: 0.1vh solid rgb(255, 211, 79); */
+
+
+
+}
+
+
+#eva2_legend{
+	position: sticky;
+
+	width: 50%;
+	height: 20px;
+	padding-bottom: 8px;
+	padding-top: 5px;
+
+
+	/* background-color: rgb(0, 68, 255); */
+	border-bottom: 0.5vh solid rgb(0, 68, 255);
+	font-weight: 500;
+	text-align: center;
+
+	padding-left: 0; /* Remove default padding */
+	background-image: linear-gradient(to top,#627ecb, #38418e);
+/* 
+	box-sizing: border-box; 
+	border-left: 0.1vh solid #000000; */
+
+	/* border: 0.1vh solid rgb(255, 211, 79); */
+
+
+
+}
 /* Minimap panel */
 #panel_minimap {
 	top: 0%;
@@ -213,43 +363,125 @@
 }
 
 /* Minimap dot styling */
-.mapdot {
-	position: absolute;
-	height: 5px;
-	width: 5px;
-	background-color: #08d;
-	border-radius: 50%;
-	display: inline-block;
+.mapdot1 {
+    position: absolute;
+    height: 5px;
+    width: 5px;
+    background-color: rgb(255, 50, 241);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 1; /* Default opacity for new dots */
 }
 
+.current-dot1 {
+    width: 0;
+    height: 0;
+    /* border-left: 5px solid transparent;
+    border-right: 5px solid transparent; */
+	border: 0.5vh solid rgb(255, 0, 0);
+    border-radius: 0;
+    opacity: 1; /* Ensure the current dot is fully opaque */
+}
+
+
+/* Minimap dot styling */
+.mapdot2 {
+    position: absolute;
+    height: 5px;
+    width: 5px;
+    background-color: rgb(50, 248, 255);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 1; /* Default opacity for new dots */
+}
+
+.current-dot2 {
+    width: 0;
+    height: 0;
+    /* border-left: 5px solid transparent;
+    border-right: 5px solid transparent; */
+	border: 0.5vh solid rgb(0, 68, 255);
+    border-radius: 0;
+    opacity: 1; /* Ensure the current dot is fully opaque */
+}
+
+/* .mapdot3 {
+    position: absolute;
+    height: 5px;
+    width: 5px;
+    background-color: rgb(9, 255, 0);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 1; 
+} */
+
+.pin {
+	width: 2px; /* Skinnier pin shaft */
+	height: 30px; /* Taller pin for the visual stacking effect */
+	background: #00500b;
+	position: absolute;
+  }
+  
+  .pin::before {
+	content: '';
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent; /* Creates left half of pin point */
+	border-right: 5px solid transparent; /* Creates right half of pin point */
+	border-top: 10px solid #96c69c; /* Creates the point of the pin */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -100%); /* Position the tip */
+	z-index: 1;
+  }
+  
+  .pin::after {
+	content: '';
+	width: 8px; /* Diameter of the pin head */
+	height: 8px; /* Diameter of the pin head */
+	border-radius: 50%;
+	background: #00500b;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -160%); /* Position the circle above the point */
+	z-index: 2; /* Higher z-index so the circle is above the point */
+  }
+  
 
 /* Camera Feed Panel */
 #panel_camfeed_1 {
 	top: 0%;
-	right: 33.75%;
+	right: 34.5%;
 	height: 50%;
-	aspect-ratio: 1 / 1;
+	aspect-ratio: 250 / 281;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to bottom ,#33426b, #161c58);
+	justify-content: center;
 
 
 }
 
 #panel_camfeed_2 {
 	top: 50%;
-	right: 33.75%;
+	right: 34.5%;
 	height: 50%;
-	aspect-ratio: 1 / 1;
+	aspect-ratio: 250 / 281;	
 	/* background-color: #88c; */
-	background-image: linear-gradient(to bottom ,#33426b, #161c58);
+	background-image: linear-gradient(to top ,#253254, #161c58);
+
 
 
 }
 
 
 #camfeed_2_element {
-	width: 90%;
+	width: 95%;
 	height: 90%;
+	margin-top: 5%;
+	margin-left: 3%;
+	border-radius: 5%;
 }
 
 
