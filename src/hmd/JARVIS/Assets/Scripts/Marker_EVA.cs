@@ -38,6 +38,7 @@ public class Marker_EVA : MonoBehaviour
 
     IEnumerator FetchEVLocs()
     {
+        /*
         string IMUJsonString = TSSc.GetIMUJsonString();
         Debug.Log(IMUJsonString);
         JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
@@ -58,12 +59,13 @@ public class Marker_EVA : MonoBehaviour
 
         transform.localPosition = new Vector3((0.11f * (x / 3000f)) - 0.055f, (0.11f * (y / 3000f)) - 0.055f, -0.002f);
         yield break;
+        */
 
-        /*
+        
 
         using (UnityWebRequest request = UnityWebRequest.Get(telemetryEndpoint))
         {
-            yield request.SendWebRequest();
+            yield return request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -97,6 +99,6 @@ public class Marker_EVA : MonoBehaviour
 
             //yield break;
         }
-        */
+        
     }
 }

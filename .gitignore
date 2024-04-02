@@ -3,3 +3,4 @@ node_modules
 input.webm
 output.wav
 output.pcm
+build_release
