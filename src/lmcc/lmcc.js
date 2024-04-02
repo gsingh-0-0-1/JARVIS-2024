@@ -18,7 +18,7 @@ const PORT_WEB = CONFIG['LMCC']['PORT_WEB'];
 
 // the gateway and LMCC will be on the same machine
 var GATEWAY_HOST = process.argv.slice(2)[0]; //'localhost';
-if (GATEWAY_HOST == '') {
+if (GATEWAY_HOST == '' || GATEWAY_HOST == undefined) {
 	GATEWAY_HOST = '0.0.0.0'
 }
 const GATEWAY_PORT = CONFIG['GATEWAY']['PORT_SOC'];
