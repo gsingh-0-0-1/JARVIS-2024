@@ -639,6 +639,7 @@ var alerts_pretty = {
     'heart_rate' : 'Heart Rate',
     'suit_pressure_oxy' : 'Suit O2 Pressure', 
     'suit_pressure_co2' : 'Suit CO2 Pressure',
+    'suit_pressure_cO2' : 'Suit CO2 Pressure',
     'suit_pressure_other' : 'Suit Pressure (Other)', 
     'suit_pressure_total' : 'Suit Total Pressure', 
     'helmet_pressure_co2' : 'Helmet CO2 Pressure', 
@@ -646,7 +647,8 @@ var alerts_pretty = {
     'fan_sec_rpm' : 'Secondary Fan RPM', 
     'scrubber_a_co2_storage' : 'Scrubber A CO2 Storage', 
     'scrubber_b_co2_storage' : 'Scrubber B CO2 Storage', 
-    'temperature' : 'Temperature'
+    'temperature' : 'Temperature',
+    'coolant_ml' : 'Coolant ML'
 }
 
 function updateAlerts(){
@@ -669,6 +671,9 @@ function updateAlerts(){
                         var color = 'red-text';
                         if (alert_keys_yellow.includes(key)) {
                             color = 'yellow-text'
+                        }
+                        if (alerts_pretty[key] == undefined) {
+                            console.log(key)
                         }
                         alerts[`${eva.toUpperCase()}: ${alerts_pretty[key]}`] = {
                             'val' : value,

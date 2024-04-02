@@ -117,7 +117,7 @@ function addBreadCrumb1(content) {
     dot1.classList.add("mapdot1", "current-dot1"); // Add "current-dot" class to the new dot
     dot1.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
     dot1.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
-    
+    dot1.appendChild(document.getElementById("EV1_minimap_text"));
 
     // Add the new dot to the beginning of the array
     MAPDOTS1.unshift(dot1);
@@ -159,7 +159,7 @@ function addBreadCrumb2(content) {
     dot2.classList.add("mapdot2", "current-dot2"); // Add "current-dot" class to the new dot
     dot2.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
     dot2.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
-    
+    dot2.appendChild(document.getElementById("EV2_minimap_text"));
 
     // Add the new dot to the beginning of the array
     MAPDOTS2.unshift(dot2);

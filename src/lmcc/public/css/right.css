@@ -8,6 +8,26 @@
 	left: 5%;
 } */
 
+.EV_minimap_text {
+    position: absolute;
+    visibility: hidden;
+    padding: 0.2vh 0.2vw;
+    background-color: #444;
+    border-radius: 20%;
+    font-size: 2vh;
+    border: #111;
+    top: 10%;
+    left: 10%;
+}
+
+.current-dot1:hover #EV1_minimap_text {
+    visibility: visible;
+}
+
+.current-dot2:hover #EV2_minimap_text {
+    visibility: visible;
+}
+
 .switch {
 	/* Adjustments for right page */
 	margin-left: 5%;
@@ -143,6 +163,12 @@
 	left: 5%; */
 	align-self:flex-end;
     margin-left: 3%;
+
+    border: 2px solid #88c;
+    border-radius: 4px;
+    background-color: #669;
+    color: #eee;
+
 }
 
 
