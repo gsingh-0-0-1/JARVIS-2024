@@ -186,8 +186,8 @@ function addGeoPin(content) {
 
     geo_pin_list.prepend(li)
 
-    var dot3 = document.createElement("span");
-    dot3.classList.add("mapdot3"); // Add "current-dot" class to the new dot
+    var dot3 = document.createElement("div");
+    dot3.classList.add("pin"); // Add "current-dot" class to the new dot
     dot3.style.left = String(100 * EVA1_x / 4251) + "%";
     dot3.style.top = String(100 * EVA1_y / 3543) + "%";
 
@@ -196,8 +196,8 @@ function addGeoPin(content) {
   
 
       // Add the new dot to the beginning of the array
-      MAPDOTSGEOPIN.unshift(dot3);
-      document.getElementById("panel_minimap").appendChild(dot3);
+    MAPDOTSGEOPIN.unshift(dot3);
+    document.getElementById("panel_minimap").appendChild(dot3);
 
         // Add event listener for click event
     dot3.addEventListener('click', function() {
@@ -207,7 +207,6 @@ function addGeoPin(content) {
 
         setTimeout(() => li.style.background = '', 3000); // Remove highlight after 3 seconds
     });
-
 }
 
 

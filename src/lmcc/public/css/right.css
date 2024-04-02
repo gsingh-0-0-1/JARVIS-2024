@@ -378,15 +378,50 @@
     opacity: 1; /* Ensure the current dot is fully opaque */
 }
 
-.mapdot3 {
+/* .mapdot3 {
     position: absolute;
     height: 5px;
     width: 5px;
     background-color: rgb(9, 255, 0);
     border-radius: 50%;
     display: inline-block;
-    opacity: 1; /* Default opacity for new dots */
-}
+    opacity: 1; 
+} */
+
+.pin {
+	width: 2px; /* Skinnier pin shaft */
+	height: 30px; /* Taller pin for the visual stacking effect */
+	background: #00500b;
+	position: absolute;
+  }
+  
+  .pin::before {
+	content: '';
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent; /* Creates left half of pin point */
+	border-right: 5px solid transparent; /* Creates right half of pin point */
+	border-top: 10px solid #96c69c; /* Creates the point of the pin */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -100%); /* Position the tip */
+	z-index: 1;
+  }
+  
+  .pin::after {
+	content: '';
+	width: 8px; /* Diameter of the pin head */
+	height: 8px; /* Diameter of the pin head */
+	border-radius: 50%;
+	background: #00500b;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -160%); /* Position the circle above the point */
+	z-index: 2; /* Higher z-index so the circle is above the point */
+  }
+  
 
 /* Camera Feed Panel */
 #panel_camfeed_1 {
