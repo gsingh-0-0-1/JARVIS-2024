@@ -606,7 +606,7 @@ function updateTimers(){
 				'EV1: O2 left' : data['telemetry']['eva1']['oxy_time_left'] + "s",
 				'EV1: Battery' : Math.round(Number(data['telemetry']['eva1']['batt_time_left'])) + "s",
 				'EV2: O2 left' : data['telemetry']['eva2']['oxy_time_left'] + "s",
-				'EV3: Battery' : Math.round(Number(data['telemetry']['eva2']['batt_time_left'])) + "s",
+				'EV2: Battery' : Math.round(Number(data['telemetry']['eva2']['batt_time_left'])) + "s",
 			}
 		})
 		.catch(error => console.error('Error generating biometrics:', error));
