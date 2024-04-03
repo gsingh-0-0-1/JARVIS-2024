@@ -8,7 +8,7 @@ function createTask() {
     fetch('/createTask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ taskName: taskName })
+        body: JSON.stringify({ taskName: activeTask })
     })
     .then(response => {
         if (!response.ok) {
@@ -109,7 +109,23 @@ function displayTimers(){
         const jsonObject = JSON.parse(data)
         let result = ''
         for (const key in jsonObject) {
-            result += `${key}: ${jsonObject[key]}<br>`
+            var val = jsonObject[key].replace("s", "")
+            
+            var hour = Math.floor(Number(val / 3600))
+            var minute = Math.floor((Number(val) - (hour * 3600)) / 60)
+            var second = val - (hour * 3600) - (minute * 60)
+
+            if (String(minute).length == 1) {
+                minute = '0' + minute
+            }
+
+            if (String(second).length == 1) {
+                minute = '0' + minute
+            }
+    
+            var str = hour + ":" + minute + ":" + second
+
+            result += `${key}: ${str}<br>`
         }
 		document.getElementById("timers").innerHTML = result
 	})
