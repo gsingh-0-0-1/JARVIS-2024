@@ -171,6 +171,7 @@ height: 3%;
 	display: inline-block; /* Display the panels inline */
 	vertical-align: top; /* Align them to the top */
 	border-radius: 10px;
+    overflow-y: scroll; /* Force vertical scrollbar */
 
 }
 
