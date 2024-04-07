@@ -159,13 +159,13 @@ function displayAlerts(){
             return 0
         });
 
-        console.log(items)
-
         let result = ''
 
         for (var i = 0; i < items.length; i++) {
-            const item = items[i]
-            result += `<span class="${item[1]['color']}">${item[0]}: ${item[1]['val']}</span><br>`;
+            const item = items[i][1]
+            result += `<span class="${item['color']}">
+            ${item['eva']} ${item['name']}: ${item['val']} ${item['unit']}
+            </span><br>`;
         }
 
 		document.getElementById("alerts").innerHTML = result
