@@ -109,8 +109,9 @@ function addBreadCrumb1(content) {
 
     var li1 = document.createElement('li');
     var coords = content.coords;
-    var desc = content.desc;
-    li1.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    // var desc = content.desc;
+    //${desc}:
+    li1.textContent = `(${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
     breadcrumbList1.prepend(li1);
 
     var dot1 = document.createElement("span");
@@ -151,8 +152,9 @@ function addBreadCrumb2(content) {
 
     var li2 = document.createElement('li');
     var coords = content.coords;
-    var desc = content.desc;
-    li2.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    // var desc = content.desc;
+    //${desc}:
+    li2.textContent = `(${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
     breadcrumbList2.prepend(li2);
 
     var dot2 = document.createElement("span");

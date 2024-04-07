@@ -67,9 +67,27 @@ ws.onmessage = function (event) {
     if (message_type == "GEOPIN") {
         LOCAL_DATA["GEOPINS"].push(message);
     } else if (message_type == "BREADCRUMBS1") {
-        LOCAL_DATA["BREADCRUMBS1"].push(message);
+
+		let breadcrumb =  {
+			content:  {
+				coords: message.content.coords
+			},
+			sender: message.sender,
+            type: message.type,
+            timestamp: message.timestamp
+		};
+        LOCAL_DATA["BREADCRUMBS1"].push(breadcrumb);
 	}else if (message_type == "BREADCRUMBS2") {
-		LOCAL_DATA["BREADCRUMBS2"].push(message);
+
+		let breadcrumb = {
+            content: {
+                coords: message.content.coords
+            },
+            sender: message.sender,
+            type: message.type,
+            timestamp: message.timestamp
+        };
+		LOCAL_DATA["BREADCRUMBS2"].push(breadcrumb);
 	} else if (message_type == "TASKS")
 	LOCAL_DATA["TASKS"].push(message);
 
