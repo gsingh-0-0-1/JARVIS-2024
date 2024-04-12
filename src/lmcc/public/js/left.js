@@ -76,66 +76,6 @@ function displaySelectedTask() {
 
 fetchAllTasks()
 
-function displayBiometrics(){
-    fetch('/localdata/BIOMETRICS')
-    .then(response => {
-        if (!response.ok) throw new Error('Failed to fetch biometrics');
-        return response.text()
-    })
-	.then(data => {
-        const jsonObject = JSON.parse(data)
-        let result = ''
-        for (const key in jsonObject) {
-            result += `<span class="${jsonObject[key]['color']}">${key}: ${jsonObject[key]['val']}</span><br>`;
-        }
-
-		document.getElementById("biometrics").innerHTML = result
-
-	})
-    .catch(error => console.error('Error creating task:', error));
-
-}
-
-displayBiometrics()
-window.setInterval(displayBiometrics, 1000)
-
-function displayTimers(){
-    fetch('/localdata/TIMERS')
-    .then(response => {
-        if (!response.ok) throw new Error('Failed to fetch biometrics');
-        return response.text()
-    })
-	.then(data => {
-        const jsonObject = JSON.parse(data)
-        let result = ''
-        for (const key in jsonObject) {
-            var val = jsonObject[key].replace("s", "")
-            
-            var hour = Math.floor(Number(val / 3600))
-            var minute = Math.floor((Number(val) - (hour * 3600)) / 60)
-            var second = val - (hour * 3600) - (minute * 60)
-
-            if (String(minute).length == 1) {
-                minute = '0' + minute
-            }
-
-            if (String(second).length == 1) {
-                minute = '0' + minute
-            }
-    
-            var str = hour + ":" + minute + ":" + second
-
-            result += `${key}: ${str}<br>`
-        }
-		document.getElementById("timers").innerHTML = result
-	})
-    .catch(error => console.error('Error creating task:', error));
-
-}
-
-displayTimers()
-window.setInterval(displayTimers, 1000)
-
 function displayAlerts(){
     fetch('/localdata/ALERTS')
     .then(response => {
@@ -159,23 +99,26 @@ function displayAlerts(){
 //            return 0
 //        });
 
-        let result_telemetry = ''
-        let result_value = ''
+        var evas = ['eva1', 'eva2'];
+        for (let eva of evas) {
+            let result_telemetry = ''
+            let result_value = ''
 
-        for (var i = 0; i < items.length; i++) {
-            const item = items[i][1]
-            if (item['eva'] == 'EVA1') {
-                result_telemetry += `<span class="${item['color']}">
-                ${item['name']}
-                </span><br>`;
-                result_value += `<span class="${item['color']}">
-                ${item['val']} ${item['unit']}
-                </span><br>`;
+            for (var i = 0; i < items.length; i++) {
+                const item = items[i][1]
+                if (item['eva'] == eva) {
+                    result_telemetry += `<span class="${item['color']}">
+                    ${item['name']}
+                    </span><br>`;
+                    result_value += `<span class="${item['color']}">
+                    ${item['val']} ${item['unit']}
+                    </span><br>`;
+                }
             }
-        }
 
-		document.getElementById("eva1_telemetry").innerHTML = result_telemetry
-		document.getElementById("eva1_value").innerHTML = result_value
+            document.getElementById(`${eva}_telemetry`).innerHTML = result_telemetry
+            document.getElementById(`${eva}_value`).innerHTML = result_value
+        }
 	})
     .catch(error => console.error('Error creating task:', error));
 

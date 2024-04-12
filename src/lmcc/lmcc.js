@@ -810,7 +810,7 @@ function updateAlerts(){
 					}
 
 					alerts[`${eva}: ${key}`] = {
-						'eva': eva.toUpperCase(),
+						'eva': eva,
 						'name': alerts_pretty[key]['name'],
 						'unit': alerts_pretty[key]['unit'],
 						'val': value.toFixed(alerts_pretty[key]['decimal']),
