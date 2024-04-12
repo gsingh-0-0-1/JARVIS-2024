@@ -632,6 +632,26 @@ function updateTimers(){
     }, 1000); // 1 second interval
 }
 
+var timers = ['oxy_time_left', 'batt_time_left']
+
+function convertTimer(val) {
+	val = Math.round(val)
+	var hour = Math.floor(Number(val / 3600))
+	var minute = Math.floor((Number(val) - (hour * 3600)) / 60)
+	var second = val - (hour * 3600) - (minute * 60)
+
+	if (String(minute).length == 1) {
+		minute = '0' + minute
+	}
+
+	if (String(second).length == 1) {
+		minute = '0' + minute
+	}
+
+	var str = hour + ":" + minute + ":" + second
+	return str
+}
+
 
 var alert_keys_yellow = ['batt_time_left', 
     'oxy_pri_storage',
@@ -647,95 +667,118 @@ var alert_keys_yellow = ['batt_time_left',
 var alerts_pretty = {
     'batt_time_left' : {
 		'name' : 'Battery Time Left',
-		'unit' : 's'
+		'unit' : '',
+		'decimal' : 0,
 	},
     'oxy_pri_storage' : {
-		'name' : 'Pri O2 Storage',
-		'unit' : '%'
+		'name' : 'Primary O2 Storage',
+		'unit' : '%',
+		'decimal' : 1,
 	},
     'oxy_sec_storage' : {
-		'name' : 'Sec O2 Storage',
-		'unit' : '%'
+		'name' : 'Secondary O2 Storage',
+		'unit' : '%',
+		'decimal' : 1,
 	},
     'oxy_pri_pressure' : {
-		'name' : 'Pri O2 Pressure',
-		'unit' : 'psi'
+		'name' : 'Primary O2 Pressure',
+		'unit' : 'psi',
+		'decimal' : 0,
 	},
     'oxy_sec_pressure' : {
-		'name' : 'Sec O2 Pressure',
-		'unit' : 'psi'
+		'name' : 'Secondary O2 Pressure',
+		'unit' : 'psi',
+		'decimal' : 0,
 	},
     'oxy_time_left' : {
 		'name' : 'O2 Time Left',
-		'unit' : 's'
+		'unit' : '',
+		'decimal' : 0,
 	},
     'oxy_consumption' : {
 		'name' : 'O2 Consumption',
-		'unit' : 'psi/min'
+		'unit' : 'psi/min',
+		'decimal' : 3,
 	},
     'co2_production' : {
 		'name' : 'CO2 Production',
-		'unit' : 'psi/min'
+		'unit' : 'psi/min',
+		'decimal' : 3,
 	},
     'coolant_liquid_pressure' : {
 		'name' : 'Coolant Liquid Pressure',
-		'unit' : 'psi'
+		'unit' : 'psi',
+		'decimal' : 2,
 	},
     'coolant_gas_pressure' : {
 		'name' : 'Coolant Gas Pressure',
-		'unit' : 'psi'
+		'unit' : 'psi',
+		'decimal' : 2,
 	},
     'heart_rate' : {
 		'name' : 'Heart Rate',
-		'unit' : 'bpm'
+		'unit' : 'bpm',
+		'decimal' : 0,
 	},
     'suit_pressure_oxy' : {
 		'name' : 'Suit O2 Pressure', 
-		'unit' : 'psi'
+		'unit' : 'psi',
+		'decimal' : 3,
 	},
     'suit_pressure_co2' : {
 		'name' : 'Suit CO2 Pressure',
-		'unit' : 'psi'
+		'unit' : 'psi',
+		'decimal' : 3,
 	},
     'suit_pressure_cO2' : {
 		'name' : 'Suit CO2 Pressure',
-		'unit' : 'psi'
+		'unit' : 'psi',
+		'decimal' : 3,
 	},
     'suit_pressure_other' : {
 		'name' : 'Suit Pressure (Other)', 
-		'unit' : 'psi'
+		'unit' : 'psi',
+		'decimal' : 3,
 	},
     'suit_pressure_total' : {
 		'name' : 'Suit Total Pressure', 
-		'unit' : 'psi'
+		'unit' : 'psi',
+		'decimal' : 3,
 	},
     'helmet_pressure_co2' : {
 		'name' : 'Helmet CO2 Pressure', 
-		'unit' : 'psi'
+		'unit' : 'psi',
+		'decimal' : 3,
 	},
     'fan_pri_rpm' : {
-		'name' : 'Pri Fan RPM',
-		'unit' : 'rpm'
+		'name' : 'Primary Fan RPM',
+		'unit' : 'rpm',
+		'decimal' : 0,
 	},
     'fan_sec_rpm' : {
-		'name' : 'Sec Fan RPM', 
-		'unit' : 'rpm'
+		'name' : 'Secondary Fan RPM', 
+		'unit' : 'rpm',
+		'decimal' : 0,
 	},
     'scrubber_a_co2_storage' : {
 		'name' : 'Scrubber A CO2 Storage', 
-		'unit' : '%'
+		'unit' : '%',
+		'decimal' : 1,
 	},
     'scrubber_b_co2_storage' : {
 		'name' : 'Scrubber B CO2 Storage', 
-		'unit' : '%'
+		'unit' : '%',
+		'decimal' : 1,
 	},
     'temperature' : {
 		'name' : 'Temperature',
-		'unit' : 'F'
+		'unit' : 'F',
+		'decimal' : 1,
 	},
     'coolant_ml' : { // This isn't used in alerts
 		'name' : 'Coolant ML',
-		'unit' : 'ml'
+		'unit' : 'ml',
+		'decimal' : 2,
 	},
 }
 
@@ -765,12 +808,17 @@ function updateAlerts(){
 					if (alerts_pretty[key] == undefined) {
 						console.log(key)
 					}
+
 					alerts[`${eva}: ${key}`] = {
 						'eva': eva.toUpperCase(),
 						'name': alerts_pretty[key]['name'],
 						'unit': alerts_pretty[key]['unit'],
-						'val': value.toFixed(3) % 1 == 0 ? value.toFixed(0) : value.toFixed(3),
+						'val': value.toFixed(alerts_pretty[key]['decimal']),
 						'color': color
+					}
+
+					if (timers.includes(key)) {
+						alerts[`${eva}: ${key}`]['val'] = convertTimer(value)
 					}
                 }
 
