@@ -149,15 +149,15 @@ function displayAlerts(){
             return [key, jsonObjects[key]];
         });
 
-        items.sort(function (first, second) {
-            if (first[1]['color'] == 'red-text') {
-                return -1
-            }
-            if (second[1]['color'] == 'red-text') {
-                return 1
-            }
-            return 0
-        });
+//        items.sort(function (first, second) {
+//            if (first[1]['color'] == 'red-text') {
+//                return -1
+//            }
+//            if (second[1]['color'] == 'red-text') {
+//                return 1
+//            }
+//            return 0
+//        });
 
         let result1 = ''
         let result2 = ''
@@ -165,7 +165,7 @@ function displayAlerts(){
         for (var i = 0; i < items.length; i++) {
             const item = items[i][1]
             result = `<span class="${item['color']}">
-            ${item['eva']} ${item['name']}: ${item['val']} ${item['unit']}
+            ${item['name']}: ${item['val']} ${item['unit']}
             </span><br>`;
             if (item['eva'] == 'EVA1') {
                 result1 += result

@@ -646,23 +646,23 @@ var alert_keys_yellow = ['batt_time_left',
 
 var alerts_pretty = {
     'batt_time_left' : {
-		'name' : 'Battery Left',
+		'name' : 'Battery Time Left',
 		'unit' : 's'
 	},
     'oxy_pri_storage' : {
-		'name' : 'Primary O2 Storage',
+		'name' : 'Pri O2 Storage',
 		'unit' : '%'
 	},
     'oxy_sec_storage' : {
-		'name' : 'Secondary O2 Storage',
+		'name' : 'Sec O2 Storage',
 		'unit' : '%'
 	},
     'oxy_pri_pressure' : {
-		'name' : 'Primary O2 Pressure',
+		'name' : 'Pri O2 Pressure',
 		'unit' : 'psi'
 	},
     'oxy_sec_pressure' : {
-		'name' : 'Secondary O2 Pressure',
+		'name' : 'Sec O2 Pressure',
 		'unit' : 'psi'
 	},
     'oxy_time_left' : {
@@ -714,11 +714,11 @@ var alerts_pretty = {
 		'unit' : 'psi'
 	},
     'fan_pri_rpm' : {
-		'name' : 'Primary Fan RPM',
+		'name' : 'Pri Fan RPM',
 		'unit' : 'rmp'
 	},
     'fan_sec_rpm' : {
-		'name' : 'Secondary Fan RPM', 
+		'name' : 'Sec Fan RPM', 
 		'unit' : 'rmp'
 	},
     'scrubber_a_co2_storage' : {
@@ -735,9 +735,11 @@ var alerts_pretty = {
 	},
     'coolant_ml' : { // This isn't used in alerts
 		'name' : 'Coolant ML',
-		'unit' : 'UNKOWN'
+		'unit' : 'ml'
 	},
 }
+
+var bio_timer_labels = ['heart_rate', 'temperature', 'oxy_time_left', 'batt_time_left']
 
 function updateAlerts(){
 	setInterval(() => {
@@ -753,24 +755,29 @@ function updateAlerts(){
 
 
 			for (const eva of evas) {
-                for (var key of Object.keys(data['telemetry'][eva])) {
-                    let value = data['telemetry'][eva][key]
-                    if (!isNominal(key, value)) {
-                        var color = 'red-text';
-                        if (alert_keys_yellow.includes(key)) {
-                            color = 'yellow-text'
-                        }
-                        if (alerts_pretty[key] == undefined) {
-                            console.log(key)
-                        }
-                        alerts[`${eva}: ${key}`] = {
-							'eva' : eva.toUpperCase(),
-							'name' : alerts_pretty[key]['name'],
-							'unit' : alerts_pretty[key]['unit'],
-                            'val' : value.toFixed(3) % 1 == 0 ? value.toFixed(0) : value.toFixed(3),
-                            'color' : color
-                        }
-                    }
+				for (var key of Object.keys(data['telemetry'][eva])) {
+					if (bio_timer_labels.includes(key)) {
+						continue;
+					}
+
+					let value = data['telemetry'][eva][key]
+					var color = 'green-text';
+					if (!isNominal(key, value)) {
+						color = 'red-text';
+						if (alert_keys_yellow.includes(key)) {
+							color = 'yellow-text'
+						}
+					}
+					if (alerts_pretty[key] == undefined) {
+						console.log(key)
+					}
+					alerts[`${eva}: ${key}`] = {
+						'eva': eva.toUpperCase(),
+						'name': alerts_pretty[key]['name'],
+						'unit': alerts_pretty[key]['unit'],
+						'val': value.toFixed(3) % 1 == 0 ? value.toFixed(0) : value.toFixed(3),
+						'color': color
+					}
                 }
 
 			}
