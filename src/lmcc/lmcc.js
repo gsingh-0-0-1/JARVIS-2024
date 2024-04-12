@@ -687,7 +687,7 @@ var alerts_pretty = {
 	},
     'heart_rate' : {
 		'name' : 'Heart Rate',
-		'unit' : 'bmp'
+		'unit' : 'bpm'
 	},
     'suit_pressure_oxy' : {
 		'name' : 'Suit O2 Pressure', 
@@ -715,11 +715,11 @@ var alerts_pretty = {
 	},
     'fan_pri_rpm' : {
 		'name' : 'Pri Fan RPM',
-		'unit' : 'rmp'
+		'unit' : 'rpm'
 	},
     'fan_sec_rpm' : {
 		'name' : 'Sec Fan RPM', 
-		'unit' : 'rmp'
+		'unit' : 'rpm'
 	},
     'scrubber_a_co2_storage' : {
 		'name' : 'Scrubber A CO2 Storage', 
@@ -739,8 +739,6 @@ var alerts_pretty = {
 	},
 }
 
-var bio_timer_labels = ['heart_rate', 'temperature', 'oxy_time_left', 'batt_time_left']
-
 function updateAlerts(){
 	setInterval(() => {
 		fetch(TELEMTRY)
@@ -756,10 +754,6 @@ function updateAlerts(){
 
 			for (const eva of evas) {
 				for (var key of Object.keys(data['telemetry'][eva])) {
-					if (bio_timer_labels.includes(key)) {
-						continue;
-					}
-
 					let value = data['telemetry'][eva][key]
 					var color = 'green-text';
 					if (!isNominal(key, value)) {

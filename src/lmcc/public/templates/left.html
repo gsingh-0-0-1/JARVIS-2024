@@ -70,34 +70,27 @@
 
         <!-- 2. Mission Monitoring Panel -->
         <div id="panel_mission_monitor" class="panel">
-            <div id="missiontitle" div class="paneltitle">Mission Monitoring</div>
             
             <div id="inner_mission_panel">
-
-                <div id="time_bio_panel">
-                    <div id="timers_panel">
-                        <b>Timers</b>
-                        <div id="timers">Timer1: 20
-                        </div>
-                    </div>
-                    
-                    <div id="biometrics_panel">
-                        <b>Biometrics</b>
-                        <div id="biometrics">Heart rate: 10
-                        </div>
-                    </div>
-
-                </div>
                 
-                <div id="alerts_container">
-                    <div id="alerts_panel">
-                        <b>Alerts EVA 1</b>
-                        <div id="alerts1">Alerts go here
+                <div id="eva_container">
+                    <div id="eva_panel">
+                        <div id="evatitle_container">
+                            <b>EVA 1</b>
+                          </div>
+                        <div class="column_telemetry">
+                            Telemetry
+                            <div id="eva1_telemetry"></div>
+                        </div>
+                        <div class="column_value">
+                            Value
+                            <div id="eva1_value"></div>
                         </div>
                     </div>
-                    <div id="alerts_panel">
-                        <b>Alerts EVA 2</b>
-                        <div id="alerts2">Alerts go here
+
+                    <div id="eva_panel">
+                        <b>EVA 2</b>
+                        <div id="eva2">
                         </div>
                     </div>
                 </div>
@@ -107,9 +100,9 @@
             
 
         <!-- 3. Geological Sampling Panel -->
-        <div id="panel_geo_sampling" class="panel title">
+        <!-- <div id="panel_geo_sampling" class="panel title">
             Geological Sampling
-        </div>
+        </div> -->
 
         <audio autoplay id="micstream"></audio>
     <!-- </div> -->

@@ -40,8 +40,11 @@
 }
 
 #evatitle {
-width: 100%;
-height: 3%;
+	width: 100%;
+	height: 3%;
+}
+#evatitle_container {
+	text-align: center;
 }
 
 
@@ -107,8 +110,9 @@ height: 3%;
 #panel_mission_monitor {
 	top: 0%;
 	left: 0%;
-	height: 60%;
+	height: 65%;
 	width: 80%;
+	padding: 0px;
 	aspect-ratio: 400 / 158;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
@@ -122,102 +126,36 @@ height: 3%;
 #inner_mission_panel {
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
+	justify-content: left;
 	
 	/* border: 0.2vh solid rgb(41, 225, 249); */
-	height: 90%;
+	height: 95%;
 
 }
 
-
-
-
-
-#time_bio_panel {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	align-items: center;
-
-	width:20%;
-	/* border: 0.2vh solid rgb(194, 76, 43); */
-	/* height: 95%; */
-	/* margin: 0;      
-    padding: 0;   */
-
-
-}
-
-
-#timers_panel, #biometrics_panel {
-	height: 45%;
-
-	/* padding: 1% 1%; */
-	padding-left: 8px;
-	padding-top: 8px;
-	background-image: radial-gradient(#737f9d, #5e6394);
-	border: 0.2vh solid #454b8f;
-	/* margin-top: 1%; */
-	/* width: 100%; */
-	display: inline-block; /* Display the panels inline */
-	vertical-align: top; /* Align them to the top */
-	border-radius: 10px;
-	width:95%;
-
-}
-
-
-#timers {
-	font-family: Source Code Pro;
-	color: white;
-	
-
-}
-
-/* #biometrics_panel {
-	height: 50%;
-	padding: 1% 1%;
-	background-image: radial-gradient(#737f9d, #5e6394);
-	border: 0.2vh solid #454b8f;
-	margin-top: 1%;
-	width: 50%;
-	display: inline-block; 
-	vertical-align: top; 
-	border-radius: 10px;
-
-} */
-
-#biometrics {
-	font-family: Source Code Pro;
-	color: white;
-
-}
-
-#alerts_container {
+#eva_container {
 	display: flex;
     justify-content: center;
     align-items: center; 
 	aspect-ratio: 5 / 1;
-	width: 80%;
+	width: 70%;
+	padding-top: 1%;
 	/* left: 0%; */
 	/* border: 0.3vh solid rgb(176, 158, 255); */
-	padding-bottom: 8px;
 
 }
-#alerts_panel {
-	height: 92%;
+#eva_panel {
+	height: 100%;
 	padding: 1% 1%;
 	background-image: radial-gradient(#737f9d, #5e6394);
 	border: 0.2vh solid #454b8f;
-	margin-top: 1%;
 	width: 97%;
-	/* align-items: center; */
 	display: inline-block; /* Display the panels inline */
 	border-radius: 10px;
 
 }
 
-#alerts {
+#eva {
 	font-family: Source Code Pro;
 	color: white;
 
@@ -242,6 +180,15 @@ height: 3%;
   width: 100%;
 }
 
+.column_telemetry {
+float: left;
+width: 65%;
+}
+.column_value {
+float: left;
+width: 35%;
+}
+
 select {
   appearance: none;
   /* safari */
@@ -260,7 +207,7 @@ select {
 #panel_geo_sampling {
 	bottom: 0%;
 	left: 0%;
-	height: 40%;
+	height: 35%;
 	width: 80%;
 	aspect-ratio: 400 / 158;
 	/* background-color: #88c; */
