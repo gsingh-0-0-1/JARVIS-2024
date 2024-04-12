@@ -159,16 +159,23 @@ function displayAlerts(){
             return 0
         });
 
-        let result = ''
+        let result1 = ''
+        let result2 = ''
 
         for (var i = 0; i < items.length; i++) {
             const item = items[i][1]
-            result += `<span class="${item['color']}">
+            result = `<span class="${item['color']}">
             ${item['eva']} ${item['name']}: ${item['val']} ${item['unit']}
             </span><br>`;
+            if (item['eva'] == 'EVA1') {
+                result1 += result
+            } else {
+                result2 += result
+            }
         }
 
-		document.getElementById("alerts").innerHTML = result
+		document.getElementById("alerts1").innerHTML = result1
+		document.getElementById("alerts2").innerHTML = result2
 	})
     .catch(error => console.error('Error creating task:', error));
 

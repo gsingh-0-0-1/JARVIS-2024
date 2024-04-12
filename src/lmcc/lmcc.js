@@ -581,6 +581,7 @@ function isNominal(metricName, metric) {
 	else if (metricName == 'coolant_gas_pressure') {
 		return 0 <= metric && metric <= 700
 	}
+	return true
 }
 
 
