@@ -236,12 +236,14 @@ height: 3%;
 }
 
 .red-text {
-    color: darkred;
+    color: rgb(120, 44, 44);
+	/* text-shadow: white 0px 0px 0px; */
 	font-weight: bold;
 }
 
 .select-dropdown {
-  min-width: 50%;
+  /* min-width: 50%; */
+  width: 100%;
 }
 
 select {
@@ -251,7 +253,7 @@ select {
   /* other styles for aesthetics */
   width: 100%;
   font-size: 1.5vh;
-  padding: 0.675em 6em 0.675em 1em;
+  padding: 0.675em 1em; /* Reduce the right padding */
   background-color: #88a;
   border: 1px solid #aad;
   border-radius: 0.25rem;
