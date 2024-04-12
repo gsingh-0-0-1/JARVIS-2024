@@ -1,0 +1,16 @@
+Grab XRF Scanners
+	(look for rocks outside of expected composition ranges)
+EVA1 COLLECTION PROCEDURE:
+	Navigate to Station A
+		Collect Samples at Station A
+	Navigate to Station B
+		Collect Samples at Station B
+	Navigate to Station C
+		Collect Samples at Station C
+EVA2 COLLECTION PROCEDURE:
+	Navigate to Station D
+		Collect Samples at Station D
+	Navigate to Station E
+		Collect Samples at Station E
+	Navigate to Station F
+		Collect Samples at Station F

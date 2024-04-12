@@ -644,29 +644,98 @@ var alert_keys_yellow = ['batt_time_left',
     'coolant_gas_pressure']
 
 var alerts_pretty = {
-    'batt_time_left' : 'Battery Left',
-    'oxy_pri_storage' : 'Primary O2 Storage',
-    'oxy_sec_storage' : 'Secondary O2 Storage',
-    'oxy_pri_pressure' : 'Primary O2 Pressure',
-    'oxy_sec_pressure' : 'Secondary O2 Pressure',
-    'oxy_time_left' : 'O2 Time Left',
-    'oxy_consumption' : 'O2 Consumption',
-    'co2_production' : 'CO2 Production',
-    'coolant_liquid_pressure' : 'Coolant Liquid Pressure',
-    'coolant_gas_pressure' : 'Coolant Gas Pressure',
-    'heart_rate' : 'Heart Rate',
-    'suit_pressure_oxy' : 'Suit O2 Pressure', 
-    'suit_pressure_co2' : 'Suit CO2 Pressure',
-    'suit_pressure_cO2' : 'Suit CO2 Pressure',
-    'suit_pressure_other' : 'Suit Pressure (Other)', 
-    'suit_pressure_total' : 'Suit Total Pressure', 
-    'helmet_pressure_co2' : 'Helmet CO2 Pressure', 
-    'fan_pri_rpm' : 'Primary Fan RPM',
-    'fan_sec_rpm' : 'Secondary Fan RPM', 
-    'scrubber_a_co2_storage' : 'Scrubber A CO2 Storage', 
-    'scrubber_b_co2_storage' : 'Scrubber B CO2 Storage', 
-    'temperature' : 'Temperature',
-    'coolant_ml' : 'Coolant ML'
+    'batt_time_left' : {
+		'name' : 'Battery Left',
+		'unit' : 's'
+	},
+    'oxy_pri_storage' : {
+		'name' : 'Primary O2 Storage',
+		'unit' : '%'
+	},
+    'oxy_sec_storage' : {
+		'name' : 'Secondary O2 Storage',
+		'unit' : '%'
+	},
+    'oxy_pri_pressure' : {
+		'name' : 'Primary O2 Pressure',
+		'unit' : 'psi'
+	},
+    'oxy_sec_pressure' : {
+		'name' : 'Secondary O2 Pressure',
+		'unit' : 'psi'
+	},
+    'oxy_time_left' : {
+		'name' : 'O2 Time Left',
+		'unit' : 's'
+	},
+    'oxy_consumption' : {
+		'name' : 'O2 Consumption',
+		'unit' : 'psi/min'
+	},
+    'co2_production' : {
+		'name' : 'CO2 Production',
+		'unit' : 'psi/min'
+	},
+    'coolant_liquid_pressure' : {
+		'name' : 'Coolant Liquid Pressure',
+		'unit' : 'psi'
+	},
+    'coolant_gas_pressure' : {
+		'name' : 'Coolant Gas Pressure',
+		'unit' : 'psi'
+	},
+    'heart_rate' : {
+		'name' : 'Heart Rate',
+		'unit' : 'bmp'
+	},
+    'suit_pressure_oxy' : {
+		'name' : 'Suit O2 Pressure', 
+		'unit' : 'psi'
+	},
+    'suit_pressure_co2' : {
+		'name' : 'Suit CO2 Pressure',
+		'unit' : 'psi'
+	},
+    'suit_pressure_cO2' : {
+		'name' : 'Suit CO2 Pressure',
+		'unit' : 'psi'
+	},
+    'suit_pressure_other' : {
+		'name' : 'Suit Pressure (Other)', 
+		'unit' : 'psi'
+	},
+    'suit_pressure_total' : {
+		'name' : 'Suit Total Pressure', 
+		'unit' : 'psi'
+	},
+    'helmet_pressure_co2' : {
+		'name' : 'Helmet CO2 Pressure', 
+		'unit' : 'psi'
+	},
+    'fan_pri_rpm' : {
+		'name' : 'Primary Fan RPM',
+		'unit' : 'rmp'
+	},
+    'fan_sec_rpm' : {
+		'name' : 'Secondary Fan RPM', 
+		'unit' : 'rmp'
+	},
+    'scrubber_a_co2_storage' : {
+		'name' : 'Scrubber A CO2 Storage', 
+		'unit' : '%'
+	},
+    'scrubber_b_co2_storage' : {
+		'name' : 'Scrubber B CO2 Storage', 
+		'unit' : '%'
+	},
+    'temperature' : {
+		'name' : 'Temperature',
+		'unit' : 'F'
+	},
+    'coolant_ml' : { // This isn't used in alerts
+		'name' : 'Coolant ML',
+		'unit' : 'UNKOWN'
+	},
 }
 
 function updateAlerts(){
@@ -693,183 +762,15 @@ function updateAlerts(){
                         if (alerts_pretty[key] == undefined) {
                             console.log(key)
                         }
-                        alerts[`${eva.toUpperCase()}: ${alerts_pretty[key]}`] = {
-                            'val' : value,
+                        alerts[`${eva}: ${key}`] = {
+							'eva' : eva.toUpperCase(),
+							'name' : alerts_pretty[key]['name'],
+							'unit' : alerts_pretty[key]['unit'],
+                            'val' : value.toFixed(3) % 1 == 0 ? value.toFixed(0) : value.toFixed(3),
                             'color' : color
                         }
                     }
                 }
-
-                /*
-
-				let batt_time_left = data['telemetry'][eva]['batt_time_left'];
-				if (!isNominal('batt_time_left', batt_time_left)) {
-					alerts[`${eva.toUpperCase()} - Batt Time Left`] = {
-						'val': batt_time_left,
-						'color': 'yellow-text'
-					}
-				}
-
-				let oxy_pri_storage = data['telemetry'][eva]['oxy_pri_storage'];
-				if (!isNominal('oxy_pri_storage', oxy_pri_storage)) {
-					alerts[`${eva.toUpperCase()} - Oxy Pri Storage`] = {
-						'val': oxy_pri_storage,
-						'color': 'yellow-text'
-					}
-				}
-
-				let oxy_sec_storage = data['telemetry'][eva]['oxy_sec_storage'];
-				if (!isNominal('oxy_sec_storage', oxy_sec_storage)) {
-					alerts[`${eva.toUpperCase()} - Oxy Sec Storage`] = {
-						'val': oxy_sec_storage,
-						'color': 'yellow-text'
-					}
-				}
-
-				let oxy_pri_pressure = data['telemetry'][eva]['oxy_pri_pressure'];
-				if (!isNominal('oxy_pri_pressure', oxy_pri_pressure)) {
-					alerts[`${eva.toUpperCase()} - Oxy Pri Pressure`] = {
-						'val': oxy_pri_pressure,
-						'color': 'yellow-text'
-					}
-				}
-
-				let oxy_sec_pressure = data['telemetry'][eva]['oxy_sec_pressure'];
-				if (!isNominal('oxy_sec_pressure', oxy_sec_pressure)) {
-					alerts[`${eva.toUpperCase()} - Oxy Sec Pressure`] = {
-						'val': oxy_sec_pressure,
-						'color': 'yellow-text'
-					}
-				}
-
-				let oxy_time_left = data['telemetry'][eva]['oxy_time_left'];
-				if (!isNominal('oxy_time_left', oxy_time_left)) {
-					alerts[`${eva.toUpperCase()} - Oxy Time Left`] = {
-						'val': oxy_time_left,
-						'color': 'yellow-text'
-					}
-				}
-
-				let heart_rate = data['telemetry'][eva]['heart_rate'];
-				if (!isNominal('heart_rate', heart_rate)) {
-					alerts[`${eva.toUpperCase()} - Heart Rate`] = {
-						'val': heart_rate,
-						'color': 'red-text'
-					}
-				}
-
-				let oxy_consumption = data['telemetry'][eva]['oxy_consumption'];
-				if (!isNominal('oxy_consumption', oxy_consumption)) {
-					alerts[`${eva.toUpperCase()} - Oxy Consumption`] = {
-						'val': oxy_consumption,
-						'color': 'yellow-text'
-					}
-				}
-
-				let co2_production = data['telemetry'][eva]['co2_production'];
-				if (!isNominal('co2_production', co2_production)) {
-					alerts[`${eva.toUpperCase()} - CO2 Production`] = {
-						'val': co2_production,
-						'color': 'yellow-text'
-					}
-				}
-
-				let suit_pressure_oxy = data['telemetry'][eva]['suit_pressure_oxy'];
-				if (!isNominal('suit_pressure_oxy', suit_pressure_oxy)) {
-					alerts[`${eva.toUpperCase()} - Suit Pressure Oxy`] = {
-						'val': suit_pressure_oxy,
-						'color': 'red-text'
-					}
-				}
-
-				let suit_pressure_co2 = data['telemetry'][eva]['suit_pressure_co2'];
-				if (!isNominal('suit_pressure_co2', suit_pressure_co2)) {
-					alerts[`${eva.toUpperCase()} - Suit Pressure CO2`] = {
-						'val': suit_pressure_co2,
-						'color': 'red-text'
-					}
-				}
-
-				let suit_pressure_other = data['telemetry'][eva]['suit_pressure_other'];
-				if (!isNominal('suit_pressure_other', suit_pressure_other)) {
-					alerts[`${eva.toUpperCase()} - Suit Pressure Other`] = {
-						'val': suit_pressure_other,
-						'color': 'red-text'
-					}
-				}
-
-				let suit_pressure_total = data['telemetry'][eva]['suit_pressure_total'];
-				if (!isNominal('suit_pressure_total', suit_pressure_total)) {
-					alerts[`${eva.toUpperCase()} - Suit Pressure Total`] = {
-						'val': suit_pressure_total,
-						'color': 'red-text'
-					}
-				}
-
-				let helmet_pressure_co2 = data['telemetry'][eva]['helmet_pressure_co2'];
-				if (!isNominal('helmet_pressure_co2', helmet_pressure_co2)) {
-					alerts[`${eva.toUpperCase()} - Helmet Pressure CO2`] = {
-						'val': helmet_pressure_co2,
-						'color': 'red-text'
-					}
-				}
-
-				let fan_pri_rpm = data['telemetry'][eva]['fan_pri_rpm'];
-				if (!isNominal('fan_pri_rpm', fan_pri_rpm)) {
-					alerts[`${eva.toUpperCase()} - Fan Pri RPM`] = {
-						'val': fan_pri_rpm,
-						'color': 'red-text'
-					}
-				}
-
-				let fan_sec_rpm = data['telemetry'][eva]['fan_sec_rpm'];
-				if (!isNominal('fan_sec_rpm', fan_sec_rpm)) {
-					alerts[`${eva.toUpperCase()} - Fan Sec RPM`] = {
-						'val': fan_sec_rpm,
-						'color': 'red-text'
-					}
-				}
-
-				let scrubber_a_co2_storage = data['telemetry'][eva]['scrubber_a_co2_storage'];
-				if (!isNominal('scrubber_a_co2_storage', scrubber_a_co2_storage)) {
-					alerts[`${eva.toUpperCase()} - Scrubber A CO2 Storage`] = {
-						'val': scrubber_a_co2_storage,
-						'color': 'red-text'
-					}
-				}
-
-				let scrubber_b_co2_storage = data['telemetry'][eva]['scrubber_b_co2_storage'];
-				if (!isNominal('scrubber_b_co2_storage', scrubber_b_co2_storage)) {
-					alerts[`${eva.toUpperCase()} - Scrubber B CO2 Storage`] = {
-						'val': scrubber_b_co2_storage,
-						'color': 'red-text'
-					}
-				}
-
-				let temperature = data['telemetry'][eva]['temperature'];
-				if (!isNominal('temperature', temperature)) {
-					alerts[`${eva.toUpperCase()} - Temperature`] = {
-						'val': temperature,
-						'color': 'red-text'
-					}
-				}
-
-				let coolant_liquid_pressure = data['telemetry'][eva]['coolant_liquid_pressure'];
-				if (!isNominal('coolant_liquid_pressure', coolant_liquid_pressure)) {
-					alerts[`${eva.toUpperCase()} - Coolant Liquid Pressure`] = {
-						'val': coolant_liquid_pressure,
-						'color': 'yellow-text'
-					}
-				}
-
-				let coolant_gas_pressure = data['telemetry'][eva]['coolant_gas_pressure'];
-				if (!isNominal('coolant_gas_pressure', coolant_gas_pressure)) {
-					alerts[`${eva.toUpperCase()} - Coolant Gas Pressure`] = {
-						'val': coolant_gas_pressure,
-						'color': 'yellow-text'
-					}
-				}
-                */
 
 			}
 

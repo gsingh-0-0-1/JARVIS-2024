@@ -143,17 +143,31 @@ function displayAlerts(){
         return response.text()
     })
 	.then(data => {
-        const jsonObject = JSON.parse(data)
+        jsonObjects = JSON.parse(data)
+
+        var items = Object.keys(jsonObjects).map(function (key) {
+            return [key, jsonObjects[key]];
+        });
+
+        items.sort(function (first, second) {
+            if (first[1]['color'] == 'red-text') {
+                return -1
+            }
+            if (second[1]['color'] == 'red-text') {
+                return 1
+            }
+            return 0
+        });
+
         let result = ''
-        for (const key in jsonObject) {
-            var add = `<span class="${jsonObject[key]['color']}">${key}: ${jsonObject[key]['val']}</span><br><br>`;
-            if (jsonObject[key]["color"] == 'red-text') {
-                result = add + result;
-            }
-            else {
-                result = result + add;
-            }
+
+        for (var i = 0; i < items.length; i++) {
+            const item = items[i][1]
+            result += `<span class="${item['color']}">
+            ${item['eva']} ${item['name']}: ${item['val']} ${item['unit']}
+            </span><br>`;
         }
+
 		document.getElementById("alerts").innerHTML = result
 	})
     .catch(error => console.error('Error creating task:', error));

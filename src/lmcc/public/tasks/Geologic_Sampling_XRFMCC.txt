@@ -1,0 +1,5 @@
+WAIT for arrival confirmation from EV
+Relay search area to EV
+	MAP of the designated search areas is included
+	POIS are provided
+Give EV confirmation to proceed
