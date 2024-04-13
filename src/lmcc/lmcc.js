@@ -683,12 +683,12 @@ var alerts_pretty = {
     'oxy_pri_pressure' : {
 		'name' : 'Primary O2 Pressure',
 		'unit' : 'psi',
-		'decimal' : 0,
+		'decimal' : 3,
 	},
     'oxy_sec_pressure' : {
 		'name' : 'Secondary O2 Pressure',
 		'unit' : 'psi',
-		'decimal' : 0,
+		'decimal' : 3,
 	},
     'oxy_time_left' : {
 		'name' : 'O2 Time Left',
@@ -799,6 +799,12 @@ function updateAlerts(){
 				for (var key of Object.keys(data['telemetry'][eva])) {
 					let value = data['telemetry'][eva][key]
 					var color = 'green-text';
+
+					// for some reason, eva2 has "suit_pressure_cO2" while eva1 has "suit_pressure_co2"
+					if (key == 'suit_pressure_cO2') {
+						key = 'suit_pressure_co2'
+					}
+
 					if (!isNominal(key, value)) {
 						color = 'red-text';
 						if (alert_keys_yellow.includes(key)) {
