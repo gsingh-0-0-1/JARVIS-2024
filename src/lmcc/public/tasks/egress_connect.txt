@@ -1,0 +1,5 @@
+PLUG: Connect UIA and DCU via the cable
+SWITCH: UIA EV-1 EV-2 EMU POWER -> ON
+SWITCH: DCU BATT -> Umbilical
+DEPRESS PUMP PWR – ON
+powerStat, powerStat2, eva1_battstat, eva2_battstat, depress
