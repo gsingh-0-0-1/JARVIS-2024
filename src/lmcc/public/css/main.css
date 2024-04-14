@@ -14,6 +14,25 @@ button {
 	font-family: Source Code Pro, Courier;
 }
 
+.help-panel{
+	position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+	height: 70%;
+    /* max-width: 400px; */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1001;
+    display: none;
+	background-image: radial-gradient(#5f6f96, #3946b6);
+	opacity: 95%;
+	border-radius: 5%;
+	border: 0.3vh solid rgb(208, 213, 230);
+
+}
+
 
 .panel-container {
 	/* display: flex; */

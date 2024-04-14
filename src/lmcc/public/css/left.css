@@ -108,15 +108,21 @@
 
 
 #panel_mission_monitor {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	top: 0%;
 	left: 0%;
-	height: 65%;
+	height: 60%;
 	width: 70%;
 	padding: 0px;
 	aspect-ratio: 400 / 158;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
 	border-radius: 10px;
+	/* border: 0.2vh solid rgb(41, 225, 249); */
+
 }
 
 #missiontitle {
@@ -126,10 +132,11 @@
 #inner_mission_panel {
 	display: flex;
 	flex-direction: row;
-	justify-content: left;
+	/* justify-content: left; */
 	
 	/* border: 0.2vh solid rgb(41, 225, 249); */
 	height: 95%;
+	width: 100%;
 
 }
 
@@ -140,6 +147,7 @@
 	aspect-ratio: 5 / 1;
 	width: 100%;
 	padding-top: 1%;
+	height: 95%;
 	/* left: 0%; */
 	/* border: 0.3vh solid rgb(176, 158, 255); */
 
@@ -177,6 +185,26 @@
 	font-weight: bold;
 }
 
+
+#helpBtn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    border: none;
+    background-color: #f1f1f1cb;
+	color: black;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+	text-align: center;  
+	line-height: 10px;  /* Same as the height to center text vertically */
+
+
+}
+
 .select-dropdown {
   /* min-width: 50%; */
   width: 100%;
@@ -211,7 +239,7 @@ select {
 #panel_geo_sampling {
 	bottom: 0%;
 	left: 0%;
-	height: 35%;
+	height: 40%;
 	width: 70%;
 	aspect-ratio: 400 / 158;
 	/* background-color: #88c; */
