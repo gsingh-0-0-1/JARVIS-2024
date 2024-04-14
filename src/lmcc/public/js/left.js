@@ -39,6 +39,7 @@ function fetchAllTasks() {
 		console.log(data)
 		taskSel.replaceChildren([]);
 		for (var task of data) {
+			console.log(task)
 			if (task == '\n' || task == '') {
 				continue
 			}
