@@ -161,3 +161,15 @@ function displayErrors(){
 
 displayErrors()
 window.setInterval(displayErrors, 1000)
+
+
+function toggleHelpPanel() {
+    var panel = document.getElementById('helpPanel');
+    if (panel.style.display === 'block') {
+        panel.style.display = 'none';
+    } else {
+        panel.style.display = 'block';
+    }
+}
+
+document.getElementById('helpBtn').addEventListener('click', toggleHelpPanel);
