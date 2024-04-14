@@ -1,2 +1,0 @@
-SWITCH: UIA Depress -> ON
-depress

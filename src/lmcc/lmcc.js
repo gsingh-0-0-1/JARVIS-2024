@@ -488,7 +488,7 @@ function generateBreadcrumbs() {
 
 
 
-
+/*
 async function createTask(taskName) {
 	const filePath = `public/tasks/${taskName}.txt`;
 
@@ -515,7 +515,32 @@ async function createTask(taskName) {
 		console.error(`Got an error trying to read the file: ${error.message}`);
 	}
 }
+*/
 
+async function createTask(taskContent) {
+
+	try {
+		const lines = taskContent.split('\n');
+		const tssInfo = lines.pop().split(', ');
+		const taskDesc = lines.join('\n');
+
+		const taskJson = {
+			content: {
+				// taskName: taskName,
+				taskDesc: taskDesc,
+				tssInfo: tssInfo,
+				status: "Not started"
+			},
+			sender: "LMCC",
+			type: "TASK",
+			timestamp: new Date().toISOString()
+		};
+
+		ws.send(JSON.stringify(taskJson));
+	} catch (error) {
+		console.error(`Got an error trying to read the file: ${error.message}`);
+	}
+}
 
 function isNominal(metricName, metric) {
 	if (metricName == 'batt_time_left') {
@@ -876,8 +901,9 @@ app.post('/geopins', async (req, res) => {
 });
 
 app.post('/createTask', (req, res) => {
-    const taskName = req.body.taskName;
-    createTask(taskName);
+    //const taskName = req.body.taskName;
+    var taskContent = req.body.taskContent
+    createTask(taskContent);
     res.sendStatus(201);
 });
 

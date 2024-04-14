@@ -27,9 +27,11 @@
                 
                 <div class="select-dropdown">
                     <select id="taskCategorySelector" onchange="fetchAllTasks()">
-                        <option value="cat_egress">egress</option>
-                        <option value="cat_ingress">ingress</option>
-                        <option value="cat_rover">rover</option>
+                        <option value="cat_egress">Egress</option>
+                        <option value="cat_ingress">Ingress</option>
+                        <option value="cat_rover">Rover</option>
+                        <option value="cat_navigation">Navigation</option>
+                        <option value="cat_sampling">Sampling</option>
 
                         <!-- Add more tasks as needed -->
                     </select>
@@ -54,8 +56,10 @@
 
             <!-- <br><br> -->
             <div id="task_description_panel">
-                <div id="task_description"> 
-                </div>
+                <textarea id="task_description" type="text"> 
+                </textarea>
+
+                <input id="task_tss_vars" type="hidden">
             </div>
 
             <!-- <br><br> -->
@@ -73,24 +77,8 @@
         <!-- 2. Mission Monitoring Panel -->
         <div id="panel_mission_monitor" class="panel">
             
-            <!-- <div id="inner_mission_panel"> -->
-            <div id="missiontitle" div class="paneltitle">
-                Mission Control
-                 <!-- Question Mark Button -->
-                <button id="helpBtn">?</button>
-            </div>
-
-            <!-- Help Panel -->
-            <div id="helpPanel" class="help-panel">
-                <h2>Mission Control</h2>
-                <p>Green: Normal</p>
-                <p>Yellow: Value is off-nominal, but there is NO handling error scenario</p>
-                <p>Red: Value is off-nominal. There IS an handling error scenario</p>
-                <button onclick="toggleHelpPanel()">Close</button>
-            </div>
-
             <div id="inner_mission_panel">
-
+                
                 <div id="eva_container">
                     <div class="eva_panel">
                         <div id="evatitle_container">
@@ -126,7 +114,7 @@
                         <div id="evatitle_container">
                             <b>Errors</b>
                         </div>
-
+                        
                         <div class="column_telemetry">
                             Name
                             <div id="error_name"></div>
@@ -139,7 +127,7 @@
                         
                     </div>
                 </div>
-               
+        
             </div>
         </div>
             
