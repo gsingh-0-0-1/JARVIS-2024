@@ -1,0 +1,5 @@
+SWITCH: DCU OXY -> Primary
+SWITCH: UIA OXY SUPPLY -> ON
+Wait until Primary OXY Tank is at 3000 psi
+SWITCH: UIA OXY SUPPLY -> OFF
+dummyvar
