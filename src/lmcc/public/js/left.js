@@ -4,11 +4,17 @@
 function createTask() {
     var activeTask = document.getElementById('taskSelector').value;
     var taskName = document.getElementById(activeTask).textContent;
+    var taskString = document.getElementById('task_description').value;
+
+    taskString = taskString + "\n" + document.getElementById("task_tss_vars").value
+
+    //alert(taskString)
 
     fetch('/createTask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ taskName: activeTask })
+        body: JSON.stringify({ taskName: activeTask,
+        taskContent: taskString })
     })
     .then(response => {
         if (!response.ok) {
@@ -39,7 +45,6 @@ function fetchAllTasks() {
 		console.log(data)
 		taskSel.replaceChildren([]);
 		for (var task of data) {
-			console.log(task)
 			if (task == '\n' || task == '') {
 				continue
 			}
@@ -70,7 +75,8 @@ function displaySelectedTask() {
     })
 	.then(data => {
 		console.log(data)
-		document.getElementById("task_description").innerHTML = data.split("\n").slice(0, -1).join("<br>")
+		document.getElementById("task_description").value = data.split("\n").slice(0, -1).join("\n")
+		document.getElementById("task_tss_vars").value = data.split("\n").slice(-1)
 	})
     .catch(error => console.error('Error creating task:', error));
 }
