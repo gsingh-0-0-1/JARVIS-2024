@@ -235,6 +235,12 @@
 
 }
 
+#closeButtonContainer {
+	position: absolute;
+    bottom: 3%;
+    right: 5%;
+}
+
 .select-dropdown {
   /* min-width: 50%; */
   width: 100%;

@@ -83,10 +83,12 @@
             <!-- Help Panel -->
             <div id="helpPanel" class="help-panel">
                 <h2>Mission Control</h2>
-                <p>Green: Normal</p>
-                <p>Yellow: Value is off-nominal, but there is NO handling error scenario</p>
-                <p>Red: Value is off-nominal. There IS an handling error scenario</p>
-                <button onclick="toggleHelpPanel()">Close</button>
+                <p><span style="background-color: #90ee90; padding: 0.2em; color:black;">Green:</span> Normal</p>
+                <p><span style="background-color: #ffff99; padding: 0.2em; color:black; ">Yellow:</span> Value is off-nominal, but there is NO handling error scenario</p>
+                <p><span style="background-color: #ff9999; padding: 0.2em; color:black; ">Red:</span> Value is off-nominal. There IS a handling error scenario</p>
+                <div id="closeButtonContainer">
+                    <button onclick="toggleHelpPanel()">Close</button>
+                </div>
             </div>
 
             <div id="inner_mission_panel">
