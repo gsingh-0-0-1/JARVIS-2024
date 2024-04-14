@@ -5,100 +5,150 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" type="text/css">
 
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/right.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/right.css">
 </head>
 <body>
+    <div class="panel-container">
 
-    <!-- Geo info panel -->
-    <div id="panel_geo" class="panel">
-        <div class="paneltitle">
-            Geo Info
-        </div>
-		
-        <div id="geopin_input_panel">
-            <input class="user_input" type="number" id="pinX" placeholder="X coordinate">
-            <input class="user_input" type="number" id="pinY" placeholder="Y coordinate">
-            <input class="user_input" type="text" id="pindesc" placeholder="Description...">
-
-            <button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
-                Create Geo Pin
-            </button>
-        </div>
-
-        <div id="button_panels">
-
-        </div>
-
-
-        <div id="panel_lists">
-
-            <!-- List for geopins -->
-            <div id="custom_pin_panel">
-
-                <div id="geopin_title" class="paneltitle">
-                    Geo Pins
-                </div>
-
-                <div id="geo_pin_list_panel">
-                    <ul id="geo_pin_list"></ul>
-                </div>
+        <!-- 1. Geo info panel -->
+        <div id="panel_geo" class="panel">
+            <div class="paneltitle">
+                Geo Info
             </div>
+            
+            <div id="geopin_input_panel">
+                <input class="user_input" type="number" id="pinX" placeholder="X-coord (0-4000)">
+                <input class="user_input" type="number" id="pinY" placeholder="Y-coord (0-3500)">
+                <input class="user_input" type="text" id="pindesc" placeholder="Description...">
 
-            <!-- List for breadcrumbs -->
-            <div id="breadcrumb_panel">
-                
-                <div id ="breadcrumb_title" class="paneltitle">
-                    BreadCrumbs
-                        <!-- Our switches -->
-                    <!-- <label class="switch">
-                        <input type="checkbox" id="breadcrumbToggle" onchange="toggleBreadcrumbs()">
-                        <span class="slider">
-                            <span class="slider-text">Toggle Breadcrumbs</span>
-                            <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
-                            <path fill="none" d="m4 16.5 8 8 16-16"></path>
-                        </svg>
-                        </span>
-                    </label> -->
-                </div>
-
-
-                <!--
-                <button id="begin_call" onclick='javascript:beginCall("lmcc_left")'>
-                    Begin Audio Call
+                <button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
+                    Create Location Pin
                 </button>
-                -->
-
-                <div hidden id="breadcrumb_list_panel">
-                    <ul id="breadcrumb_list"></ul>
-                </div>
             </div>
+
+            <div id="button_panels">
+
+            </div>
+
+
+            <div id="panel_lists">
+               
+
+                <!-- List for breadcrumbs -->
+                <div id="breadcrumb_panel">
+                    
+                    <div id ="breadcrumb_title" class="paneltitle">
+                        EVA Path
+                            <!-- Our switches -->
+                        <!-- <label class="switch">
+                            <input type="checkbox" id="breadcrumbToggle" onchange="toggleBreadcrumbs()">
+                            <span class="slider">
+                                <span class="slider-text">Toggle Breadcrumbs</span>
+                                <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+                                <path fill="none" d="m4 16.5 8 8 16-16"></path>
+                            </svg>
+                            </span>
+                        </label> -->
+                    </div>
+
+
+                    <!--
+                    <button id="begin_call" onclick='javascript:beginCall("lmcc_left")'>
+                        Begin Audio Call
+                    </button>
+                    -->
+                    <div id="breadcrumb_list_inner_panel">
+                        <div id="eva1_legend">
+                            EV1
+                        </div>
+                        <div id="eva2_legend">
+                            EV2
+                        </div>
+                     
+                        
+                        <div id="eva1_breadcrumb_list_panel">
+                            <ul id="eva1_breadcrumb_list"></ul>
+                        </div>
+
+                        <div id="eva2_breadcrumb_list_panel">
+                            <ul id="eva2_breadcrumb_list"></ul>
+                        </div>
+                    </div>
+                    
+                  
+                </div>
+
+                 <!-- List for geopins -->
+                 <div id="custom_pin_panel">
+
+                    <div id="geopin_title" class="paneltitle">
+                        Geo Pins
+                    </div>
+
+                    <div id="geo_pin_list_panel">
+                        <ul id="geo_pin_list"></ul>
+                    </div>
+                </div>
+            
+
+            
+            </div>
+            
+
+        </div>
+
+        <!-- 2. minimap panel -->
+        <div id="panel_minimap" class="panel">
+            <span id="EV1_minimap_text" class="EV_minimap_text">
+                EV1
+            </span>
+
+            <span id="EV2_minimap_text" class="EV_minimap_text">
+                EV2
+            </span>
+            
+        </div>
         
 
-          
+        <!-- 3. Camera Feed -->
+        <div id="panel_camfeed_1" class="panel">
+            Crew Camera Feed 1
+            <video id="camfeed_2_element" controls poster="/images/moonsurface.gif">
+                <source src="https://100.69.33.190/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
+            </video>
         </div>
-          
 
+        <div id="panel_camfeed_2" class="panel">
+            Crew Camera Feed 2
+            <video id="camfeed_2_element" controls poster="/images/moonsurface.gif">
+                <source src="https://100.69.33.190/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
+            </video>
+        </div>
+
+        <!-- 4. Rover Interface -->
+        <div id="panel_rover" class="panel">
+            Rover
+        </div>
+
+
+         <!-- 5. Control Cache -->
+         <div id="panel_controlcache" class="panel">
+            Control Cache
+         </div>
+
+        <!-- <button id="button_task_toggle" onclick="toggleTaskState()">
+            Task: Not Started
+        </button> -->
+
+
+        <audio autoplay id="micstream"></audio>
     </div>
-
-    <!-- minimap panel -->
-    <div id="panel_minimap" class="panel">
-
-    </div>
-    
-
-    <!-- <button id="button_task_toggle" onclick="toggleTaskState()">
-        Task: Not Started
-    </button> -->
-
-
-    <audio autoplay id="micstream"></audio>
-
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
-<script src="/js/voice.js"></script>
+<!--<script src="/js/voice.js"></script>-->
 <script src="/js/right.js"></script>
 <script>
 

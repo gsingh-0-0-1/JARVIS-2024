@@ -1,3 +1,5 @@
+@import "bourbon";
+
 body {
 	background-color: #123;
 	font-family: Source Code Pro, Courier;
@@ -7,18 +9,107 @@ button {
 	color: #bbb;
 	padding: 1vh 1vh;
 	background-color: #444;
-	border: none;
+	/* border-right: 0.2vh solid #aeaeae; */
+	border-right: 0.2vh solid #aeaeae;
 	font-family: Source Code Pro, Courier;
 }
 
-.panel {
-	position: fixed;
-	border: 0.5vh solid black;
-	box-sizing: border-box;
+
+.panel-container {
 	/* display: flex; */
 	/* flex-direction: column; */
+	height: 100%; 
+	width: 100%;
+	overflow: hidden;
+} 
+
+
+.panel {
+	position:absolute;
+	border: 0.2vh solid #454b8f;
+	box-sizing: border-box;
+	border-radius: 8px;
+	padding: 10px;
+	color: white;
+	/* align-items: center ; */
+	/* background-image: url('/images/background.png'); */
+	/* background-image: linear-gradient(to bottom right, #161c56,#33426b); */
+	/* background-color: #161c56; */
+	/* display: flex; */
+	/* flex-direction: column;
+	flex-wrap: wrap; */
+	color: white;
 }
 
+
+
+/* dropdown initial*/
+.custom-select {
+    position: relative;
+    background-color: #e6e6e6;
+    width: auto;
+    float: left;
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 50px auto;
+    cursor: pointer;
+}
+
+.custom-select .input-wrap {
+    position: relative;
+    border: 1px solid #000;
+}
+
+.custom-select .input-wrap::after {
+    content: "";
+    position: absolute;
+    z-index: 200;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    width: 18px;
+    height: 9px;
+    background-color: #000;
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+}
+
+.custom-select .input-wrap.active::after {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.custom-select input {
+    font-size: 1rem;
+    font-weight: 200;
+    width: 100%;
+    padding: 8px 24px 8px 10px;
+    border: none;
+    background-color: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.custom-select .option {
+    display: none; /* Change to block when active */
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-top: none;
+    z-index: 200;
+    overflow: hidden;
+}
+
+.custom-select .option p:hover {
+    background-color: aliceBlue;
+    cursor: pointer;
+}
+
+.border-bottom-n {
+    border-bottom-color: transparent!important;
+}
 
 
 
@@ -40,18 +131,28 @@ button {
 	text-align: center;
 	padding-top: 3%;	
 	padding-bottom: 3%;
-	left: 50%;
+	/* left: 50%; */
 	font-weight: 600;
+	color: #fff;
+	font-size: large;
+	/* background-color: #0a0e3d; */
+	background-image: linear-gradient(to bottom right,#10154a, #090d2f);
+	border: 0.1vh solid #4e5496;
 }
 
+
+
 .user_input {
-	color: #bbb;
+	/* color: #dcdcdc; */
 	padding: 1vh 1vh;
-	background-color: #444;
+	background-color: rgb(234, 237, 243);
 	border: none;
 	font-family: Source Code Pro, Courier;
 	width: 40%;
 	margin-top: 5%;
+    margin-left: 3%;
+	border: 0.2vh solid #aeaeae;
+
 	/* display: inline-block; */
 }
 

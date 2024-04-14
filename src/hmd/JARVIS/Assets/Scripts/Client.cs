@@ -10,8 +10,9 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.AssetImporters;
+// using UnityEditor.AssetImporters;
 using SocketIOClass = SocketIOClient.SocketIO;
+
 
 public class Client : MonoBehaviour
 {
@@ -34,12 +35,15 @@ public class Client : MonoBehaviour
     {
         // soundClip = AudioClip.Create("sound_chunk", 10000, 1, 44100, false);
 
-        TSSc = new TSScConnection();
+        // TSSc = new TSScConnection();
         string host = "data.cs.purdue.edu";
-        // TSSc.ConnectToHost(host, 7);
+        TSSc.ConnectToHost(host, 7);
+
+        TextAsset gateway = Resources.Load("gateway") as TextAsset;
+        string gateway_ip = gateway.ToString().Split("\n")[0];
 
         // TSSc = new TSScConnection();
-        ws = new WebSocket("ws://192.168.86.23:4761");
+        ws = new WebSocket("ws://" + gateway_ip.ToString() + ":4761");
         ws.ConnectAsync();
         ws.OnOpen += (sender, e) => {
                Debug.Log("Connected");
@@ -56,7 +60,7 @@ public class Client : MonoBehaviour
                 Debug.Log(e.Message);
         };
 
-        var socketio_client = new SocketIOClass("http://192.168.86.23:4762");
+        var socketio_client = new SocketIOClass("http://" + gateway_ip.ToString() + ":4762");
 
         socketio_client.OnConnected += async (sender, e) => {
             Debug.Log("socket io connected");
@@ -113,21 +117,6 @@ public class Client : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            Debug.Log("Right Arrow pressed");
-
-            string IMUJsonString = TSSc.GetIMUJsonString();
-            JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
-            float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
-            Debug.Log($"IMU posx: {posx}");
-
-            SendGEOPin(posx, 1, "hi");
-
-            // Why are we sending breadcrumbs? This is the responsibility of the LMCC!
-            // We need to receiving them so we can display them!
-            // SendBreadcrumbs(-0.14f, posx, "bread");
-
-        }
         if (readyToPlay) {
             procAndPlay();
             readyToPlay = false;
@@ -137,11 +126,13 @@ public class Client : MonoBehaviour
 
     public void OnButtonClick()
     {
-        string textx = textboxx.text;
-        string texty = textboxy.text;
-        string textdesc = textboxdesc.text;
+        Debug.Log("geo button clicked");
+        string IMUJsonString = TSSc.GetIMUJsonString();
+        JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
+        float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
+        float posy = IMUJson["imu"]["eva1"]["posy"].GetValue<float>();
 
-        SendGEOPin(float.Parse(textx), float.Parse(texty), textdesc);
+        SendGEOPin(posx, posy, "EVA1 Coords");
 
     }
 

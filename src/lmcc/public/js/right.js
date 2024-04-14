@@ -1,23 +1,42 @@
 var LOCAL_DATA = {}
 LOCAL_DATA["GEOPINS"] = [];
-LOCAL_DATA["BREADCRUMBS"] = [];
+LOCAL_DATA["BREADCRUMBS1"] = [];
+LOCAL_DATA["BREADCRUMBS2"] = [];
+
+var this_sender = "LMCC" + String(new Date().getTime())
 
 var geo_pin_list = document.getElementById("geo_pin_list")
 
 // we need to keep this port value fixed, I guess
-const ws = new WebSocket('ws://' + "0.0.0.0" + ':' + "4761");
+var ws;
+
+fetch('/gatewayhost')
+.then(response => {
+    if (!response.ok) throw new Error('Failed to load gateway host');
+    return response.text();
+})
+.then(data => {
+    ws = new WebSocket('ws://' + data + ':' + "4761");
+    defineWebSocketHandlers();
+})
+.catch(error => console.error('Error loading gateway host:', error));
 
 function requestGeoPinCreation() {
-    const x = document.getElementById('pinX').value;
-    const y = document.getElementById('pinY').value;
-    const desc = document.getElementById('pindesc').value;
+    var x = document.getElementById('pinX').value;
+    var y = document.getElementById('pinY').value;
+    var desc = document.getElementById('pindesc').value;
+
+    if (x == '' || y == '' || desc == '') {
+        alert("Please enter a valid x-coord, y-coord, and description")
+        return
+    }
 
     const geopinData = {
         content: {
             coords: { x: x || undefined, y: y || undefined },
         }, // Will be ignored if undefined
         desc: desc,
-        sender: "LMCC", // Automatically set; adjust if needed for HMD
+        sender: this_sender, // Automatically set; adjust if needed for HMD
         type: "GEOPIN",
         timestamp: new Date().toISOString()
     };
@@ -39,11 +58,16 @@ function requestGeoPinCreation() {
 }
 
 
-var breadcrumbList = document.getElementById("breadcrumb_list");
+var breadcrumbList1 = document.getElementById("eva1_breadcrumb_list");
+var breadcrumbList2 = document.getElementById("eva2_breadcrumb_list");
+
+
 var breadcrumbsVisible = true;
 
 function toggleBreadcrumbs() {
-    var breadcrumbList = document.getElementById("breadcrumb_list");
+    var breadcrumbList1 = document.getElementById("eva1_breadcrumb_list");
+    var breadcrumbList2 = document.getElementById("eva2_breadcrumb_list");
+
     var toggleCheckbox = document.getElementById("breadcrumbToggle");
   
     if (toggleCheckbox.checked) {
@@ -63,9 +87,13 @@ function toggleBreadcrumbs() {
 			})
 			.catch(error => console.error('Error fetching breadcrumbs:', error));
             */
-        breadcrumbList.style.display = "block"
+        breadcrumbList1.style.display = "block"
+        breadcrumbList2.style.display = "block"
+
 	} else {
-        breadcrumbList.style.display = "none"
+        breadcrumbList1.style.display = "none"
+        breadcrumbList2.style.display = "none"
+
 		//breadcrumbList.innerHTML = '';
 		// toggleButton.classList.remove("active");
 	}
@@ -73,36 +101,92 @@ function toggleBreadcrumbs() {
 }
 
 
-var MAPDOTS = []
+var MAPDOTS1 = []
 
-function addBreadCrumb(content) {
-    // console.log(content)
-    LOCAL_DATA["BREADCRUMBS"].push(content)
+function addBreadCrumb1(content) {
+    LOCAL_DATA["BREADCRUMBS1"].push(content);
 
-    var li = document.createElement('li');
 
+    var li1 = document.createElement('li');
     var coords = content.coords;
     var desc = content.desc;
+    li1.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    breadcrumbList1.prepend(li1);
 
-    li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    var dot1 = document.createElement("span");
+    dot1.classList.add("mapdot1", "current-dot1"); // Add "current-dot" class to the new dot
+    dot1.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
+    dot1.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
+    dot1.appendChild(document.getElementById("EV1_minimap_text"));
 
-    breadcrumbList.appendChild(li);
+    // Add the new dot to the beginning of the array
+    MAPDOTS1.unshift(dot1);
+    document.getElementById("panel_minimap").appendChild(dot1);
 
-    var dot = document.createElement("span")
-    dot.classList.add("mapdot")
+    // Update the appearance of existing dots
+    for (let i = 0; i < MAPDOTS1.length; i++) {
+        let opacity;
+        if (i <= 10) {
+            // Rapidly decrease opacity for the first 5 dots
+            opacity = 1 - (i * 0.07);
+        } else {
+            // Set a low, fixed opacity for the trailing dots
+            opacity = 0.3;
+        }
+        MAPDOTS1[i].style.opacity = opacity;
 
-    // 4251 and 3453 are the dimensions of the image. this is just a dumb
-    // hardcoding that I (Gurmehar) am doing for now
-    dot.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%"
-    dot.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%"
-
-    if (MAPDOTS.length != 0) {
-        MAPDOTS[MAPDOTS.length - 1].style.backgroundColor = "#f00"
+        // Remove the "current-dot" class from the trailing dots
+        if (i > 0) {
+            MAPDOTS1[i].classList.remove("current-dot1");
+        }
     }
-
-    MAPDOTS.push(dot)
-    document.getElementById("panel_minimap").appendChild(dot)
 }
+
+
+var MAPDOTS2 = []
+
+function addBreadCrumb2(content) {
+    LOCAL_DATA["BREADCRUMBS2"].push(content);
+
+
+    var li2 = document.createElement('li');
+    var coords = content.coords;
+    var desc = content.desc;
+    li2.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    breadcrumbList2.prepend(li2);
+
+    var dot2 = document.createElement("span");
+    dot2.classList.add("mapdot2", "current-dot2"); // Add "current-dot" class to the new dot
+    dot2.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
+    dot2.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
+    dot2.appendChild(document.getElementById("EV2_minimap_text"));
+
+    // Add the new dot to the beginning of the array
+    MAPDOTS2.unshift(dot2);
+    document.getElementById("panel_minimap").appendChild(dot2);
+
+    // Update the appearance of existing dots
+    for (let i = 0; i < MAPDOTS2.length; i++) {
+        let opacity;
+        if (i <= 10) {
+            // Rapidly decrease opacity for the first 5 dots
+            opacity = 1 - (i * 0.07);
+        } else {
+            // Set a low, fixed opacity for the trailing dots
+            opacity = 0.3;
+        }
+        MAPDOTS2[i].style.opacity = opacity;
+
+        // Remove the "current-dot" class from the trailing dots
+        if (i > 0) {
+            MAPDOTS2[i].classList.remove("current-dot2");
+        }
+    }
+}
+
+
+//custom Geopin
+var MAPDOTSGEOPIN = []
 
 
 function addGeoPin(content) {
@@ -117,7 +201,50 @@ function addGeoPin(content) {
     li.appendChild(document.createElement("br"))
     li.appendChild(document.createTextNode("-: (" + EVA1_x + ", " + EVA1_y + ")"))
 
-    geo_pin_list.appendChild(li)
+    geo_pin_list.prepend(li)
+
+    var dot3 = document.createElement("img");
+    dot3.src = "/images/geopin_3.png"
+    dot3.style.zIndex = 2;
+    dot3.width = String(document.getElementById("panel_minimap").clientHeight * 0.03)
+
+    // we need the geo pin to have the bottom point be centered on the location
+    // by default the position we give css/html will control the position of the top-left
+    // corner of the image. thus we need to subtract the image height from the y
+    // and half the image width from the x
+
+    dot3.style.left = String(100 * EVA1_x / 4251) + "%";
+    dot3.style.top = String(100 * EVA1_y / 3543) + "%";
+    dot3.style.position = "absolute"
+    // dot3.style.width = "5%"
+    // dot3.style.height = "5%"
+
+    // dot.title = `${desc}: (${EVA1_x}, ${EVA1_y})`; // Tooltip text on hover
+
+  
+
+    // Add the new dot to the beginning of the array
+    MAPDOTSGEOPIN.unshift(dot3);
+    document.getElementById("panel_minimap").appendChild(dot3);
+
+    dot3.onload = function() {
+        var imgHeight = dot3.height;
+        var imgWidth = dot3.width;
+
+        console.log("height", imgHeight, imgWidth)
+
+        dot3.style.left = String((100 * EVA1_x / 4251) - (100 * imgWidth / document.getElementById("panel_minimap").clientWidth)) + "%";
+        dot3.style.top = String((100 * EVA1_y / 3543) - (100 * imgHeight / document.getElementById("panel_minimap").clientHeight)) + "%";
+    }
+
+        // Add event listener for click event
+    dot3.addEventListener('click', function() {
+        // Highlight the corresponding list item
+        li.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        li.style.background = 'rgba(255, 255, 0, 0.5)'; // Yellow with 80% opacity
+
+        setTimeout(() => li.style.background = '', 3000); // Remove highlight after 3 seconds
+    });
 }
 
 
@@ -144,31 +271,36 @@ function addGeoPin(content) {
     // make function call 
 //}
 
-ws.onmessage = async function (event, isBinary) {
-	var data = await event.data.text();
-	var message = JSON.parse(data);
-	var message_type = message["type"];
-	// console.log('Received ' + message_type + ' from ' + message["sender"]);
+function defineWebSocketHandlers() {
+    ws.onmessage = async function (event, isBinary) {
+    	var data = await event.data.text();
+    	var message = JSON.parse(data);
+    	var message_type = message["type"];
+    	// console.log('Received ' + message_type + ' from ' + message["sender"]);
 
-	if (message_type == "GEOPIN") {
-		// console.log(message["content"]);
-		addGeoPin(message["content"]);
-	} else if (message_type == "BREADCRUMBS") {
-		// Display the list of breadcrumbs
-		// breadcrumbList.innerHTML = '';
-        // console.log(message.content)
-		// message.content.forEach(breadcrumb => {
-        addBreadCrumb(message.content)
-		/*
-        var li = document.createElement('li');
-		var coords = message.content.coords;
-		var desc = message.content.desc;
-		li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-		breadcrumbList.appendChild(li);
-        */
-		// });
-	}
-};
+    	if (message_type == "GEOPIN" && message["sender"] == this_sender) {
+    		// console.log(message["content"]);
+    		addGeoPin(message["content"]);
+    	} else if (message_type == "BREADCRUMBS1") {
+    		// Display the list of breadcrumbs
+    		// breadcrumbList.innerHTML = '';
+            // console.log(message.content)
+    		// message.content.forEach(breadcrumb => {
+            addBreadCrumb1(message.content)
+    		/*
+            var li = document.createElement('li');
+    		var coords = message.content.coords;
+    		var desc = message.content.desc;
+    		li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    		breadcrumbList.appendChild(li);
+            */
+    		// });
+    	}  else if (message_type == "BREADCRUMBS2") {
+            addBreadCrumb2(message.content)
+
+        }
+    };
+}
 
 
 // when we load, check with the server for existing pins
@@ -180,24 +312,44 @@ fetch('/localdata/GEOPINS')
 .then(data => {
     for (let pin_num of Object.keys(data)) {
         console.log("load/creating geopin", data[pin_num])
-        addGeoPin(data[pin_num]["content"]);
+        if (data[pin_num]["sender"] == this_sender) {
+            addGeoPin(data[pin_num]["content"]);
+        }
     }
 })
 .catch(error => console.error('Error loading existing geopins:', error));
 
 // when we load, check with the server for existing breadcrumbs
-fetch('/localdata/BREADCRUMBS')
+fetch('/localdata/BREADCRUMBS1')
 .then(response => {
-    if (!response.ok) throw new Error('Failed to load existing breadcrumbs');
+    if (!response.ok) throw new Error('Failed to load existing breadcrumbs1');
     return response.json();
 })
 .then(data => {
     for (let pin_num of Object.keys(data)) {
         console.log("load/creating bcrumb", data[pin_num])
-        addBreadCrumb(data[pin_num]["content"]);
+        addBreadCrumb1(data[pin_num]["content"]);
     }
 })
-.catch(error => console.error('Error loading existing breadcrumbs:', error));
+.catch(error => console.error('Error loading existing breadcrumbs1:', error));
+
+
+
+
+//EVA 2
+// when we load, check with the server for existing breadcrumbs
+fetch('/localdata/BREADCRUMBS2')
+.then(response => {
+    if (!response.ok) throw new Error('Failed to load existing breadcrumbs2');
+    return response.json();
+})
+.then(data => {
+    for (let pin_num of Object.keys(data)) {
+        console.log("load/creating bcrumb", data[pin_num])
+        addBreadCrumb2(data[pin_num]["content"]);
+    }
+})
+.catch(error => console.error('Error loading existing breadcrumbs2:', error));
 
 
 // initPeer("lmcc_right")
