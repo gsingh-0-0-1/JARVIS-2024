@@ -645,7 +645,7 @@ function convertTimer(val) {
 	}
 
 	if (String(second).length == 1) {
-		minute = '0' + minute
+		second = '0' + second
 	}
 
 	var str = hour + ":" + minute + ":" + second

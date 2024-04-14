@@ -4,7 +4,7 @@
 	/* top: 0%; */
 	right: 0%;
 	height: 100%;
-	width: 20%;
+	width: 30%;
 	top: 0%;
 	background-image: linear-gradient(to left,#33426b, #202663);
 	display: flex;
@@ -111,7 +111,7 @@
 	top: 0%;
 	left: 0%;
 	height: 65%;
-	width: 80%;
+	width: 70%;
 	padding: 0px;
 	aspect-ratio: 400 / 158;
 	/* background-color: #88c; */
@@ -138,21 +138,23 @@
     justify-content: center;
     align-items: center; 
 	aspect-ratio: 5 / 1;
-	width: 70%;
+	width: 100%;
 	padding-top: 1%;
 	/* left: 0%; */
 	/* border: 0.3vh solid rgb(176, 158, 255); */
 
 }
-#eva_panel {
+
+.eva_panel {
+	position: relative;
 	height: 100%;
 	padding: 1% 1%;
 	background-image: radial-gradient(#737f9d, #5e6394);
 	border: 0.2vh solid #454b8f;
-	width: 97%;
+	width: 100%;
 	display: inline-block; /* Display the panels inline */
 	border-radius: 10px;
-
+	overflow: scroll;
 }
 
 #eva {
@@ -181,12 +183,14 @@
 }
 
 .column_telemetry {
-float: left;
-width: 65%;
+	float: left;
+	width: 65%;
 }
+
+
 .column_value {
-float: left;
-width: 35%;
+	float: left;
+	width: 35%;
 }
 
 select {
@@ -208,7 +212,7 @@ select {
 	bottom: 0%;
 	left: 0%;
 	height: 35%;
-	width: 80%;
+	width: 70%;
 	aspect-ratio: 400 / 158;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to top right ,#33426b, #161c56);
