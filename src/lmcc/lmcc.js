@@ -790,9 +790,41 @@ function updateTelemetry(){
     }, 1000); // 1 second interval
 }
 
+function updateErrors(){
+	setInterval(() => {
+		fetch(ERROR)
+		.then(response => response.json())
+		.then(data => {
+
+			errors = {}
+
+			for (var key of Object.keys(data['error'])) {
+				let value = data['error'][key]
+				var color = 'green-text';
+
+				if (value == true) {
+					color = 'red-text';
+				}
+
+				errors[`${key}`] = {
+					'name': key,
+					'val': value,
+					'color': color,
+				}
+
+			}
+
+
+			LOCAL_DATA["ERRORS"] = errors
+		})
+		.catch(error => console.error('Error generating telemetry:', error));
+    }, 1000); // 1 second interval
+}
+
 ws.onopen = function (event) {
 	generateBreadcrumbs()
 	updateTelemetry()
+	updateErrors()
 };
 
 
