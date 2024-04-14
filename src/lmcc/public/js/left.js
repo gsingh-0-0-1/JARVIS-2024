@@ -76,8 +76,8 @@ function displaySelectedTask() {
 
 fetchAllTasks()
 
-function displayAlerts(){
-    fetch('/localdata/ALERTS')
+function displayTelemetry(){
+    fetch('/localdata/TELEMETRY')
     .then(response => {
         if (!response.ok) throw new Error('Failed to fetch biometrics');
         return response.text()
@@ -124,5 +124,5 @@ function displayAlerts(){
 
 }
 
-displayAlerts()
-window.setInterval(displayAlerts, 1000)
+displayTelemetry()
+window.setInterval(displayTelemetry, 1000)

@@ -33,6 +33,7 @@ const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
 const CHECK_STATUIA = TSS_FULL_HTTP + "/json_data/UIA.json"
 const TELEMTRY = 	TSS_FULL_HTTP + "/json_data/teams/0/TELEMETRY.json"
 const CHECK_STATDCU = TSS_FULL_HTTP + "/json_data/DCU.json"
+const ERROR = TSS_FULL_HTTP + "/json_data/ERROR.json"
 
 
 /*
@@ -53,9 +54,8 @@ LOCAL_DATA["BREADCRUMBS1"] = [];
 LOCAL_DATA["BREADCRUMBS2"] = [];
 
 LOCAL_DATA["TASKS"] = [];
-LOCAL_DATA["BIOMETRICS"] = {};
-LOCAL_DATA["TIMERS"] = {};
-LOCAL_DATA["ALERTS"] = {};
+LOCAL_DATA["TELEMETRY"] = {};
+LOCAL_DATA["ERRORS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -585,53 +585,6 @@ function isNominal(metricName, metric) {
 }
 
 
-
-function updateBiometrics(){
-	setInterval(() => {
-		fetch(TELEMTRY)
-		.then(response => response.json())
-		.then(data => {
-//			console.log(data)
-			LOCAL_DATA["BIOMETRICS"] = {
-				'EV1 - Heart Rate' : {
-					'val' : data['telemetry']['eva1']['heart_rate'] + " bpm",
-					'color' : isNominal('heart_rate', data['telemetry']['eva1']['heart_rate']) ? 'green-text' : 'red-text'
-				},
-				'EV1 -  Temperature' : {
-					'val' : String(Math.round(Number(data['telemetry']['eva1']['temperature']) * 100) / 100) + " F",
-					'color' : isNominal('temperature', data['telemetry']['eva1']['temperature']) ? 'green-text' : 'red-text'
-				},
-				'EV2 - Heart Rate' : {
-					'val' : data['telemetry']['eva2']['heart_rate'] + " bpm",
-					'color' : isNominal('heart_rate', data['telemetry']['eva2']['heart_rate']) ? 'green-text' : 'red-text'
-				},
-				'EV2 -  Temperature' : {
-					'val' : String(Math.round(Number(data['telemetry']['eva2']['temperature']) * 100) / 100) + " F",
-					'color' : isNominal('temperature', data['telemetry']['eva2']['temperature']) ? 'green-text' : 'red-text'
-				},
-			}
-		})
-		.catch(error => console.error('Error generating biometrics:', error));
-    }, 1000); // 1 second interval
-}
-
-function updateTimers(){
-	setInterval(() => {
-		fetch(TELEMTRY)
-		.then(response => response.json())
-		.then(data => {
-//			console.log(data)
-			LOCAL_DATA["TIMERS"] = {
-				'EV1: O2 left' : data['telemetry']['eva1']['oxy_time_left'] + "s",
-				'EV1: Battery' : Math.round(Number(data['telemetry']['eva1']['batt_time_left'])) + "s",
-				'EV2: O2 left' : data['telemetry']['eva2']['oxy_time_left'] + "s",
-				'EV2: Battery' : Math.round(Number(data['telemetry']['eva2']['batt_time_left'])) + "s",
-			}
-		})
-		.catch(error => console.error('Error generating biometrics:', error));
-    }, 1000); // 1 second interval
-}
-
 var timers = ['oxy_time_left', 'batt_time_left']
 
 function convertTimer(val) {
@@ -782,7 +735,7 @@ var alerts_pretty = {
 	},
 }
 
-function updateAlerts(){
+function updateTelemetry(){
 	setInterval(() => {
 		fetch(TELEMTRY)
 		.then(response => response.json())
@@ -831,17 +784,15 @@ function updateAlerts(){
 			}
 
 
-			LOCAL_DATA["ALERTS"] = alerts
+			LOCAL_DATA["TELEMETRY"] = alerts
 		})
-		.catch(error => console.error('Error generating biometrics:', error));
+		.catch(error => console.error('Error generating telemetry:', error));
     }, 1000); // 1 second interval
 }
 
 ws.onopen = function (event) {
 	generateBreadcrumbs()
-	updateBiometrics()
-	updateTimers()
-	updateAlerts()
+	updateTelemetry()
 };
 
 
