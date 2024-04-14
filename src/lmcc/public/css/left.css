@@ -145,7 +145,7 @@
     justify-content: center;
     align-items: center; 
 	aspect-ratio: 5 / 1;
-	width: 100%;
+	width: 75%;
 	padding-top: 1%;
 	height: 95%;
 	/* left: 0%; */
@@ -168,7 +168,30 @@
 #eva {
 	font-family: Source Code Pro;
 	color: white;
+}
 
+#error_container {
+	display: flex;
+    justify-content: center;
+    align-items: center; 
+	aspect-ratio: 5 / 1;
+	width: 25%;
+	padding-top: 1%;
+	/* left: 0%; */
+	/* border: 0.3vh solid rgb(176, 158, 255); */
+
+}
+
+.error_panel {
+	position: relative;
+	height: 100%;
+	padding: 1% 1%;
+	background-image: radial-gradient(#737f9d, #5e6394);
+	border: 0.2vh solid #454b8f;
+	width: 100%;
+	display: inline-block; /* Display the panels inline */
+	border-radius: 10px;
+	overflow: scroll;
 }
 
 .green-text {

@@ -27,8 +27,10 @@
                 
                 <div class="select-dropdown">
                     <select id="taskCategorySelector" onchange="fetchAllTasks()">
-                        <option value="cat_egress">Egress</option>
-                        <option value="cat_ingress">Ingress</option>
+                        <option value="cat_egress">egress</option>
+                        <option value="cat_ingress">ingress</option>
+                        <option value="cat_rover">rover</option>
+
                         <!-- Add more tasks as needed -->
                     </select>
                 </div>
@@ -113,6 +115,22 @@
                         <div class="column_value">
                             Value
                             <div id="eva2_value"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="error_container">
+                    <div class="error_panel">
+                        <div id="evatitle_container">
+                            <b>Errors</b>
+                        </div>
+                        <div class="column_telemetry">
+                            Name
+                            <div id="error_name"></div>
+                        </div>
+                        <div class="column_value">
+                            Value
+                            <div id="error_value"></div>
                         </div>
                     </div>
                 </div>

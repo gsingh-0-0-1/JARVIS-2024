@@ -76,10 +76,10 @@ function displaySelectedTask() {
 
 fetchAllTasks()
 
-function displayAlerts(){
-    fetch('/localdata/ALERTS')
+function displayTelemetry(){
+    fetch('/localdata/TELEMETRY')
     .then(response => {
-        if (!response.ok) throw new Error('Failed to fetch biometrics');
+        if (!response.ok) throw new Error('Failed to fetch telemetry');
         return response.text()
     })
 	.then(data => {
@@ -88,16 +88,6 @@ function displayAlerts(){
         var items = Object.keys(jsonObjects).map(function (key) {
             return [key, jsonObjects[key]];
         });
-
-//        items.sort(function (first, second) {
-//            if (first[1]['color'] == 'red-text') {
-//                return -1
-//            }
-//            if (second[1]['color'] == 'red-text') {
-//                return 1
-//            }
-//            return 0
-//        });
 
         var evas = ['eva1', 'eva2'];
         for (let eva of evas) {
@@ -120,21 +110,54 @@ function displayAlerts(){
             document.getElementById(`${eva}_value`).innerHTML = result_value
         }
 	})
-    .catch(error => console.error('Error creating task:', error));
+    .catch(error => console.error('Error creating telemetry:', error));
 
 }
 
-displayAlerts()
-window.setInterval(displayAlerts, 1000)
 
-function toggleHelpPanel() {
-    var panel = document.getElementById('helpPanel');
-    if (panel.style.display === 'block') {
-        panel.style.display = 'none';
-    } else {
-        panel.style.display = 'block';
-    }
+displayTelemetry()
+window.setInterval(displayTelemetry, 1000)
+
+function displayErrors(){
+    fetch('/localdata/ERRORS')
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch errors');
+        return response.text()
+    })
+	.then(data => {
+        jsonObjects = JSON.parse(data)
+
+        var items = Object.keys(jsonObjects).map(function (key) {
+            return [key, jsonObjects[key]];
+        });
+
+
+        result_name = ''
+        result_value = ''
+
+        for (var i = 0; i < items.length; i++) {
+            const item = items[i][1]
+            var name = item['name'].split('_').join(' ')
+
+            // https://stackoverflow.com/a/4878800/10693624
+            name = name.toLowerCase()
+                .split(' ')
+                .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                .join(' ');
+            result_name += `<span class="${item['color']}">
+                ${name}
+                </span><br>`;
+            result_value += `<span class="${item['color']}">
+                ${item['val']}
+                </span><br>`;
+        }
+
+        document.getElementById(`error_name`).innerHTML = result_name
+        document.getElementById(`error_value`).innerHTML = result_value
+	})
+    .catch(error => console.error('Error creating error:', error));
+
 }
 
-document.getElementById('helpBtn').addEventListener('click', toggleHelpPanel);
-
+displayErrors()
+window.setInterval(displayErrors, 1000)

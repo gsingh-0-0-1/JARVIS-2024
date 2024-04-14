@@ -50,7 +50,14 @@ public class O2_time : MonoBehaviour
                 int oxy_minutes = oxy_seconds / 60;
                 int oxy_hours = oxy_minutes / 60;
                 int oxy_min_right = oxy_minutes % 60;
-                text.SetText($"{oxy_hours}: {oxy_min_right}");
+                if (oxy_min_right < 10)
+                {
+                    text.SetText($"{oxy_hours}: 0{oxy_min_right}");
+                }
+                else
+                {
+                    text.SetText($"{oxy_hours}: {oxy_min_right}");
+                }
                 float fillValue = (float)oxy_minutes / 70;
 
                 barImage.fillAmount = fillValue;
