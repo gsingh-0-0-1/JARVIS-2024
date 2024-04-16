@@ -253,7 +253,6 @@ function addGeoPin(content) {
 
 
 //right click to make geopins
-// Function to handle geopin creation from right-clicks
 function createGeopinFromClick(x, y, desc) {
     if (!x || !y || !desc) {
         alert("Please enter a valid x-coord, y-coord, and description");
@@ -265,7 +264,7 @@ function createGeopinFromClick(x, y, desc) {
             coords: { x: parseInt(x), y: parseInt(y) },
         },
         desc: desc,
-        sender: this_sender, // Assumes this_sender is globally defined
+        sender: this_sender,
         type: "GEOPIN",
         timestamp: new Date().toISOString()
     };
