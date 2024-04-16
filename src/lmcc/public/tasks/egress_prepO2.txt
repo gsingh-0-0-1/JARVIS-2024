@@ -1,5 +1,5 @@
 SWITCH: UIA OXY VENT -> ON
-Wait until Primary and Secondary OXY Tanks are empty for both EVAs
+	Wait until Primary and Secondary OXY Tanks are empty for both EVAs
 SWITCH: UIA OXY VENT -> OFF
 SWITCH: DCU OXY -> PRIMARY
 SWITCH: UIA OXY SUPPLY -> ON
