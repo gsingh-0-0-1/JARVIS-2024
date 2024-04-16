@@ -1,14 +1,22 @@
 // beginCall("lmcc_left", "lmcc_right")
 // initPeer("lmcc_left")
+var TSS_ADDR;
+
 
 function createTask() {
     var activeTask = document.getElementById('taskSelector').value;
     var taskName = document.getElementById(activeTask).textContent;
+    var taskString = document.getElementById('task_description').value;
+
+    taskString = taskString + "\n" + document.getElementById("task_tss_vars").value
+
+    //alert(taskString)
 
     fetch('/createTask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ taskName: activeTask })
+        body: JSON.stringify({ taskName: activeTask,
+        taskContent: taskString })
     })
     .then(response => {
         if (!response.ok) {
@@ -69,7 +77,8 @@ function displaySelectedTask() {
     })
 	.then(data => {
 		console.log(data)
-		document.getElementById("task_description").innerHTML = data.split("\n").slice(0, -1).join("<br>")
+		document.getElementById("task_description").value = data.split("\n").slice(0, -1).join("\n")
+		document.getElementById("task_tss_vars").value = data.split("\n").slice(-1)
 	})
     .catch(error => console.error('Error creating task:', error));
 }
@@ -92,22 +101,46 @@ function displayTelemetry(){
         var evas = ['eva1', 'eva2'];
         for (let eva of evas) {
             let result_telemetry = ''
+            let result_telemetry_nominal = ''
+
             let result_value = ''
+            let result_value_nominal = ''
 
             for (var i = 0; i < items.length; i++) {
                 const item = items[i][1]
                 if (item['eva'] == eva) {
-                    result_telemetry += `<span class="${item['color']}">
-                    ${item['name']}
-                    </span><br>`;
-                    result_value += `<span class="${item['color']}">
-                    ${item['val']} ${item['unit']}
-                    </span><br>`;
+                    if (item['color'] == 'red-text') {
+						result_telemetry = `<span class="${item['color']}">
+                    	${item['name']}
+                    	</span><br>` + result_telemetry;
+
+	                    result_value = `<span class="${item['color']}">
+	                    ${item['val']} ${item['unit']}
+	                    </span><br>` + result_value;
+	                }
+	                if (item['color'] == 'yellow-text') {
+	                	result_telemetry += `<span class="${item['color']}">
+                    	${item['name']}
+                    	</span><br>`;
+
+	                	result_value += `<span class="${item['color']}">
+	                    ${item['val']} ${item['unit']}
+	                    </span><br>`;
+	                }
+	                if (item['color'] == 'green-text') {
+	                	result_telemetry_nominal += `<span class="${item['color']}">
+                    	${item['name']}
+                    	</span><br>`;
+
+	                	result_value_nominal += `<span class="${item['color']}">
+	                    ${item['val']} ${item['unit']}
+	                    </span><br>`;
+	                }
                 }
             }
 
-            document.getElementById(`${eva}_telemetry`).innerHTML = result_telemetry
-            document.getElementById(`${eva}_value`).innerHTML = result_value
+            document.getElementById(`${eva}_telemetry`).innerHTML = result_telemetry + result_telemetry_nominal
+            document.getElementById(`${eva}_value`).innerHTML = result_value + result_value_nominal
         }
 	})
     .catch(error => console.error('Error creating telemetry:', error));
@@ -132,8 +165,8 @@ function displayErrors(){
         });
 
 
-        result_name = ''
-        result_value = ''
+        var result_name = ''
+        var result_value = ''
 
         for (var i = 0; i < items.length; i++) {
             const item = items[i][1]
@@ -144,11 +177,20 @@ function displayErrors(){
                 .split(' ')
                 .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
                 .join(' ');
+
+            var val = String(item['val'])
+            if (item['val'] == true) {
+            	val = 'ERROR'
+            }
+            else {
+            	val = 'OK'
+            }
+
             result_name += `<span class="${item['color']}">
                 ${name}
                 </span><br>`;
             result_value += `<span class="${item['color']}">
-                ${item['val']}
+                ${val}
                 </span><br>`;
         }
 
@@ -158,6 +200,102 @@ function displayErrors(){
     .catch(error => console.error('Error creating error:', error));
 
 }
+
+var comp_minerals = ['SiO2', 'TiO2', 'Al2O3', 'FeO', 'MnO', 'MgO', 'CaO', 'K2O', 'P2O3', 'other']
+var sig_op = ['<', '>', '>', '>', '>', '>', '>', '>', '>', '>']
+var sig_amt = [10, 1, 10, 29, 1, 20, 10, 1, 1.5, 50]
+
+
+function setUpGeoPanel() {
+	var evs = ['1', '2']
+	var row_pos = [35, 75]
+
+	var bre = document.createElement("br")
+	document.getElementById("panel_geo_sampling").appendChild(bre)
+
+	var y = 0;
+	var x = 0;
+
+	for (var ev of evs) {
+		x = 0
+		for (var min of comp_minerals) {
+			var el = document.createElement("div")
+			el.id = "geo_item_ev" + ev + "_" + min.toLowerCase()
+			el.classList.add("geo_item")
+
+			el.textContent = 0
+			el.style.left = (100 * x / comp_minerals.length + 100 / (comp_minerals.length * 2)) + "%"
+			el.style.top = (row_pos[y]) + "%"
+			document.getElementById("panel_geo_sampling").appendChild(el)
+
+
+
+			var cap = document.createElement("div")
+			cap.id = "geo_item_ev" + ev + "_" + min.toLowerCase() + "_cap"
+			cap.classList.add("geo_caption")
+
+			cap.innerHTML = comp_minerals[x]
+			cap.style.left = (100 * x / comp_minerals.length + 100 / (comp_minerals.length * 2)) + "%"
+			cap.style.top = (row_pos[y] + 10) + "%"
+			document.getElementById("panel_geo_sampling").appendChild(cap)
+
+			x = x + 1
+		}
+		y = y + 1
+	}
+
+	setTimeout(fetchSpecData, 1000)
+}
+
+
+function fetchSpecData() {
+	fetch('/specdata')
+	.then(response => {
+	    if (!response.ok) throw new Error('Failed to load spec data');
+	    return response.json();
+	})
+	.then(data => {
+		var spec_data = data['spec']
+		for (var ev of ['1', '2']) {
+			var mineral_data = spec_data["eva" + ev]["data"]
+			var x = 0;
+			for (var key of Object.keys(mineral_data)) {
+				var el = document.getElementById("geo_item_ev" + ev + "_" + key.toLowerCase())
+				var cap = document.getElementById("geo_item_ev" + ev + "_" + key.toLowerCase() + "_cap")
+				var col = "#ff1111"
+				el.textContent = mineral_data[key]
+				if (sig_op[x] == '<') {
+					if (Number(mineral_data[key]) < sig_amt[x]) {
+						el.style.color = col
+						cap.style.color = col
+					}
+				}
+				if (sig_op[x] == '>') {
+					if (Number(mineral_data[key]) > sig_amt[x]) {
+						el.style.color = col
+						cap.style.color = col
+					}
+				}
+				x = x + 1
+			}
+		}
+		setTimeout(fetchSpecData, 1000)
+	})
+	.catch(error => console.error('Error parsing spec data:', error));
+}
+
+
+fetch('/tsshost')
+.then(response => {
+    if (!response.ok) throw new Error('Failed to load tss address');
+    return response.text();
+})
+.then(data => {
+	TSS_ADDR = data
+})
+.catch(error => console.error('Error loading tss address:', error));
+
+setUpGeoPanel()
 
 displayErrors()
 window.setInterval(displayErrors, 1000)

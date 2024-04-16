@@ -31,7 +31,7 @@ const USER = "LMCC";
 const TSS_FULL_HTTP = "http://" + TSS_ADDR + ":" + TSS_PORT
 const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
 const CHECK_STATUIA = TSS_FULL_HTTP + "/json_data/UIA.json"
-const TELEMTRY = 	TSS_FULL_HTTP + "/json_data/teams/0/TELEMETRY.json"
+const TELEMTRY = 	TSS_FULL_HTTP + "/json_data/teams/7/TELEMETRY.json"
 const CHECK_STATDCU = TSS_FULL_HTTP + "/json_data/DCU.json"
 const ERROR = TSS_FULL_HTTP + "/json_data/ERROR.json"
 
@@ -488,7 +488,7 @@ function generateBreadcrumbs() {
 
 
 
-
+/*
 async function createTask(taskName) {
 	const filePath = `public/tasks/${taskName}.txt`;
 
@@ -515,7 +515,32 @@ async function createTask(taskName) {
 		console.error(`Got an error trying to read the file: ${error.message}`);
 	}
 }
+*/
 
+async function createTask(taskContent) {
+
+	try {
+		const lines = taskContent.split('\n');
+		const tssInfo = lines.pop().split(', ');
+		const taskDesc = lines.join('\n');
+
+		const taskJson = {
+			content: {
+				// taskName: taskName,
+				taskDesc: taskDesc,
+				tssInfo: tssInfo,
+				status: "Not started"
+			},
+			sender: "LMCC",
+			type: "TASK",
+			timestamp: new Date().toISOString()
+		};
+
+		ws.send(JSON.stringify(taskJson));
+	} catch (error) {
+		console.error(`Got an error trying to read the file: ${error.message}`);
+	}
+}
 
 function isNominal(metricName, metric) {
 	if (metricName == 'batt_time_left') {
@@ -876,12 +901,34 @@ app.post('/geopins', async (req, res) => {
 });
 
 app.post('/createTask', (req, res) => {
-    const taskName = req.body.taskName;
-    createTask(taskName);
+    //const taskName = req.body.taskName;
+    var taskContent = req.body.taskContent
+    createTask(taskContent);
     res.sendStatus(201);
 });
 
 
+app.get("/specdata", (req, res) => {
+	fetch("http://" + TSS_ADDR + ":" + TSS_PORT + "/json_data/SPEC.json")
+	.then(response => {
+	    if (!response.ok) throw new Error('Failed to load spec data');
+	    return response.text();
+	})
+	.then(data => {
+		res.send(data)
+		/*
+		var spec_data = data['spec']
+		for (var ev of ['1', '2']) {
+			var mineral_data = spec_data["eva" + ev]["data"]
+			for (var key of Object.keys(mineral_data)) {
+				document.getElementById("geo_item_ev" + ev + "_" + key.toLowerCase()).textContent = mineral_data[key]
+			}
+		}
+		setTimeout(fetchSpecData, 1000)
+		*/
+	})
+	.catch(error => console.error('Error parsing spec data:', error));
+})
 
 
 app.get('/localdata/:item', (req, res) => {
@@ -895,6 +942,10 @@ app.get('/localdata/:item', (req, res) => {
 
 app.get('/gatewayhost', (req, res) => {
 	res.send(GATEWAY_HOST)
+})
+
+app.get('/tsshost', (req, res) => {
+	res.send(TSS_ADDR)
 })
 
 // create api endpoint 

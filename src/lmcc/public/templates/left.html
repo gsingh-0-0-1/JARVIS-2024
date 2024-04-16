@@ -16,7 +16,7 @@
         
         <!-- 1. Task Interface Panel -->
         <div id="task_panel" class="panel">
-            <div id="evatitle" div class="paneltitle">EVA Tasks</div>
+            <div id="evatitle" class="paneltitle">EVA Tasks</div>
 
             <div id="task_category_panel">
                 <label for="taskCategorySelector">
@@ -56,8 +56,10 @@
 
             <!-- <br><br> -->
             <div id="task_description_panel">
-                <div id="task_description"> 
-                </div>
+                <textarea id="task_description" type="text"> 
+                </textarea>
+
+                <input id="task_tss_vars" type="hidden">
             </div>
 
             <!-- <br><br> -->
@@ -75,8 +77,25 @@
         <!-- 2. Mission Monitoring Panel -->
         <div id="panel_mission_monitor" class="panel">
             
+            <!-- <div id="inner_mission_panel"> -->
+            <div id="missiontitle" class="paneltitle">Mission Control</div>
+
+             <!-- Question Mark Button -->
+            <button id="helpBtn">?</button>
+
+            <!-- Help Panel -->
+            <div id="helpPanel" class="help-panel">
+                <h2>Mission Control</h2>
+                <p><span style="background-color: #90ee90; padding: 0.2em; color:black;">Green:</span> Normal</p>
+                <p><span style="background-color: #ffff99; padding: 0.2em; color:black; ">Yellow:</span> Value is off-nominal, but there is NO handling error scenario</p>
+                <p><span style="background-color: #ff9999; padding: 0.2em; color:black; ">Red:</span> Value is off-nominal. There IS a handling error scenario</p>
+                <div id="closeButtonContainer">
+                    <button onclick="toggleHelpPanel()">Close</button>
+                </div>
+            </div>
+
             <div id="inner_mission_panel">
-                
+
                 <div id="eva_container">
                     <div class="eva_panel">
                         <div id="evatitle_container">
@@ -106,6 +125,24 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="error_container">
+                    <div class="error_panel">
+                        <div id="evatitle_container">
+                            <b>Errors</b>
+                        </div>
+                        
+                        <div class="column_telemetry">
+                            Name
+                            <div id="error_name"></div>
+                        </div>
+
+                        <div class="column_value">
+                            Status
+                            <div id="error_value"></div>
+                        </div>
+                    </div>
+                </div>
                
             </div>
         </div>
@@ -113,7 +150,8 @@
 
         <!-- 3. Geological Sampling Panel -->
         <div id="panel_geo_sampling" class="panel title">
-            Geological Sampling
+            <div id="geotitle" class="paneltitle">Geological Sampling</div>
+
         </div>
 
         <audio autoplay id="micstream"></audio>
