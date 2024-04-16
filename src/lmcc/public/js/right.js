@@ -64,6 +64,7 @@ var breadcrumbList2 = document.getElementById("eva2_breadcrumb_list");
 
 var breadcrumbsVisible = true;
 
+
 function toggleBreadcrumbs() {
     var breadcrumbList1 = document.getElementById("eva1_breadcrumb_list");
     var breadcrumbList2 = document.getElementById("eva2_breadcrumb_list");
@@ -250,6 +251,80 @@ function addGeoPin(content) {
 }
 
 
+
+//right click to make geopins
+// Function to handle geopin creation from right-clicks
+function createGeopinFromClick(x, y, desc) {
+    if (!x || !y || !desc) {
+        alert("Please enter a valid x-coord, y-coord, and description");
+        return;
+    }
+
+    const geopinData = {
+        content: {
+            coords: { x: parseInt(x), y: parseInt(y) },
+        },
+        desc: desc,
+        sender: this_sender, // Assumes this_sender is globally defined
+        type: "GEOPIN",
+        timestamp: new Date().toISOString()
+    };
+
+    fetch('/geopins', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(geopinData)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to create geopin');
+        console.log('Geopin created:', response);
+        alert('Geopin created successfully!');
+    })
+    .catch(error => console.error('Error creating geopin:', error));
+}
+
+// Right-click event listener for the minimap
+document.getElementById('panel_minimap').addEventListener('contextmenu', function(event) {
+    event.preventDefault(); // Prevent default context menu
+
+    var rect = event.target.getBoundingClientRect();
+    var x = event.clientX - rect.left; // x position within the element.
+    var y = event.clientY - rect.top;  // y position within the element.
+
+    var scaleX = 4251 / rect.width; // Adjust to your map's dimensions
+    var scaleY = 3543 / rect.height; // Adjust to your map's dimensions
+
+    var coordX = Math.round(x * scaleX);
+    var coordY = Math.round(y * scaleY);
+
+    // Show the right-click menu at the mouse position
+    var menu = document.getElementById('rightClickMenu');
+    menu.style.display = 'block';
+    menu.style.left = `${event.pageX}px`;
+    menu.style.top = `${event.pageY}px`;
+
+    // Pre-fill hidden inputs (mainly for debugging or if you need to display these values)
+    document.getElementById('rightClickX').value = coordX;
+    document.getElementById('rightClickY').value = coordY;
+});
+
+// Event listener for submitting geopin from right-click
+document.querySelector('#rightClickMenu button').addEventListener('click', function() {
+    var x = document.getElementById('rightClickX').value;
+    var y = document.getElementById('rightClickY').value;
+    var desc = document.getElementById('rightClickDesc').value;
+
+    if (!desc) {
+        alert("Please enter a description.");
+        return;
+    }
+
+    createGeopinFromClick(x, y, desc);
+
+    // Hide the menu and clear inputs after submission
+    document.getElementById('rightClickMenu').style.display = 'none';
+    document.getElementById('rightClickDesc').value = '';
+});
 
 //function toggleTaskState() {
     // Get the button element
