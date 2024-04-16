@@ -1,3 +1,4 @@
 SWAP FAN switch to secondary position
 RELAY FAN position switch to LMCC
 BEGIN navigation back to airlock
+dummy_var
