@@ -908,6 +908,27 @@ app.post('/createTask', (req, res) => {
 });
 
 
+app.get("/specdata", (req, res) => {
+	fetch("http://" + TSS_ADDR + ":" + TSS_PORT + "/json_data/SPEC.json")
+	.then(response => {
+	    if (!response.ok) throw new Error('Failed to load spec data');
+	    return response.text();
+	})
+	.then(data => {
+		res.send(data)
+		/*
+		var spec_data = data['spec']
+		for (var ev of ['1', '2']) {
+			var mineral_data = spec_data["eva" + ev]["data"]
+			for (var key of Object.keys(mineral_data)) {
+				document.getElementById("geo_item_ev" + ev + "_" + key.toLowerCase()).textContent = mineral_data[key]
+			}
+		}
+		setTimeout(fetchSpecData, 1000)
+		*/
+	})
+	.catch(error => console.error('Error parsing spec data:', error));
+})
 
 
 app.get('/localdata/:item', (req, res) => {
@@ -921,6 +942,10 @@ app.get('/localdata/:item', (req, res) => {
 
 app.get('/gatewayhost', (req, res) => {
 	res.send(GATEWAY_HOST)
+})
+
+app.get('/tsshost', (req, res) => {
+	res.send(TSS_ADDR)
 })
 
 // create api endpoint 

@@ -16,7 +16,7 @@
         
         <!-- 1. Task Interface Panel -->
         <div id="task_panel" class="panel">
-            <div id="evatitle" div class="paneltitle">EVA Tasks</div>
+            <div id="evatitle" class="paneltitle">EVA Tasks</div>
 
             <div id="task_category_panel">
                 <label for="taskCategorySelector">
@@ -27,9 +27,11 @@
                 
                 <div class="select-dropdown">
                     <select id="taskCategorySelector" onchange="fetchAllTasks()">
-                        <option value="cat_egress">egress</option>
-                        <option value="cat_ingress">ingress</option>
-                        <option value="cat_rover">rover</option>
+                        <option value="cat_egress">Egress</option>
+                        <option value="cat_ingress">Ingress</option>
+                        <option value="cat_rover">Rover</option>
+                        <option value="cat_navigation">Navigation</option>
+                        <option value="cat_sampling">Sampling</option>
 
                         <!-- Add more tasks as needed -->
                     </select>
@@ -54,8 +56,10 @@
 
             <!-- <br><br> -->
             <div id="task_description_panel">
-                <div id="task_description"> 
-                </div>
+                <textarea id="task_description" type="text"> 
+                </textarea>
+
+                <input id="task_tss_vars" type="hidden">
             </div>
 
             <!-- <br><br> -->
@@ -74,11 +78,10 @@
         <div id="panel_mission_monitor" class="panel">
             
             <!-- <div id="inner_mission_panel"> -->
-            <div id="missiontitle" div class="paneltitle">
-                Mission Control
-                 <!-- Question Mark Button -->
-                <button id="helpBtn">?</button>
-            </div>
+            <div id="missiontitle" class="paneltitle">Mission Control</div>
+
+             <!-- Question Mark Button -->
+            <button id="helpBtn">?</button>
 
             <!-- Help Panel -->
             <div id="helpPanel" class="help-panel">
@@ -147,7 +150,8 @@
 
         <!-- 3. Geological Sampling Panel -->
         <div id="panel_geo_sampling" class="panel title">
-            Geological Sampling
+            <div id="geotitle" class="paneltitle">Geological Sampling</div>
+
         </div>
 
         <audio autoplay id="micstream"></audio>
