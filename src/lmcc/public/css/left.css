@@ -175,9 +175,9 @@
 
 .eva_panel {
 	position: relative;
-	height: 96%;
+	height: 95%;
 	padding: 1% 1%;
-	background-image: radial-gradient(#737f9d, #5e6394);
+	background-image: linear-gradient(to left,#33426b, #202663);
 	border: 0.2vh solid #454b8f;
 	width: 100%;
 	border-radius: 10px;
@@ -206,10 +206,10 @@
 
 .error_panel {
 	position: relative;
-	height: 97%;
+	height: 96%;
 	padding: 1% 1%;
 	padding-top: 2.5%;
-	background-image: radial-gradient(#737f9d, #5e6394);
+	background-image: linear-gradient(to left,#33426b, #202663);
 	border: 0.2vh solid #454b8f;
 	width: 100%;
 	border-radius: 10px;
@@ -227,9 +227,9 @@
 }
 
 .red-text {
-    color: rgb(120, 44, 44);
+    color: rgb(200, 44, 44);
 	/* text-shadow: white 0px 0px 0px; */
-	font-weight: bold;
+	/* font-weight: bold; */
 }
 
 

@@ -101,22 +101,46 @@ function displayTelemetry(){
         var evas = ['eva1', 'eva2'];
         for (let eva of evas) {
             let result_telemetry = ''
+            let result_telemetry_nominal = ''
+
             let result_value = ''
+            let result_value_nominal = ''
 
             for (var i = 0; i < items.length; i++) {
                 const item = items[i][1]
                 if (item['eva'] == eva) {
-                    result_telemetry += `<span class="${item['color']}">
-                    ${item['name']}
-                    </span><br>`;
-                    result_value += `<span class="${item['color']}">
-                    ${item['val']} ${item['unit']}
-                    </span><br>`;
+                    if (item['color'] == 'red-text') {
+						result_telemetry = `<span class="${item['color']}">
+                    	${item['name']}
+                    	</span><br>` + result_telemetry;
+
+	                    result_value = `<span class="${item['color']}">
+	                    ${item['val']} ${item['unit']}
+	                    </span><br>` + result_value;
+	                }
+	                if (item['color'] == 'yellow-text') {
+	                	result_telemetry += `<span class="${item['color']}">
+                    	${item['name']}
+                    	</span><br>`;
+
+	                	result_value += `<span class="${item['color']}">
+	                    ${item['val']} ${item['unit']}
+	                    </span><br>`;
+	                }
+	                if (item['color'] == 'green-text') {
+	                	result_telemetry_nominal += `<span class="${item['color']}">
+                    	${item['name']}
+                    	</span><br>`;
+
+	                	result_value_nominal += `<span class="${item['color']}">
+	                    ${item['val']} ${item['unit']}
+	                    </span><br>`;
+	                }
                 }
             }
 
-            document.getElementById(`${eva}_telemetry`).innerHTML = result_telemetry
-            document.getElementById(`${eva}_value`).innerHTML = result_value
+            document.getElementById(`${eva}_telemetry`).innerHTML = result_telemetry + result_telemetry_nominal
+            document.getElementById(`${eva}_value`).innerHTML = result_value + result_value_nominal
         }
 	})
     .catch(error => console.error('Error creating telemetry:', error));
@@ -141,8 +165,8 @@ function displayErrors(){
         });
 
 
-        result_name = ''
-        result_value = ''
+        var result_name = ''
+        var result_value = ''
 
         for (var i = 0; i < items.length; i++) {
             const item = items[i][1]
@@ -153,11 +177,20 @@ function displayErrors(){
                 .split(' ')
                 .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
                 .join(' ');
+
+            var val = String(item['val'])
+            if (item['val'] == true) {
+            	val = 'ERROR'
+            }
+            else {
+            	val = 'OK'
+            }
+
             result_name += `<span class="${item['color']}">
                 ${name}
                 </span><br>`;
             result_value += `<span class="${item['color']}">
-                ${item['val']}
+                ${val}
                 </span><br>`;
         }
 

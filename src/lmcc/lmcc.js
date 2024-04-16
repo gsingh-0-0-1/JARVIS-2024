@@ -31,7 +31,7 @@ const USER = "LMCC";
 const TSS_FULL_HTTP = "http://" + TSS_ADDR + ":" + TSS_PORT
 const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
 const CHECK_STATUIA = TSS_FULL_HTTP + "/json_data/UIA.json"
-const TELEMTRY = 	TSS_FULL_HTTP + "/json_data/teams/0/TELEMETRY.json"
+const TELEMTRY = 	TSS_FULL_HTTP + "/json_data/teams/7/TELEMETRY.json"
 const CHECK_STATDCU = TSS_FULL_HTTP + "/json_data/DCU.json"
 const ERROR = TSS_FULL_HTTP + "/json_data/ERROR.json"
 
