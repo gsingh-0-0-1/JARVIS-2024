@@ -521,7 +521,11 @@ async function createTask(taskContent) {
 
 	try {
 		const lines = taskContent.split('\n');
-		const tssInfo = lines.pop().split(', ');
+		var tssInfo = lines.pop().split(', ');
+		// if there's no tssInfo
+		if (tssInfo.length == 1 && tssInfo[0].length == 0) {
+			tssInfo = [];
+		}
 		const taskDesc = lines.join('\n');
 
 		const taskJson = {

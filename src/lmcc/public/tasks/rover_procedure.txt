@@ -3,4 +3,3 @@ LMCC2 will manually command the rover UP the mountain
 At the top of the mountain the rover will collect samples
 	(QR CODE)
 LMCC2 will pilot the rover to a rendezvous point with EV2 for transfer of the collected samples
-	

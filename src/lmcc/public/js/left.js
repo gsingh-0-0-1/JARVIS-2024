@@ -54,7 +54,12 @@ function fetchAllTasks() {
 			var el = document.createElement("option");
 			el.value = task.split(".")[0];
 			var this_task_cat = task.split("_")[0]
-            var formattedTaskName = capitalizeFirstLetter(this_task_cat) + " " + task.split("_")[1].split(".")[0]
+            var formattedTaskName = task.toLowerCase()
+                .split('_')
+                .slice(1) // Get rid of task_cat
+                .map((s) => s.charAt(0).toUpperCase() + s.substring(1)) // upper first letter of each word
+                .join(' ')
+                .replace(".txt", "");
 			el.textContent = formattedTaskName;
             el.id = el.value;
             if ("cat_" + this_task_cat == taskCatSel.value) {
