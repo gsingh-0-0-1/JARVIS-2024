@@ -1,1 +1,8 @@
+Once EVs have arrived at worksite, LMCC will provide information to EV on where to search (3 locations)
+On go from LMCC, EV navigate to desgnated Station
+EV, perform Scan and Sampling procedure at designated Station
+EV navigate to next Station
+EV perform Scan and Sampling procedure at designated Station
+EV navigate to next Station
+EV, perform Scan and Sampling procedure at designated Station
 dummy_var

@@ -1,0 +1,7 @@
+EVs notify LMCC1 starting inspection procedure
+EV1 scan Comm tower, EV2 scan MMRTG for possible issues
+If issue found, notify LMCC1
+    Note: Each EV will be receiving procedures from their LMCC.
+If EVs do not have a procedure for the issue, standby until their designated LMCC sends new procedure
+Execute appropriate procedure
+dummy_var
