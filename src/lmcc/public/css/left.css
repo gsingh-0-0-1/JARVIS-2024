@@ -153,7 +153,7 @@
 	/* justify-content: center; */
 	
 	/* border: 0.2vh solid rgb(41, 225, 249); */
-	height: 95%;
+	height: 96%;
 	width: 100%;
 	top: 5%;
 
@@ -310,7 +310,7 @@ select {
 .geo_item {
 	position: absolute;
 	left: 0%;
-	font-size: 4vh;
+	font-size: 3.5vh;
 	transform: translate(-50%, -50%);
 }
 

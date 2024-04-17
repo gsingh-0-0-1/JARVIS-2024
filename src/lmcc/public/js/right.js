@@ -3,7 +3,7 @@ LOCAL_DATA["GEOPINS"] = [];
 LOCAL_DATA["BREADCRUMBS1"] = [];
 LOCAL_DATA["BREADCRUMBS2"] = [];
 
-var this_sender = "LMCC" + String(new Date().getTime())
+var this_sender = "LMCC"// + String(new Date().getTime())
 
 var geo_pin_list = document.getElementById("geo_pin_list")
 
@@ -63,6 +63,7 @@ var breadcrumbList2 = document.getElementById("eva2_breadcrumb_list");
 
 
 var breadcrumbsVisible = true;
+
 
 function toggleBreadcrumbs() {
     var breadcrumbList1 = document.getElementById("eva1_breadcrumb_list");
@@ -250,6 +251,75 @@ function addGeoPin(content) {
 }
 
 
+
+//right click to make geopins
+function createGeopinFromClick(x, y, desc) {
+    if (!x || !y || !desc) {
+        alert("Please enter a valid x-coord, y-coord, and description");
+        return;
+    }
+
+    const geopinData = {
+        content: {
+            coords: { x: parseInt(x), y: parseInt(y) },
+        },
+        desc: desc,
+        sender: this_sender,
+        type: "GEOPIN",
+        timestamp: new Date().toISOString()
+    };
+
+    fetch('/geopins', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(geopinData)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to create geopin');
+        console.log('Geopin created:', response);
+        alert('Geopin created successfully!');
+    })
+    .catch(error => console.error('Error creating geopin:', error));
+}
+
+// Right-click event listener for the minimap
+document.getElementById('panel_minimap').addEventListener('contextmenu', function(event) {
+
+    event.preventDefault(); // Prevent default context menu
+
+    var rect = event.target.getBoundingClientRect();
+
+    //alert(event.clientX + " " + event.clientY + " " + rect.left + " " + rect.top)
+
+    // Show the right-click menu at the mouse position
+
+    var menu = document.getElementById('rightClickMenu');
+    //menu.style.visibility = 'visible';
+    //menu.style.position = 'absolute'
+    var coordX = 4251 * (event.clientX - rect.left) / rect.width
+    var coordY = 3543 * (event.clientY - rect.top) / rect.height
+
+    document.getElementById("pinX").value = Math.round(coordX)
+    document.getElementById("pinY").value = Math.round(coordY)
+});
+
+// Event listener for submitting geopin from right-click
+document.querySelector('#rightClickMenu button').addEventListener('click', function() {
+    var x = document.getElementById('rightClickX').value;
+    var y = document.getElementById('rightClickY').value;
+    var desc = document.getElementById('rightClickDesc').value;
+
+    if (!desc) {
+        alert("Please enter a description.");
+        return;
+    }
+
+    createGeopinFromClick(x, y, desc);
+
+    // Hide the menu and clear inputs after submission
+    document.getElementById('rightClickMenu').style.display = 'none';
+    document.getElementById('rightClickDesc').value = '';
+});
 
 //function toggleTaskState() {
     // Get the button element
