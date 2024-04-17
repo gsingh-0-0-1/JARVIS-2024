@@ -113,16 +113,14 @@
                 EV2
             </span>
 
-           
+             <!-- Right-click context menu for adding geopin -->
+             <div id="rightClickMenu" style="visibility: hidden; position: absolute; z-index: 1000; padding: 10px; background: white; border: 1px solid #ccc;">
+                <input type="hidden" id="rightClickX" name="x">
+                <input type="hidden" id="rightClickY" name="y">
+                <input type="text" id="rightClickDesc" placeholder="Enter description">
+                <button onclick="submitRightClickGeopin()">Add Geopin</button>
+            </div>
             
-        </div>
-
-         <!-- Right-click context menu for adding geopin -->
-         <div id="rightClickMenu" style="display: none; position: absolute; z-index: 1000; padding: 10px; background: white; border: 1px solid #ccc;">
-            <input type="hidden" id="rightClickX" name="x">
-            <input type="hidden" id="rightClickY" name="y">
-            <input type="text" id="rightClickDesc" placeholder="Enter description">
-            <button onclick="submitRightClickGeopin()">Add Geopin</button>
         </div>
         
 

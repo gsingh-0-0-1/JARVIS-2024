@@ -1,0 +1,4 @@
+LMCC2 will primarily be controlling the rover and performing its tasks.
+EV2 will largely be doing geologic sampling on their own with limited
+input from LMCC2.
+dummy_var

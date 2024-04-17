@@ -2,18 +2,6 @@ If available, perform Field Notes on Rock, which can include picture, voice note
 Perform XRF Scan
 Press and HOLD trigger
 Aim close to sample until beep, then release trigger
-If Rock Composition outside of nominal parameters (define), collect rock.
+If Rock Composition outside of nominal parameters (defined), collect rock.
 If able, drop and label a pin
-Samples are considered scientifically significant if:
-    Element %
-    SiO2  < 10
-    TiO2  > 1
-    Al2O3 > 10
-    FeO-T > 29
-    MnO   > 1
-    MgO   > 20
-    CaO   > 10
-    K2O   > 1
-    P2O5  > 1.5
-    other > 50
 dummy_var
