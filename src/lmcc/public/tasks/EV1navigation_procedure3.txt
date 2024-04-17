@@ -1,0 +1,4 @@
+EVA1 COLLECTION PROCEDURE STEP 3:
+	Navigate to Station C
+		Collect Samples at Station C
+dummy_var

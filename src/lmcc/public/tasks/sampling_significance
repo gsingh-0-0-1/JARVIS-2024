@@ -1,0 +1,13 @@
+Samples are considered scientifically significant if:
+    Element %
+    SiO2  < 10
+    TiO2  > 1
+    Al2O3 > 10
+    FeO-T > 29
+    MnO   > 1
+    MgO   > 20
+    CaO   > 10
+    K2O   > 1
+    P2O5  > 1.5
+    other > 50
+dummyvar
