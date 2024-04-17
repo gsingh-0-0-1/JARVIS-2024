@@ -3,7 +3,7 @@ LOCAL_DATA["GEOPINS"] = [];
 LOCAL_DATA["BREADCRUMBS1"] = [];
 LOCAL_DATA["BREADCRUMBS2"] = [];
 
-var this_sender = "LMCC" + String(new Date().getTime())
+var this_sender = "LMCC"// + String(new Date().getTime())
 
 var geo_pin_list = document.getElementById("geo_pin_list")
 
@@ -284,27 +284,23 @@ function createGeopinFromClick(x, y, desc) {
 
 // Right-click event listener for the minimap
 document.getElementById('panel_minimap').addEventListener('contextmenu', function(event) {
+
     event.preventDefault(); // Prevent default context menu
 
     var rect = event.target.getBoundingClientRect();
-    var x = event.clientX - rect.left; // x position within the element.
-    var y = event.clientY - rect.top;  // y position within the element.
 
-    var scaleX = 4251 / rect.width; // Adjust to your map's dimensions
-    var scaleY = 3543 / rect.height; // Adjust to your map's dimensions
-
-    var coordX = Math.round(x * scaleX);
-    var coordY = Math.round(y * scaleY);
+    //alert(event.clientX + " " + event.clientY + " " + rect.left + " " + rect.top)
 
     // Show the right-click menu at the mouse position
-    var menu = document.getElementById('rightClickMenu');
-    menu.style.display = 'block';
-    menu.style.left = `${event.pageX}px`;
-    menu.style.top = `${event.pageY}px`;
 
-    // Pre-fill hidden inputs (mainly for debugging or if you need to display these values)
-    document.getElementById('rightClickX').value = coordX;
-    document.getElementById('rightClickY').value = coordY;
+    var menu = document.getElementById('rightClickMenu');
+    //menu.style.visibility = 'visible';
+    //menu.style.position = 'absolute'
+    var coordX = 4251 * (event.clientX - rect.left) / rect.width
+    var coordY = 3543 * (event.clientY - rect.top) / rect.height
+
+    document.getElementById("pinX").value = Math.round(coordX)
+    document.getElementById("pinY").value = Math.round(coordY)
 });
 
 // Event listener for submitting geopin from right-click
