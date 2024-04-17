@@ -175,7 +175,7 @@
 
 .eva_panel {
 	position: relative;
-	height: 95%;
+	height: 101.5%;
 	padding: 1% 1%;
 	background-image: linear-gradient(to left,#33426b, #202663);
 	border: 0.2vh solid #454b8f;
@@ -197,7 +197,7 @@
     /* justify-content: center; */
     /* align-items: center;  */
 	width: 40%;
-	height: 95%;
+	height: 101.5%;
 	/* left: 0%; */
 	/* border: 0.3vh solid rgb(176, 158, 255); */
 	/* border: 0.1vh solid rgb(176, 158, 255); */
@@ -207,7 +207,7 @@
 .error_panel {
 	position: relative;
 	height: 96%;
-	padding: 1% 1%;
+	padding: 1% 3%;
 	padding-top: 2.5%;
 	background-image: linear-gradient(to left,#33426b, #202663);
 	border: 0.2vh solid #454b8f;
@@ -304,14 +304,16 @@ select {
 	/* background-color: #88c; */
 	background-image: linear-gradient(to top right ,#33426b, #161c56);
 	/* text-align: center; */
+	/* border: 0.1vh solid rgb(176, 158, 255); */
 
 }
 
 .geo_item {
 	position: absolute;
 	left: 0%;
-	font-size: 4vh;
+	font-size: 3.5vh;
 	transform: translate(-50%, -50%);
+	/* border: 0.1vh solid rgb(176, 158, 255); */
 }
 
 .geo_caption {
@@ -319,4 +321,6 @@ select {
 	left: 0%;
 	font-size: 2vh;
 	transform: translate(-50%, -50%);
+	/* border: 0.1vh solid rgb(176, 158, 255); */
+
 }

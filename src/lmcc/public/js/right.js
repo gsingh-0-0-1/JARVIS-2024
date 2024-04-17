@@ -287,6 +287,9 @@ document.getElementById('panel_minimap').addEventListener('contextmenu', functio
     event.preventDefault(); // Prevent default context menu
 
     var rect = event.target.getBoundingClientRect();
+
+    alert(event.clientX, event.clientY, rect.width, rect.height)
+
     var x = event.clientX - rect.left; // x position within the element.
     var y = event.clientY - rect.top;  // y position within the element.
 
