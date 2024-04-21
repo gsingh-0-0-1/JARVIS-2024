@@ -16,7 +16,7 @@ fetch('/gatewayhost')
     return response.text();
 })
 .then(data => {
-    ws = new WebSocket('ws://' + data + ':' + "4761");
+    ws = new WebSocket('ws://data.cs.purdue.edu:' + "4761");
     defineWebSocketHandlers();
 })
 .catch(error => console.error('Error loading gateway host:', error));
@@ -300,7 +300,7 @@ function createGeopinFromClick(x, y, desc) {
     .then(response => {
         if (!response.ok) throw new Error('Failed to create geopin');
         console.log('Geopin created:', response);
-        alert('Geopin created successfully!');
+        //alert('Geopin created successfully!');
     })
     .catch(error => console.error('Error creating geopin:', error));
 }
@@ -382,7 +382,8 @@ function defineWebSocketHandlers() {
     	// console.log('Received ' + message_type + ' from ' + message["sender"]);
 
     	if (message_type == "GEOPIN" && message["sender"] == this_sender) {
-    		// console.log(message["content"]);
+    		//alert("we got a geopin");
+            // console.log(message["content"]);
     		addGeoPin(message["content"]);
     	} else if (message_type == "BREADCRUMBS1") {
     		// Display the list of breadcrumbs
