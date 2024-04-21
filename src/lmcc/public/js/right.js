@@ -113,7 +113,7 @@ function addBreadCrumb1(content) {
     // var desc = content.desc;
     //${desc}:
     li1.textContent = `(${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-    breadcrumbList1.prepend(li1);
+    // breadcrumbList1.prepend(li1);
 
     var dot1 = document.createElement("span");
     dot1.classList.add("mapdot1", "current-dot1"); // Add "current-dot" class to the new dot
@@ -156,7 +156,7 @@ function addBreadCrumb2(content) {
     // var desc = content.desc;
     //${desc}:
     li2.textContent = `(${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-    breadcrumbList2.prepend(li2);
+    // breadcrumbList2.prepend(li2);
 
     var dot2 = document.createElement("span");
     dot2.classList.add("mapdot2", "current-dot2"); // Add "current-dot" class to the new dot
@@ -203,6 +203,7 @@ function addGeoPin(content) {
     li.appendChild(document.createTextNode(content["desc"]));
     li.appendChild(document.createElement("br"))
     li.appendChild(document.createTextNode("-: (" + EVA1_x + ", " + EVA1_y + ")"))
+    li.setAttribute('data-coords', JSON.stringify({x: EVA1_x, y: EVA1_y}));
 
     geo_pin_list.prepend(li)
 
@@ -248,8 +249,20 @@ function addGeoPin(content) {
 
         setTimeout(() => li.style.background = '', 3000); // Remove highlight after 3 seconds
     });
+
+    setupNavigationInteraction()
 }
 
+function setupNavigationInteraction() {
+    var geoPinItems = document.querySelectorAll('#geo_pin_list li');
+    geoPinItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            var coords = JSON.parse(this.getAttribute('data-coords'));
+            document.getElementById('selectedCoords').value = JSON.stringify(coords);
+            document.getElementById('navigateButton').disabled = false;
+        });
+    });
+}
 
 
 //right click to make geopins
@@ -281,6 +294,23 @@ function createGeopinFromClick(x, y, desc) {
     })
     .catch(error => console.error('Error creating geopin:', error));
 }
+
+
+
+document.getElementById('navigateButton').addEventListener('click', function() {
+    var coords = JSON.parse(document.getElementById('selectedCoords').value);
+    var message = {
+        type: "NAVIGATE",
+        content: coords,
+        timestamp: new Date().toISOString()
+    };
+
+    // Send the navigation command through WebSocket or another API
+    console.log('Sending navigation command:', message);
+    ws.send(JSON.stringify(message));
+    this.disabled = true; // Optionally disable the button after sending
+});
+
 
 // Right-click event listener for the minimap
 document.getElementById('panel_minimap').addEventListener('contextmenu', function(event) {

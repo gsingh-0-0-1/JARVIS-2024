@@ -194,7 +194,7 @@
 
 }
 
-#breadcrumb_title{
+#pathfinder_title{
 	position: sticky;
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
 	border: 0.2vh solid #454b8f;
@@ -211,25 +211,37 @@
 	overflow: hidden;
 	/* border: 0.3vh solid rgb(255, 85, 85); */
 
-	
-
-
 }
-#eva1_breadcrumb_list_panel{
+
+
+#navigation_panel{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* #navigateButton {
+	align-self: center;
+
+} */
+#navigateButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* #eva1_breadcrumb_list_panel{
 	height: 100%;
     overflow: auto; 
 	overflow-x: hidden;
 	width: 45.5%;	
-	/* padding-right: 0.5%; */
 	border-right: 0.1vh solid #000000;
 
 
-	/* border: 0.1vh solid rgb(27, 167, 41); */
+	border: 0.1vh solid rgb(27, 167, 41);
 
-}
+} */
 
-#eva2_breadcrumb_list_panel{
-	/* height: calc(100% - 40px); */
+/* #eva2_breadcrumb_list_panel{
 	height: 100%;
 
     overflow: auto; 
@@ -238,67 +250,44 @@
 
 	padding-left: 0.5%;
 
-	/* border: 0.1vh solid rgb(255, 211, 79); */
+	border: 0.1vh solid rgb(255, 211, 79);
 
-
-
-}
+} */
 
 /* Styling of the list itself */
-#eva1_breadcrumb_list {
-	/* overflow: scroll; */
+/* #eva1_breadcrumb_list {
 	overflow: auto;
 	height: 100%;
 
-	list-style-position: inside; /* Moves the bullet points inside the padding area */
+	list-style-position: inside; 
     padding-left: 0; 
 
-	
-	/* border: 0.5vh solid rgb(255, 211, 79); */
-	/* border: 0.1vh solid rgb(27, 167, 41); */
 
 
-
-}
-
+} */
+/* 
 #eva2_breadcrumb_list {
-	/* overflow: scroll; */
 	overflow: auto;
 	list-style-position: inside;
     padding-left: 5%; 
-
-	/* border: 0.5vh solid rgb(198, 255, 189); */
-	/* border: 0.1vh solid rgb(94, 79, 255); */
 	height: 100%;
 
-}
+} */
 
 /* List of each breadcrumb item */
-#eva1_breadcrumb_list li {
+/* #eva1_breadcrumb_list li {
 	margin-top: 2%;
 	font-family: Source Code Pro, Courier;
 	font-size: smaller;
 	border-bottom: 1px solid black;
-	/* border: 0.1vh solid rgb(27, 167, 41); */
-	
+} */
 
-
-
-	/* border: 0.5vh solid rgb(255, 255, 134); */
-
-}
-
-#eva2_breadcrumb_list li {
+/* #eva2_breadcrumb_list li {
 	margin-top: 2%;
 	font-family: Source Code Pro, Courier;
 	font-size: smaller;
 	border-bottom: 1px solid black;
-
-	/* border: 0.5vh solid rgb(255, 255, 134); */
-	/* border: 0.1vh solid rgb(255, 211, 79); */
-	/* width: max-content; */
-
-}
+} */
 
 
 #eva1_legend{
