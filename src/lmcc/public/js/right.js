@@ -269,22 +269,23 @@ function setupNavigationInteraction() {
         });
     });
 
-function sendNavTarget(content) {
-    content['type'] = "NAVTARGET";
-    content['coords']['x'] = parseInt(content['coords']['x'])
-    content['coords']['y'] = parseInt(content['coords']['y'])
-    fetch('/navtarget', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(content)
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Failed to send nav target');
-        // return response.json(); // Or handle the response appropriately
-    })
-    .then(data => console.log('Nav target created:', data))
-    .catch(error => console.error('Error creating nav target:', error));
-}
+// function sendNavTarget(content) {
+//     content['type'] = "NAVTARGET";
+//     content['coords']['x'] = parseInt(content['coords']['x'])
+//     content['coords']['y'] = parseInt(content['coords']['y'])
+//     fetch('/navtarget', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(content)
+//     })
+//     .then(response => {
+//         if (!response.ok) throw new Error('Failed to send nav target');
+//         // return response.json(); // Or handle the response appropriately
+//     })
+//     .then(data => console.log('Nav target created:', data))
+//     .catch(error => console.error('Error creating nav target:', error));
+
+// }
 
 
 //right click to make geopins
@@ -484,6 +485,5 @@ fetch('/localdata/BREADCRUMBS2')
 })
 .catch(error => console.error('Error loading existing breadcrumbs2:', error));
 
-
+}
 // initPeer("lmcc_right")
-
