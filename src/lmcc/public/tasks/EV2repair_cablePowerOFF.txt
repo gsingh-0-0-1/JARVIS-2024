@@ -1,0 +1,2 @@
+Move POWER – OFF, notify EV1 and LMCC1
+dummy_var

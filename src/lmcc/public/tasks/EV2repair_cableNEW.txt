@@ -1,0 +1,5 @@
+Navigate to Comm Tower to retrieve one end of power cable
+take appropriate end of cable to MMRTG, notify EV1 and LMCC1 when at MMRTG
+Disconnect damaged cable from MMRTG, notify EV1 and LMCC1
+Connect new cable from MMRTG, notify EV1 and LMCC1
+dummy_var

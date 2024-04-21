@@ -1,0 +1,6 @@
+Verify channel “B” is operational, notify EV2 and LMCC1A
+On LMCC1 Go, switch to COM – B
+Perform comm check
+If Comm good, switch back to COM-A,
+Else all to COM – A
+dummy_var

@@ -1,0 +1,5 @@
+Prepare electrostatic discharge safety equipment.
+Assist in isolating power supply.
+Ensure module installation is correctly performed; conduct systems check to verify
+functionality.
+dummy_var

@@ -16,7 +16,7 @@ fetch('/gatewayhost')
     return response.text();
 })
 .then(data => {
-    ws = new WebSocket('ws://' + data + ':' + "4761");
+    ws = new WebSocket('ws://data.cs.purdue.edu:' + "4761");
     defineWebSocketHandlers();
 })
 .catch(error => console.error('Error loading gateway host:', error));
@@ -247,6 +247,12 @@ function addGeoPin(content) {
         li.scrollIntoView({ behavior: 'smooth', block: 'center' });
         li.style.background = 'rgba(255, 255, 0, 0.5)'; // Yellow with 80% opacity
 
+        console.log(content);
+        sendNavTarget(content);
+        // nav target
+        // content: x, y, same format as geopin, but name it nav target
+        // remove breadcrumbs, send button instead.
+
         setTimeout(() => li.style.background = '', 3000); // Remove highlight after 3 seconds
     });
 
@@ -262,6 +268,22 @@ function setupNavigationInteraction() {
             document.getElementById('navigateButton').disabled = false;
         });
     });
+
+function sendNavTarget(content) {
+    content['type'] = "NAVTARGET";
+    content['coords']['x'] = parseInt(content['coords']['x'])
+    content['coords']['y'] = parseInt(content['coords']['y'])
+    fetch('/navtarget', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(content)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to send nav target');
+        // return response.json(); // Or handle the response appropriately
+    })
+    .then(data => console.log('Nav target created:', data))
+    .catch(error => console.error('Error creating nav target:', error));
 }
 
 
@@ -290,7 +312,7 @@ function createGeopinFromClick(x, y, desc) {
     .then(response => {
         if (!response.ok) throw new Error('Failed to create geopin');
         console.log('Geopin created:', response);
-        alert('Geopin created successfully!');
+        //alert('Geopin created successfully!');
     })
     .catch(error => console.error('Error creating geopin:', error));
 }
@@ -389,7 +411,8 @@ function defineWebSocketHandlers() {
     	// console.log('Received ' + message_type + ' from ' + message["sender"]);
 
     	if (message_type == "GEOPIN" && message["sender"] == this_sender) {
-    		// console.log(message["content"]);
+    		//alert("we got a geopin");
+            // console.log(message["content"]);
     		addGeoPin(message["content"]);
     	} else if (message_type == "BREADCRUMBS1") {
     		// Display the list of breadcrumbs
