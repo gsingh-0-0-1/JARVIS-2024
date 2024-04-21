@@ -1,3 +1,3 @@
 If available, perform Field Notes on Rock, which can include picture, voice notes, etc.
-Perform XRF Scan
+Perform XRF Scan via Scan Procedure
 dummy_var

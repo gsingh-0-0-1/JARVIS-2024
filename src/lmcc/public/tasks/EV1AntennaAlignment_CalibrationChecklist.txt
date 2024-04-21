@@ -1,0 +1,4 @@
+Prepare alignment tools and calibration software on a portable device.
+Adjust the antenna to correct orientation using tools.
+Secure antenna position; perform calibration test.
+dummy_var
