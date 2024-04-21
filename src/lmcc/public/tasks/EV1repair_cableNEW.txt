@@ -1,0 +1,4 @@
+Retrieve spare cable
+Disconnect damaged cable from Comm Tower, notify EV2 and LMCC1
+Connect new cable from Comm Tower, notify EV2 and LMCC1
+dummy_var

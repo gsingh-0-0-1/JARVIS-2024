@@ -1,0 +1,4 @@
+Select Gear icon
+Select Shutdown
+Verify shutdown complete and notify EV2 and LMCC1
+dummy_var

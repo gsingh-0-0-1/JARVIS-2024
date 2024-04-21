@@ -1,4 +1,3 @@
-Ensure Communication Tower repair is complete
 LMCC2 will manually command the rover UP the mountain
 At the top of the mountain the rover will collect samples
 	(QR CODE)

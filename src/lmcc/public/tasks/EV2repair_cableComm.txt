@@ -1,0 +1,5 @@
+On LMCC1 Go, switch to COM – B
+Perform comm check
+If Comm good, continue COM-B,
+Else all to COM – A
+dummy_var
