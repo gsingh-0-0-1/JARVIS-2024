@@ -88,8 +88,9 @@ ws.onmessage = function (event) {
             timestamp: message.timestamp
         };
 		LOCAL_DATA["BREADCRUMBS2"].push(breadcrumb);
-	} else if (message_type == "TASKS")
-	LOCAL_DATA["TASKS"].push(message);
+	} else if (message_type == "TASKS") {
+		LOCAL_DATA["TASKS"].push(message);
+	}
 
 };
 
@@ -437,6 +438,22 @@ async function createGeoPin(data) {
     }
 
 };
+
+async function createNavTarget(data) {
+    if (data && Object.keys(data).length > 0) {
+        postData = {
+			content: {
+				coords: data.coords,
+				desc: data.desc
+			},
+			sender: data.sender || "LMCC",
+			type: data.type,
+            timestamp: new Date().toISOString()
+		}
+
+		ws.send(JSON.stringify(postData));
+	}
+}
 
 
 function generateBreadcrumbs() {
@@ -901,6 +918,12 @@ app.get('/alltasks', (req, res) => {
 app.post('/geopins', async (req, res) => {
 	console.log(req.body)
     await createGeoPin(req.body); // Assuming `createGeoPin` handles both custom and TSS data
+    res.sendStatus(201); // Indicate resource creation
+});
+
+app.post('/navtarget', async (req, res) => {
+	console.log(req.body)
+    await createNavTarget(req.body);
     res.sendStatus(201); // Indicate resource creation
 });
 
