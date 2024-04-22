@@ -413,7 +413,7 @@ function defineWebSocketHandlers() {
 }
 
 // we need to keep this port value fixed, I guess
-var ws = new WebSocket("ws://0.0.0.0:4761");
+var ws = new WebSocket("ws://data.cs.purdue.edu:4761");
 
 fetch('/gatewayhost')
 .then(response => {
@@ -421,7 +421,7 @@ fetch('/gatewayhost')
     return response.text();
 })
 .then(data => {
-    ws = new WebSocket("ws://0.0.0.0:4761");
+    //ws = new WebSocket("ws://0.0.0.0:4761");
     defineWebSocketHandlers();
 })
 .catch(error => console.error('Error loading gateway host:', error));
