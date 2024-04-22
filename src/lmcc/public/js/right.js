@@ -7,20 +7,6 @@ var this_sender = "LMCC"// + String(new Date().getTime())
 
 var geo_pin_list = document.getElementById("geo_pin_list")
 
-// we need to keep this port value fixed, I guess
-var ws;
-
-fetch('/gatewayhost')
-.then(response => {
-    if (!response.ok) throw new Error('Failed to load gateway host');
-    return response.text();
-})
-.then(data => {
-    ws = new WebSocket('ws://data.cs.purdue.edu:' + "4761");
-    defineWebSocketHandlers();
-})
-.catch(error => console.error('Error loading gateway host:', error));
-
 function requestGeoPinCreation() {
     var x = document.getElementById('pinX').value;
     var y = document.getElementById('pinY').value;
@@ -268,6 +254,8 @@ function setupNavigationInteraction() {
             document.getElementById('navigateButton').disabled = false;
         });
     });
+}
+
 
 // function sendNavTarget(content) {
 //     content['type'] = "NAVTARGET";
@@ -409,9 +397,9 @@ function defineWebSocketHandlers() {
     	var data = await event.data.text();
     	var message = JSON.parse(data);
     	var message_type = message["type"];
-    	// console.log('Received ' + message_type + ' from ' + message["sender"]);
+    	console.log('Received ' + message_type + ' from ' + message["sender"]);
 
-    	if (message_type == "GEOPIN" && message["sender"] == this_sender) {
+    	if (message_type == "GEOPIN") {
     		//alert("we got a geopin");
             // console.log(message["content"]);
     		addGeoPin(message["content"]);
@@ -436,6 +424,19 @@ function defineWebSocketHandlers() {
     };
 }
 
+// we need to keep this port value fixed, I guess
+var ws = new WebSocket("ws://0.0.0.0:4761");
+
+fetch('/gatewayhost')
+.then(response => {
+    if (!response.ok) throw new Error('Failed to load gateway host');
+    return response.text();
+})
+.then(data => {
+    ws = new WebSocket("ws://0.0.0.0:4761");
+    defineWebSocketHandlers();
+})
+.catch(error => console.error('Error loading gateway host:', error));
 
 // when we load, check with the server for existing pins
 fetch('/localdata/GEOPINS')
@@ -485,5 +486,4 @@ fetch('/localdata/BREADCRUMBS2')
 })
 .catch(error => console.error('Error loading existing breadcrumbs2:', error));
 
-}
 // initPeer("lmcc_right")
