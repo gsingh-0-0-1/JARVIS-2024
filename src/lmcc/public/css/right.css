@@ -186,6 +186,7 @@
     /* background-color: rgb(116, 116, 175); */
 	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
 	border: 0.2vh solid #454b8f;
+	align-items: center;
 
 	
 
@@ -198,6 +199,7 @@
 	position: sticky;
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
 	border: 0.2vh solid #454b8f;
+	width: 100%;
 
 }
 
@@ -220,15 +222,19 @@
 	align-items: center;
 }
 
-/* #navigateButton {
+ #navigateButton {
 	align-self: center;
+}
 
-} */
 #navigateButton:disabled {
+	align-self: center;
     opacity: 0.5;
     cursor: not-allowed;
 }
 
+ #selectedPin {
+	width: 95%
+}
 /* #eva1_breadcrumb_list_panel{
 	height: 100%;
     overflow: auto; 

@@ -177,7 +177,7 @@ function addBreadCrumb2(content) {
 //custom Geopin
 var MAPDOTSGEOPIN = []
 
-
+selectedPin = null;
 function addGeoPin(content) {
     LOCAL_DATA["GEOPINS"].push(content)
 
@@ -233,47 +233,36 @@ function addGeoPin(content) {
         li.scrollIntoView({ behavior: 'smooth', block: 'center' });
         li.style.background = 'rgba(255, 255, 0, 0.5)'; // Yellow with 80% opacity
 
-        console.log(content);
-        sendNavTarget(content);
-        // nav target
-        // content: x, y, same format as geopin, but name it nav target
-        // remove breadcrumbs, send button instead.
+        document.getElementById('selectedPin').innerText =
+        `Selected:
+        x: ${content['coords']['x']}
+        y: ${content['coords']['y']}
+        Desc: ${content['desc']}
+        `;
+        selectedPin = content;
+        document.getElementById('navigateButton').disabled = false;
 
         setTimeout(() => li.style.background = '', 3000); // Remove highlight after 3 seconds
     });
 
-    setupNavigationInteraction()
 }
 
-function setupNavigationInteraction() {
-    var geoPinItems = document.querySelectorAll('#geo_pin_list li');
-    geoPinItems.forEach(function(item) {
-        item.addEventListener('click', function() {
-            var coords = JSON.parse(this.getAttribute('data-coords'));
-            document.getElementById('selectedCoords').value = JSON.stringify(coords);
-            document.getElementById('navigateButton').disabled = false;
-        });
-    });
+function sendNavTarget(content) {
+    content['type'] = "NAVTARGET";
+    content['coords']['x'] = parseInt(content['coords']['x'])
+    content['coords']['y'] = parseInt(content['coords']['y'])
+    fetch('/navtarget', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(content)
+    })
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to send nav target');
+            // return response.json(); // Or handle the response appropriately
+        })
+        .then(data => console.log('Nav target created:', data))
+        .catch(error => console.error('Error creating nav target:', error));
 }
-
-
-// function sendNavTarget(content) {
-//     content['type'] = "NAVTARGET";
-//     content['coords']['x'] = parseInt(content['coords']['x'])
-//     content['coords']['y'] = parseInt(content['coords']['y'])
-//     fetch('/navtarget', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify(content)
-//     })
-//     .then(response => {
-//         if (!response.ok) throw new Error('Failed to send nav target');
-//         // return response.json(); // Or handle the response appropriately
-//     })
-//     .then(data => console.log('Nav target created:', data))
-//     .catch(error => console.error('Error creating nav target:', error));
-
-// }
 
 
 //right click to make geopins
@@ -306,20 +295,19 @@ function createGeopinFromClick(x, y, desc) {
     .catch(error => console.error('Error creating geopin:', error));
 }
 
-
-
+document.getElementById('navigateButton').disabled = true;
 document.getElementById('navigateButton').addEventListener('click', function() {
-    var coords = JSON.parse(document.getElementById('selectedCoords').value);
-    var message = {
-        type: "NAVIGATE",
-        content: coords,
-        timestamp: new Date().toISOString()
-    };
-
-    // Send the navigation command through WebSocket or another API
-    console.log('Sending navigation command:', message);
-    ws.send(JSON.stringify(message));
-    this.disabled = true; // Optionally disable the button after sending
+    if (selectedPin == null) {
+        return;
+    }
+    sendNavTarget(selectedPin);
+    this.disabled = true;
+    document.getElementById('selectedPin').innerText = 
+    `SENT!
+    x: ${selectedPin['coords']['x']}
+    y: ${selectedPin['coords']['y']}
+    Desc: ${selectedPin['desc']}
+    `;
 });
 
 
