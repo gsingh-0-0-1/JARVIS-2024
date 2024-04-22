@@ -1,0 +1,44 @@
+body {
+	background-color: #123;
+	text-align: center;
+}
+
+#titletext {
+	position: fixed;
+	left: 50%;
+	top: 5%;
+	transform: translate(-50%, 0%);
+	font-size: calc(3vw + 3vh);
+	font-family: Source Code Pro, Courier;
+	color: white;
+}
+
+.userbutton {
+	position: fixed;
+	display: inline-block;
+	width: 30%;
+	height: 8%;
+	padding: 5% 0%;
+	font-family: Source Code Pro, Courier;
+	color: #ddd;
+	background-color: #458;
+	border: none;
+	font-size: calc(1.5vw + 1.5vh);
+	align-items: center;
+	align-content: center;
+	text-align: center;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#leftbutton {
+	left: 30%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#rightbutton {
+	left: 70%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}

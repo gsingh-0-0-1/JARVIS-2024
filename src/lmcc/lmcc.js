@@ -883,8 +883,8 @@ ws.onopen = function (event) {
 */
 
 app.get('/', (req, res) => {
-	res.redirect("/right")
-	//res.sendFile("public/templates/right.html", {root: __dirname});
+	//res.redirect("/right")
+	res.sendFile("public/templates/landing.html", {root: __dirname});
 });
 
 app.get('/right', (req, res) => {
