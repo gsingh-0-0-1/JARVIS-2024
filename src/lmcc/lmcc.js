@@ -326,10 +326,12 @@ function EVA_BIO(callback){
 		.then(response => {
 			if (!response.ok) {
 				throw new Error('Network response was not ok');
-			}batt_time_left
+			}
 			return response.json();
 		})
 		.then(data => {
+			// This function has errors
+			return;
 			const batt_time_left = data['eva1']['batt_time_left'];
 			const batt_time_left2 = data['eva2']['batt_time_left'];
 			const oxy_pri_storage = data['eva1']['oxy_pri_storage'];
