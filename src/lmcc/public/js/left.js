@@ -62,7 +62,7 @@ function fetchAllTasks() {
                 .replace(".txt", "");
 			el.textContent = formattedTaskName;
             el.id = el.value;
-            if ("cat_" + this_task_cat == taskCatSel.value) {
+            if ("cat_" + this_task_cat == taskCatSel.value.toLowerCase()) {
 				taskSel.appendChild(el)
 			}
 		}
