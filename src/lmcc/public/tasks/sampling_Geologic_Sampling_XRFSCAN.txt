@@ -1,5 +1,0 @@
-upon EV ARRIVAL, LMCC will provide information to EV on where to search 
-    (3 locations in Navigation Procedure)
-On go from LMCC, EV navigates to each Station
-    EV performs Scan and Sampling procedure at each designated Station
-dummy_var
