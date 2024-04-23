@@ -1,0 +1,4 @@
+SWITCH: UIA WATER SUPPLY -> ON
+	Wait until Water Coolant Tank is FULL
+SWITCH: UIA WATER SUPPLY -> OFF
+eva1_watersupply, eva2_watersupply

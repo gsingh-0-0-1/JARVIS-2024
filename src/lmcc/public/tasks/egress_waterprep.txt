@@ -1,9 +1,0 @@
-SWITCH: DCU PUMP -> OPEN
-SWITCH: UIA WATER WASTE -> ON/OPEN
-	Wait until Water Coolant Tank is EMPTY
-SWITCH: UIA WATER WASTE -> OFF
-SWITCH: UIA WATER SUPPLY -> ON
-	Wait until Water Coolant Tank is FULL
-SWITCH: UIA WATER SUPPLY -> OFF
-SWITCH: DCU PUMP -> CLOSE
-eva1_pump, eva2_pump, eva1_waterwaste, eva2_waterwaste, eva1_watersupply, eva2_watersupply
