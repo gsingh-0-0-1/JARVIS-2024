@@ -1,5 +1,5 @@
 SWITCH: DCU OXY -> PRIMARY
 SWITCH: UIA OXY SUPPLY -> ON
-	WAIT until PRIMARY OXY TANK is at 3000 psi
+ WAIT until PRIMARY OXY TANK is at 3000 psi
 SWITCH: UIA OXY SUPPLY -> OFF
 eva1_oxyfill, oxysupply
