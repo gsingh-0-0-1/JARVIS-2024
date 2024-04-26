@@ -413,8 +413,20 @@ function defineWebSocketHandlers() {
 }
 
 // we need to keep this port value fixed, I guess
-var ws = new WebSocket("ws://data.cs.purdue.edu:4761");
+var queryString = window.location.search;
+var urlParams = new URLSearchParams(queryString);
 
+var GATEWAY_IP = urlParams.get("gateway_ip");
+
+if (GATEWAY_IP == undefined) {
+    GATEWAY_IP = prompt("Enter Gateway IP")
+}
+
+var ws = new WebSocket("ws://" + GATEWAY_IP + ":4761");
+
+defineWebSocketHandlers();
+
+/*
 fetch('/gatewayhost')
 .then(response => {
     if (!response.ok) throw new Error('Failed to load gateway host');
@@ -425,6 +437,7 @@ fetch('/gatewayhost')
     defineWebSocketHandlers();
 })
 .catch(error => console.error('Error loading gateway host:', error));
+*/
 
 // when we load, check with the server for existing pins
 fetch('/localdata/GEOPINS')

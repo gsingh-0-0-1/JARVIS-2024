@@ -175,6 +175,20 @@ button {
 	/* display: inline-block; */
 }
 
+.text_item {
+	/* color: #dcdcdc; */
+	padding: 1vh 1vh;
+	background-color: rgb(234, 237, 243);
+	border: none;
+	font-family: Source Code Pro, Courier;
+	width: 40%;
+	margin-top: 5%;
+    margin-left: 3%;
+	border: 0.2vh solid #aeaeae;
+
+	/* display: inline-block; */
+}
+
 
 
 /* The switch - the box around the slider */
