@@ -162,6 +162,7 @@ button {
 
 
 .user_input {
+	position: relative;
 	/* color: #dcdcdc; */
 	padding: 1vh 1vh;
 	background-color: rgb(234, 237, 243);
@@ -176,9 +177,9 @@ button {
 }
 
 .text_item {
+	position: relative;
 	/* color: #dcdcdc; */
 	padding: 1vh 1vh;
-	background-color: rgb(234, 237, 243);
 	border: none;
 	font-family: Source Code Pro, Courier;
 	width: 40%;

@@ -57,9 +57,9 @@
 
 /* THE PANEL THAT CONTAINS BOTH LISTS */
 #panel_lists {
-	display: flex;
+	/*display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-evenly;*/
     height: 58%; 
     overflow: hidden; /* Prevent overflow outside this container */
 
@@ -69,7 +69,7 @@
 /* Panel that contains the buttons and list of geopins created */
 #custom_pin_panel {
 
-	position: relative;
+	display: inline-block;
     width: 49%; /* Adjust the width to fit side by side */
     height: 95%; /* Take up full height of the parent container */
     overflow: auto; /* Make it scrollable */
@@ -118,7 +118,6 @@
 
 
 #geopin_input_panel {
-	display: flex;
 	flex-flow: row wrap;
 	align-items: center;
 	justify-content: left;
@@ -223,13 +222,16 @@
 }
 
  #navigateButton {
-	align-self: center;
-}
+ 	margin-left: 3%;
 
-#navigateButton:disabled {
-	align-self: center;
-    opacity: 0.5;
-    cursor: not-allowed;
+	align-self:flex-end;
+    margin-left: 3%;
+
+    border: 2px solid #88c;
+    border-radius: 4px;
+    background-color: #669;
+    color: #eee;
+
 }
 
  #selectedPin {

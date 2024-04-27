@@ -338,6 +338,8 @@ document.getElementById('panel_minimap').addEventListener('contextmenu', functio
 
     document.getElementById("pinX").value = Math.round(coordX)
     document.getElementById("pinY").value = Math.round(coordY)
+
+    document.getElementById("pinCoords").textContent = "(" + Math.round(coordX) + ", " + Math.round(coordY) + ")"
 });
 
 // Event listener for submitting geopin from right-click

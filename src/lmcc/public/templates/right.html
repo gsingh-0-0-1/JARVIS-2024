@@ -20,52 +20,48 @@
             </div>
             
             <div id="geopin_input_panel">
-                <div class="text_item" type="number" id="pinX" placeholder="X-coord (0-4000)"></div>
-                <div class="text_item" type="number" id="pinY" placeholder="Y-coord (0-3500)"></div>
-                <div class="text_item" type="text" id="pindesc" placeholder="Description..."></div>
+                <input class="user_input" type="hidden" id="pinX">
+                <input class="user_input" type="hidden" id="pinY">
+
+                <div class="text_item" type="number" id="pinCoords" placeholder="X-coord (0-4000)">
+                    (NA , NA)
+                </div>
+
+                <input class="user_input" type="text" id="pindesc" placeholder="Description...">
+                    
+                </input>
+
+                <br><br>
 
                 <button id="button_geopincreate" onclick="javascript:requestGeoPinCreation()">
                     Create Location Pin
                 </button>
 
+                <br><br>
+
+                <button id="navigateButton">
+                    Send Selected Pin
+                </button>
+
             </div>
 
         
-
+            <!--
             <div id="button_panels">
 
             </div>
-
+            -->
 
             <div id="panel_lists">
                
 
                 <!-- List for breadcrumbs -->
-                <div id="breadcrumb_panel">
+                <div id="breadcrumb_panel"  style="display: none">
                     
                     <div id ="pathfinder_title" class="paneltitle">
                         Navigation
-                            <!-- Our switches -->
-                        <!-- <label class="switch">
-                            <input type="checkbox" id="breadcrumbToggle" onchange="toggleBreadcrumbs()">
-                            <span class="slider">
-                                <span class="slider-text">Toggle Breadcrumbs</span>
-                                <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
-                                <path fill="none" d="m4 16.5 8 8 16-16"></path>
-                            </svg>
-                            </span>
-                        </label> -->
                     </div>
 
-
-                    <!--
-                    <button id="begin_call" onclick='javascript:beginCall("lmcc_left")'>
-                        Begin Audio Call
-                    </button>
-                    -->
-                    <div>
-                        <button id="navigateButton" disabled>Send Selected Pin</button>
-                    </div>
                     <div id="selectedPin">
                         Nothing selected currently
                     </div>
