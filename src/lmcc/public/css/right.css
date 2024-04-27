@@ -57,9 +57,9 @@
 
 /* THE PANEL THAT CONTAINS BOTH LISTS */
 #panel_lists {
-	/*display: flex;
+	display: flex;
     flex-direction: row;
-    justify-content: space-evenly;*/
+    justify-content: space-evenly;
     height: 58%; 
     overflow: hidden; /* Prevent overflow outside this container */
 
