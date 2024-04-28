@@ -40,11 +40,12 @@
 #panel_geo {
 	/* flex-direction: column; */
 	/* position: fixed; */
+
 	bottom: 0%;
 	top: 50%;
 	right: 0%;
 	height: 50%;
-	aspect-ratio: 5 / 4;
+	width: 33%;
 	/* background-color: #88c; */
 	background-image: linear-gradient(to top left,#33426b, #161c56);
 
@@ -57,9 +58,11 @@
 
 /* THE PANEL THAT CONTAINS BOTH LISTS */
 #panel_lists {
-	/*display: flex;
+	/*
+	display: flex;
     flex-direction: row;
-    justify-content: space-evenly;*/
+    justify-content: space-evenly;
+    */
     height: 58%; 
     overflow: hidden; /* Prevent overflow outside this container */
 
@@ -68,13 +71,13 @@
 }
 /* Panel that contains the buttons and list of geopins created */
 #custom_pin_panel {
-
 	display: inline-block;
-    width: 49%; /* Adjust the width to fit side by side */
-    height: 95%; /* Take up full height of the parent container */
+    width: 50%; /* Adjust the width to fit side by side */
+    height: 90%; /* Take up full height of the parent container */
     overflow: auto; /* Make it scrollable */
 	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
 	border: 0.2vh solid #454b8f;
+	left: 0%;
 
     /* border: 0.5vh solid rgb(86, 174, 115); */
 }
@@ -83,14 +86,14 @@
 	position: sticky;
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
 	border: 0.2vh solid #454b8f;
-	
+	width: 100%;
 }
 
 
 #geo_pin_list_panel{
 	height: calc(100% - 40px); /* Adjust the height based on the title's height */
     overflow: auto; 
-	
+	position: relative;
 	/* border: 0.1vh solid rgb(64, 59, 95); */
 
 }
@@ -106,7 +109,8 @@
 }
 /* styling for list items */
 #geo_pin_list li {
-	margin-top: 2%;
+	padding: 0.4vh 0.4vw;
+	width: 85%;
 	font-family: Source Code Pro, Courier;
 	font-size: small;
 	border-bottom: 1px solid black;
@@ -145,42 +149,17 @@
 	flex: 1; */
 }
 
-#pindesc {
-	/* position: relative;
-	margin-top: 5%;
-	left: 5%;
-	display: inline-block; */
-	align-self:flex-end;
-
-}
-
-#button_geopincreate {
-	/* position: relative; */
-	/* font-family: Source Code Pro, Courier; */
-	/* text-align: center; */
-	/* margin-top: 5%;
-	left: 5%; */
-	align-self:flex-end;
-    margin-left: 3%;
-
-    border: 2px solid #88c;
-    border-radius: 4px;
-    background-color: #669;
-    color: #eee;
-
-}
-
-
 /* BREAD CRUMBS */
 
 
 /* Panel that contains the list of breadcrumbs created */
 #breadcrumb_panel {
-	display: flex;
-	flex-direction: column;
-	position: relative;
-    width: 49%; /* Adjust the width to fit side by side */
-    height: 95%; /* Take up full height of the parent container */
+	display: inline-block;
+	float: right;
+	/* display: flex;
+	flex-direction: column;*/
+    width: 45%; /* Adjust the width to fit side by side */
+    height: 90%; /* Take up full height of the parent container */
     overflow: auto; /* Make it scrollable */
     /* background-color: rgb(116, 116, 175); */
 	background-image: linear-gradient(to bottom right,#737f9d, #5e6394);
@@ -199,7 +178,14 @@
 	background-image: linear-gradient(to bottom right,#33426b, #161c56);
 	border: 0.2vh solid #454b8f;
 	width: 100%;
+}
 
+#selectedPin {
+ 	position: relative;
+	width: 95%;
+	font-family: Source Code Pro, Courier;
+	text-align: center;
+	margin-top: 5%;
 }
 
 /* holds both eva 1 and eva2 lists within the breadcrumbs panel*/
@@ -222,21 +208,42 @@
 }
 
  #navigateButton {
- 	margin-left: 3%;
-
-	align-self:flex-end;
-    margin-left: 3%;
-
+	position: relative;
+	display: inline-block;
     border: 2px solid #88c;
     border-radius: 4px;
     background-color: #669;
     color: #eee;
-
+    float: right;
+    width: 45%;
 }
 
- #selectedPin {
-	width: 95%
+#button_geopincreate {
+	position: relative;
+	/* font-family: Source Code Pro, Courier; */
+	/* text-align: center; */
+	/* margin-top: 5%;
+	left: 5%; */
+	/* align-self: flex-end;*/
+    border: 2px solid #88c;
+    border-radius: 4px;
+    background-color: #669;
+    color: #eee;
+    width: 45%;
 }
+
+#pindesc {
+	float: right;
+	width: 40%;
+	margin-top: 3%;
+}
+
+#pinCoords {
+	display: inline-block;
+	width: 40%;
+	margin-top: 3%;
+}
+
 /* #eva1_breadcrumb_list_panel{
 	height: 100%;
     overflow: auto; 
@@ -450,35 +457,37 @@
 /* Camera Feed Panel */
 #panel_camfeed_1 {
 	top: 0%;
-	right: 34.5%;
+	left: 0%;
 	height: 50%;
-	aspect-ratio: 250 / 281;
+	width: 22%;
 	/* background-color: #88c; */
-	background-image: linear-gradient(to bottom ,#33426b, #161c58);
-	justify-content: center;
-
-
+	/* background-image: linear-gradient(to bottom, #33426b, #161c58); */
+	background-image: linear-gradient(to bottom right, #33426b, #161c56);
 }
 
 #panel_camfeed_2 {
-	top: 50%;
-	right: 34.5%;
+	top: 0%;
+	left: 22%;
 	height: 50%;
-	aspect-ratio: 250 / 281;	
+	width: 22%;	
 	/* background-color: #88c; */
-	background-image: linear-gradient(to top ,#253254, #161c58);
-
-
-
+	/* background-image: linear-gradient(to top, #253254, #161c58); */
+	background-image: linear-gradient(to bottom right, #33426b, #161c56);
 }
 
+.camfeed_element {
+	position: absolute;
+	width: 80%;
+	height: 80%;
+	left: 50%;
+	top: 55%;
+	background-color: #345;
+	border-radius: 2%;
+	transform: translate(-50%, -50%);
+}
 
-#camfeed_2_element {
-	width: 95%;
-	height: 90%;
-	margin-top: 5%;
-	margin-left: 3%;
-	border-radius: 5%;
+.cam {
+	text-align: center;
 }
 
 
@@ -487,23 +496,30 @@
 	top: 50%;
 	left: 0%;
 	height: 50%;
-	aspect-ratio: 250 / 169;
+	width: 33.5%;
 	/* background-color: #88c; */
 	background-image: linear-gradient(45deg ,#293966, #161c56);
+}
 
+#panel_rover_lidar {
+	bottom: 0%;
+	top: 50%;
+	left: 33%;
+	height: 50%;
+	width: 33.5%;
+	/* background-color: #88c; */
+	background-image: linear-gradient(45deg ,#293966, #161c56);
 }
 
 
 
 #panel_controlcache {
 	top: 0%;
-	left: 0%;
+	left: 44%;
 	height: 50%;
-	aspect-ratio: 250 / 169;
+	width: 23%;
 	/* background-color: #88c; */
-	background-image: linear-gradient(to bottom right,#33426b, #161c56);
-
-
+	background-image: linear-gradient(to bottom right, #33426b, #161c56);
 }
 
 
@@ -513,3 +529,4 @@
     padding: 8px;
     background-color: #f9f9f9;
 }
+

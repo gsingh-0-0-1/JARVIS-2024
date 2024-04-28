@@ -174,6 +174,24 @@ function addBreadCrumb2(content) {
 }
 
 
+var select_color_timeout;
+function blinkSelectedPin(n, color, el) {
+    if (n == 0) {
+        el.style.background = color;
+        select_color_timeout = setTimeout(function() {
+            el.style.background = 'rgba(200, 100, 100, 0.5)';
+        }, 1500) 
+        return
+    }
+    el.style.background = color;
+    select_color_timeout = setTimeout(function() {
+        el.style.background = '';
+        select_color_timeout = setTimeout(function() {
+            blinkSelectedPin(n - 1, color, el);
+        }, 100)
+    }, 100)
+}
+
 //custom Geopin
 var MAPDOTSGEOPIN = []
 
@@ -183,13 +201,13 @@ function addGeoPin(content) {
 
     var li = document.createElement('li');
 
-    var EVA1_x = Math.round(Number(content["coords"]["x"]) * 100) / 100
-    var EVA1_y = Math.round(Number(content["coords"]["y"]) * 100) / 100
+    var x = Math.round(Number(content["coords"]["x"]) * 100) / 100
+    var y = Math.round(Number(content["coords"]["y"]) * 100) / 100
 
     li.appendChild(document.createTextNode(content["desc"]));
     li.appendChild(document.createElement("br"))
-    li.appendChild(document.createTextNode("-: (" + EVA1_x + ", " + EVA1_y + ")"))
-    li.setAttribute('data-coords', JSON.stringify({x: EVA1_x, y: EVA1_y}));
+    li.appendChild(document.createTextNode("LOC: (" + x + ", " + y + ")"))
+    li.setAttribute('data-coords', JSON.stringify({x: x, y: y}));
 
     geo_pin_list.prepend(li)
 
@@ -203,8 +221,8 @@ function addGeoPin(content) {
     // corner of the image. thus we need to subtract the image height from the y
     // and half the image width from the x
 
-    dot3.style.left = String(100 * EVA1_x / 4251) + "%";
-    dot3.style.top = String(100 * EVA1_y / 3543) + "%";
+    dot3.style.left = String(100 * x / 4251) + "%";
+    dot3.style.top = String(100 * y / 3543) + "%";
     dot3.style.position = "absolute"
     // dot3.style.width = "5%"
     // dot3.style.height = "5%"
@@ -223,31 +241,39 @@ function addGeoPin(content) {
 
         console.log("height", imgHeight, imgWidth)
 
-        dot3.style.left = String((100 * EVA1_x / 4251) - (100 * imgWidth / document.getElementById("panel_minimap").clientWidth)) + "%";
-        dot3.style.top = String((100 * EVA1_y / 3543) - (100 * imgHeight / document.getElementById("panel_minimap").clientHeight)) + "%";
+        dot3.style.left = String((100 * x / 4251) - (100 * imgWidth / document.getElementById("panel_minimap").clientWidth)) + "%";
+        dot3.style.top = String((100 * y / 3543) - (100 * imgHeight / document.getElementById("panel_minimap").clientHeight)) + "%";
     }
 
         // Add event listener for click event
-    dot3.addEventListener('click', function() {
+
+    var listener = function() {
+        clearTimeout(select_color_timeout)
+        for (var child of geo_pin_list.children) {
+            child.style.background = ''
+        }
         // Highlight the corresponding list item
+        var color = 'rgba(200, 255, 0, 0.5)'
+
         li.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        li.style.background = 'rgba(255, 255, 0, 0.5)'; // Yellow with 80% opacity
-
-        document.getElementById('selectedPin').innerText =
-        `Selected:
-        x: ${content['coords']['x']}
-        y: ${content['coords']['y']}
-        Desc: ${content['desc']}
-        `;
+        // document.getElementById('navigateButton').disabled = false;
         selectedPin = content;
-        document.getElementById('navigateButton').disabled = false;
 
-        setTimeout(() => li.style.background = '', 3000); // Remove highlight after 3 seconds
-    });
+        blinkSelectedPin(3, color, li);
+    }
+    dot3.addEventListener('click', listener);
+    li.addEventListener('click', listener);
 
 }
 
 function sendNavTarget(content) {
+    document.getElementById('selectedPin').innerText =
+    `- Nav Target -
+    < ${content['desc']} >
+    x: ${content['coords']['x']}
+    y: ${content['coords']['y']}
+    `;
+
     content['type'] = "NAVTARGET";
     content['coords']['x'] = parseInt(content['coords']['x'])
     content['coords']['y'] = parseInt(content['coords']['y'])
@@ -256,12 +282,12 @@ function sendNavTarget(content) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(content)
     })
-        .then(response => {
-            if (!response.ok) throw new Error('Failed to send nav target');
-            // return response.json(); // Or handle the response appropriately
-        })
-        .then(data => console.log('Nav target created:', data))
-        .catch(error => console.error('Error creating nav target:', error));
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to send nav target');
+        // return response.json(); // Or handle the response appropriately
+    })
+    .then(data => console.log('Nav target created:', data))
+    .catch(error => console.error('Error creating nav target:', error));
 }
 
 
@@ -295,19 +321,20 @@ function createGeopinFromClick(x, y, desc) {
     .catch(error => console.error('Error creating geopin:', error));
 }
 
-document.getElementById('navigateButton').disabled = true;
+//document.getElementById('navigateButton').disabled = true;
 document.getElementById('navigateButton').addEventListener('click', function() {
     if (selectedPin == null) {
         return;
     }
     sendNavTarget(selectedPin);
-    this.disabled = true;
+    /*
     document.getElementById('selectedPin').innerText = 
     `SENT!
     x: ${selectedPin['coords']['x']}
     y: ${selectedPin['coords']['y']}
     Desc: ${selectedPin['desc']}
     `;
+    */
 });
 
 

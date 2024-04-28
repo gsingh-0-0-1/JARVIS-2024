@@ -37,10 +37,8 @@
                     Create Location Pin
                 </button>
 
-                <br><br>
-
                 <button id="navigateButton">
-                    Send Selected Pin
+                    Nav to Selected Pin
                 </button>
 
             </div>
@@ -56,14 +54,27 @@
                
 
                 <!-- List for breadcrumbs -->
-                <div id="breadcrumb_panel"  style="display: none">
+
+                 <!-- List for geopins -->
+                 <div id="custom_pin_panel">
+
+                    <div id="geopin_title" class="paneltitle">
+                        Geo Pins
+                    </div>
+
+                    <div id="geo_pin_list_panel">
+                        <ul id="geo_pin_list"></ul>
+                    </div>
+                </div>
+            
+                <div id="breadcrumb_panel">
                     
                     <div id ="pathfinder_title" class="paneltitle">
                         Navigation
                     </div>
 
                     <div id="selectedPin">
-                        Nothing selected currently
+                        - Nav Target -
                     </div>
                     <!-- <div id="breadcrumb_list_inner_panel"> -->
                         <!-- <div id="eva1_legend">
@@ -85,20 +96,6 @@
                     
                   
                 </div>
-
-                 <!-- List for geopins -->
-                 <div id="custom_pin_panel">
-
-                    <div id="geopin_title" class="paneltitle">
-                        Geo Pins
-                    </div>
-
-                    <div id="geo_pin_list_panel">
-                        <ul id="geo_pin_list"></ul>
-                    </div>
-                </div>
-            
-
             
             </div>
             
@@ -127,24 +124,31 @@
         
 
         <!-- 3. Camera Feed -->
-        <div id="panel_camfeed_1" class="panel">
+        <div id="panel_camfeed_1" class="panel cam">
             Crew Camera Feed 1
-            <video id="camfeed_2_element" controls poster="/images/moonsurface.gif">
+            <video class="camfeed_element" controls poster="/images/moonsurface.gif">
                 <source src="https://100.69.33.190/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
             </video>
         </div>
 
-        <div id="panel_camfeed_2" class="panel">
+        <div id="panel_camfeed_2" class="panel cam">
             Crew Camera Feed 2
-            <video id="camfeed_2_element" controls poster="/images/moonsurface.gif">
+            <video class="camfeed_element" controls poster="/images/moonsurface.gif">
                 <source src="https://100.69.33.190/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
             </video>
         </div>
 
         <!-- 4. Rover Interface -->
-        <div id="panel_rover" class="panel">
+        <div id="panel_rover" class="panel cam">
             Rover Feed
-            <video id="camfeed_2_element" controls poster="https://mars.nasa.gov/system/resources/detail_files/25904_1-PIA24546-1200.jpg">
+            <video class="camfeed_element" controls poster="https://mars.nasa.gov/system/resources/detail_files/25904_1-PIA24546-1200.jpg">
+                <source src="" type="video/webm" />
+            </video>
+        </div>
+
+        <div id="panel_rover_lidar" class="panel cam">
+            LIDAR Feed
+            <video class="camfeed_element" controls poster="https://mars.nasa.gov/system/resources/detail_files/25904_1-PIA24546-1200.jpg">
                 <source src="" type="video/webm" />
             </video>
         </div>
