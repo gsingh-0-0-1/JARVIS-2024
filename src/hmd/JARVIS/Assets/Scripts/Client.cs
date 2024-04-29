@@ -31,8 +31,12 @@ public class Client : MonoBehaviour
     public AudioClip soundClip;
     public AudioSource audioSource;
 
+    public GameObject markerPrefab;
+
     void Start()
     {
+        StartCoroutine(renderGeoPin(0, 0));
+
         // soundClip = AudioClip.Create("sound_chunk", 10000, 1, 44100, false);
 
         // TSSc = new TSScConnection();
@@ -42,8 +46,10 @@ public class Client : MonoBehaviour
         TextAsset gateway = Resources.Load("gateway") as TextAsset;
         string gateway_ip = gateway.ToString().Split("\n")[0];
 
+        Debug.Log("GATEWAY IP " + gateway_ip);
+
         // TSSc = new TSScConnection();
-        ws = new WebSocket("ws://" + gateway_ip.ToString() + ":4761");
+        ws = new WebSocket("ws://data.cs.purdue.edu:4761");
         ws.ConnectAsync();
         ws.OnOpen += (sender, e) => {
                Debug.Log("Connected");
@@ -53,6 +59,17 @@ public class Client : MonoBehaviour
             byte[] dataBytes = e.RawData;
             string dataString = System.Text.Encoding.UTF8.GetString(dataBytes);
             JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(dataString)!;
+
+            string tasktype = JsonSerializer.Deserialize<string>(recievedInformation["type"]);
+
+            if (tasktype == "GEOPIN")
+            {
+                Debug.Log("Geo Pin received");
+                var x = int.Parse($"{recievedInformation["content"]["x"]}");
+                var y = int.Parse($"{recievedInformation["content"]["y"]}");
+
+                StartCoroutine(renderGeoPin(0, 0));
+            }
 
             // Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + recievedInformation);
         };
@@ -134,6 +151,7 @@ public class Client : MonoBehaviour
 
         SendGEOPin(posx, posy, "EVA1 Coords");
 
+        renderGeoPin(0, 0);
     }
 
     void SendGEOPin(float x, float y, string desc) {
@@ -178,4 +196,37 @@ public class Client : MonoBehaviour
 
     }
 
+    IEnumerator renderGeoPin(int x, int y)
+    {
+        double mapHeight = 0.11;
+        double mapWidth = 0.11;
+
+        GameObject marker = Instantiate(markerPrefab, transform);
+
+        float xfloat = (float)((x / 4200.0) * mapHeight);
+        float yfloat = (float)((y / 3500.0) * mapWidth);
+
+
+
+        marker.GetComponent<RectTransform>().localPosition = new Vector2(xfloat, yfloat);
+
+        yield return null;
+    }
+
+    /*
+    void renderGeoPin(int x, int y)
+    {
+        double mapHeight = 0.11;
+        double mapWidth = 0.11;
+
+        GameObject marker = Instantiate(markerPrefab, transform, 0);
+
+        float xfloat = (float)( (x / 4200.0) * mapHeight);
+        float yfloat = (float)( (y / 3500.0) * mapWidth);
+
+
+
+        marker.GetComponent<RectTransform>().localPosition = new Vector2(xfloat, yfloat);
+    }
+    */
 }

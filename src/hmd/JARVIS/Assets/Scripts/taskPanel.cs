@@ -33,14 +33,18 @@ public class bioDataPanel : MonoBehaviour
         TextAsset gateway = Resources.Load("gateway") as TextAsset;
         string gateway_ip = gateway.ToString().Split("\n")[0];
 
-        var socketio_client = new SocketIOClass("http://" + gateway_ip.ToString() + ":4762");
+        Debug.Log("GATEWAY RELOG http://" + gateway_ip + ":4761");
+
+        /*
+        var socketio_client = new SocketIOClass("http://" + gateway_ip + ":4762");
 
         socketio_client.OnConnected += (sender, e) => {
             Debug.Log("socket io connected");
         };
+        */
 
         
-        ws = new WebSocket("ws://" + gateway_ip.ToString() + ":4761");
+        ws = new WebSocket("ws://data.cs.purdue.edu:4761");
         ws.ConnectAsync();
         ws.OnOpen += (sender, e) => {
             Debug.Log("Connected");
@@ -94,7 +98,7 @@ public class bioDataPanel : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.25f); // Adjust the interval as needed
-            text.SetText(i.ToString());
+            text.SetText(panelText);
             // yield return StartCoroutine(FetchBioJSONData());
         }
     }
