@@ -207,29 +207,50 @@
 	align-items: center;
 }
 
- #navigateButton {
+
+.menubutton {
 	position: relative;
-	display: inline-block;
     border: 2px solid #88c;
     border-radius: 4px;
     background-color: #669;
     color: #eee;
-    float: right;
     width: 45%;
 }
 
+#navigateButton {
+	display: inline-block;
+    float: right;
+}
+
 #button_geopincreate {
-	position: relative;
 	/* font-family: Source Code Pro, Courier; */
 	/* text-align: center; */
 	/* margin-top: 5%;
 	left: 5%; */
 	/* align-self: flex-end;*/
+}
+
+#capture_pic_ev {
+	position: relative;
     border: 2px solid #88c;
     border-radius: 4px;
     background-color: #669;
     color: #eee;
-    width: 45%;
+}
+
+#control_notes {
+	position: absolute;
+	background-color: #bbb;
+	border: 0.1vh solid #345;
+	left: 50%;
+	top: 15%;
+	transform: translate(-50%, 0%);
+	width: 90%;
+	height: 30%;
+}
+
+#control_notes:focus {
+	outline: none;
 }
 
 #pindesc {

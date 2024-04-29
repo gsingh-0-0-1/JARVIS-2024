@@ -441,6 +441,10 @@ function defineWebSocketHandlers() {
     };
 }
 
+function addNewNote() {
+    
+}
+
 // we need to keep this port value fixed, I guess
 var queryString = window.location.search;
 var urlParams = new URLSearchParams(queryString);
