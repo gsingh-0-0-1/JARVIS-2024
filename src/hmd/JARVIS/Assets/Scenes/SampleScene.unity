@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731725, g: 0.13414745, b: 0.12107873, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1064,7 +1064,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1214,6 +1214,247 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3588310080417128203, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
   m_PrefabInstance: {fileID: 2059482300}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &376281482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 376281466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ad66e7cc9a2754d8ea989740c9f00d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 1
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  isGazePinchSelected:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isRaySelected:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isPokeSelected:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isGrabSelected:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isGazeHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isGazePinchHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isRayHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isGrabHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isPokeHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isActiveHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  disabledInteractorTypes:
+  - reference: MixedReality.Toolkit.IPokeInteractor, MixedReality.Toolkit.Core
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
+  allowSelectByVoice: 1
+  speechRecognitionKeyword: select
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  <OnClicked>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  <OnEnabled>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  <OnDisabled>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  hostTransform: {fileID: 376281478}
+  allowedManipulations: 7
+  allowedInteractionTypes: -2147483641
+  applyTorque: 1
+  springForceSoftness: 0.1
+  springTorqueSoftness: 0.1
+  springDamping: 1
+  springForceLimit: 100
+  rotationAnchorNear: 1
+  rotationAnchorFar: 1
+  releaseBehavior: 3
+  transformSmoothingLogicType:
+    reference: MixedReality.Toolkit.SpatialManipulation.DefaultTransformSmoothingLogic,
+      MixedReality.Toolkit.SpatialManipulation
+  smoothingFar: 1
+  smoothingNear: 1
+  moveLerpTime: 0.001
+  rotateLerpTime: 0.001
+  scaleLerpTime: 0.001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
+  manipulationLogicTypes:
+    moveLogicType:
+      reference: MixedReality.Toolkit.SpatialManipulation.MoveLogic, MixedReality.Toolkit.SpatialManipulation
+    rotateLogicType:
+      reference: MixedReality.Toolkit.SpatialManipulation.RotateLogic, MixedReality.Toolkit.SpatialManipulation
+    scaleLogicType:
+      reference: MixedReality.Toolkit.SpatialManipulation.ScaleLogic, MixedReality.Toolkit.SpatialManipulation
 --- !u!1 &388447760
 GameObject:
   m_ObjectHideFlags: 0
@@ -2470,14 +2711,14 @@ PrefabInstance:
     - target: {fileID: 1402552064190902084, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300000, guid: fbc47027e54e49848fdfd6d5e20510e7, type: 3}
+      objectReference: {fileID: 4300004, guid: 60260aaff9ed8764d9aad59253d848f7, type: 3}
     - target: {fileID: 1464498783771871688, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1464498783771871688, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1464498783771871688, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_LocalScale.z
@@ -2573,11 +2814,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986024626314766531, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.0537
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3986024626314766531, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0596
+      value: 0.075
       objectReference: {fileID: 0}
     - target: {fileID: 4901973373806658028, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_IsActive
@@ -2589,27 +2830,87 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5024310789677354279, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.14
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 5024310789677354279, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.139
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024310789677354279, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5024310789677354279, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0063
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024310789677354279, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024310789677354279, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024310789677354279, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024310789677354279, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024310789677354279, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5183353073573146339, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5183353073573146339, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 581466317042089072, guid: 8ce8c0b8c2dd8574c9bc1f1c7607ef37, type: 2}
     - target: {fileID: 5846045030756660992, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_text
       value: MiniMap
       objectReference: {fileID: 0}
     - target: {fileID: 5846045030756660992, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5846045030756660992, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_fontSize
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5846045030756660992, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ce8c0b8c2dd8574c9bc1f1c7607ef37, type: 2}
+    - target: {fileID: 5846045030756660992, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5846045030756660992, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5846045030756660992, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 581466317042089072, guid: 8ce8c0b8c2dd8574c9bc1f1c7607ef37, type: 2}
+    - target: {fileID: 5846045030756660992, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5846045030756660992, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930138835812789943, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_Icon
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5930138835812789943, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_Name
@@ -3314,7 +3615,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.006}
+  m_AnchoredPosition: {x: 0, y: 0.01}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1036940623
@@ -7083,6 +7384,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1539151597529160777, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: headerText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1539151597529160777, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: neutralButton.Label
       value: 
       objectReference: {fileID: 0}
@@ -7272,6 +7577,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5930138835812789943, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 376281467}
+    - targetCorrespondingSourceObject: {fileID: 5930138835812789943, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 376281482}
   m_SourcePrefab: {fileID: 100100000, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
 --- !u!33 &21378855957218181
 MeshFilter:
@@ -7506,7 +7814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7725331388044019461, guid: 15653ba0ffb01324c8a099889dd7c1ac, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.037
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7725331388044019461, guid: 15653ba0ffb01324c8a099889dd7c1ac, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7526,11 +7834,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7725331388044019461, guid: 15653ba0ffb01324c8a099889dd7c1ac, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.252
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7725331388044019461, guid: 15653ba0ffb01324c8a099889dd7c1ac, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7725331388044019461, guid: 15653ba0ffb01324c8a099889dd7c1ac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
