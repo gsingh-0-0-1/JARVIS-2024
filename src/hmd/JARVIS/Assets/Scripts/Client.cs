@@ -77,7 +77,8 @@ public class Client : MonoBehaviour
                 Debug.Log(e.Message);
         };
 
-        var socketio_client = new SocketIOClass("http://" + gateway_ip.ToString() + ":4762");
+        /*
+        var socketio_client = new SocketIOClass("http://" + gateway_ip + ":4762");
 
         socketio_client.OnConnected += async (sender, e) => {
             Debug.Log("socket io connected");
@@ -117,6 +118,7 @@ public class Client : MonoBehaviour
         });
 
         socketio_client.ConnectAsync();
+        */
     }
 
     void procAndPlay() {
@@ -141,7 +143,7 @@ public class Client : MonoBehaviour
 
     }
 
-    public void OnButtonClick()
+    public void OnGeoPinButtonClick()
     {
         Debug.Log("geo button clicked");
         string IMUJsonString = TSSc.GetIMUJsonString();

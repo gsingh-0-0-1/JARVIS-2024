@@ -13,7 +13,7 @@ using WebSocketSharp;
 public class bioDataPanel : MonoBehaviour
 {
     public TMP_Text text;
-    public static string serverURL = "http://data.cs.purdue.edu:14141/";
+    public static string serverURL = "http://data.cs.purdue.edu:14141";
     public string telemetryEndpoint = serverURL + "/json_data/teams/0/TELEMETRY.json";
 
     public List<string> remainingTasks = new List<string>();
@@ -61,16 +61,19 @@ public class bioDataPanel : MonoBehaviour
 
             if (tasktype == "TASK")
             {
-                Debug.Log("detected new task");
+                Debug.Log("detected new task " + remainingTasks.Count.ToString());
                 string taskDesc = ($"{recievedInformation["content"]["taskDesc"]}");
                 Debug.Log(taskDesc);
-                // remainingTasks.Add(taskDesc);
-                panelText = taskDesc;
-                //StartCoroutine(UpdateDisplayText(text, taskDesc));
-                //text.SetText(taskDesc);
+                remainingTasks.Add(taskDesc);
+                if (remainingTasks.Count == 0) {
+                    //text.SetText(taskDesc);
+                }
+                else {
+                    //remainingTasks.Add(taskDesc);
+                }
             }
 
-            Debug.Log("Message Received from " + ((WebSocket)sender).Url + ", Type: " + tasktype + " Data : " + recievedInformation);
+            //Debug.Log("Message Received from " + ((WebSocket)sender).Url + ", Type: " + tasktype + " Data : " + recievedInformation);
 
 
         };
@@ -80,16 +83,15 @@ public class bioDataPanel : MonoBehaviour
         
     }
 
-    IEnumerator RenderNextTask()
+    public void RenderNextTask()
     {
         if (remainingTasks.Count == 0) {
-            text.SetText("All Tasks Complete");
+            text.SetText("No Active Tasks");
         }
         else {
             text.SetText(remainingTasks[0]);
             remainingTasks.Remove(remainingTasks[0]);
         }
-        yield break;
     }
     
 
@@ -97,8 +99,13 @@ public class bioDataPanel : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.25f); // Adjust the interval as needed
-            text.SetText(panelText);
+            yield return new WaitForSeconds(0.1f); // Adjust the interval as needed
+            if (remainingTasks.Count != 0) {
+                text.SetText(remainingTasks[0]);
+            }
+            else { 
+                text.SetText("No Active Tasks");
+            }
             // yield return StartCoroutine(FetchBioJSONData());
         }
     }
