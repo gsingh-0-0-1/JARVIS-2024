@@ -73,6 +73,10 @@ public class Client : MonoBehaviour
                 renderGeoPin(x, y);
             }
 
+            if (tasktype == "NAVTARGET") {
+                
+            }
+
             // Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + recievedInformation);
         };
         ws.OnError += (sender, e) => {
