@@ -23,19 +23,20 @@ public class Client : MonoBehaviour
     public TMP_InputField textboxx;
     public TMP_InputField textboxy;
     public TMP_InputField textboxdesc;
-    public Boolean readyToPlay;
+
     public float[] dataArrFloat;
+
+    public List<Vector3> pins_to_render = new List<Vector3>();
 
     UnicodeEncoding uniEncoding = new UnicodeEncoding();
 
-    public AudioClip soundClip;
-    public AudioSource audioSource;
 
     public GameObject markerPrefab;
+    public GameObject mapCanvas;
 
     void Start()
     {
-        StartCoroutine(renderGeoPin(0, 0));
+        //StartCoroutine(renderGeoPin(0, 0));
 
         // soundClip = AudioClip.Create("sound_chunk", 10000, 1, 44100, false);
 
@@ -65,10 +66,11 @@ public class Client : MonoBehaviour
             if (tasktype == "GEOPIN")
             {
                 Debug.Log("Geo Pin received");
-                var x = int.Parse($"{recievedInformation["content"]["x"]}");
-                var y = int.Parse($"{recievedInformation["content"]["y"]}");
+                var x = int.Parse($"{recievedInformation["content"]["coords"]["x"]}");
+                var y = int.Parse($"{recievedInformation["content"]["coords"]["y"]}");
+                Debug.Log("parsed coords " + x.ToString() + " " + y.ToString());
 
-                StartCoroutine(renderGeoPin(0, 0));
+                renderGeoPin(x, y);
             }
 
             // Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + recievedInformation);
@@ -77,70 +79,16 @@ public class Client : MonoBehaviour
                 Debug.Log(e.Message);
         };
 
-        /*
-        var socketio_client = new SocketIOClass("http://" + gateway_ip + ":4762");
-
-        socketio_client.OnConnected += async (sender, e) => {
-            Debug.Log("socket io connected");
-        };
-
-        audioSource = GetComponent<AudioSource>();
-
-        socketio_client.On("audioStream", response => {
-            // Debug.Log("got audio");
-            
-            var audioData = response.GetValue<string>();//.Split("base64,")[1];
-            // Debug.Log(response.GetValue<string>());
-            // Debug.Log(audioData);
-            // memStream.Write(audioData, 0, audioData.Length);
-            // AudioClip audioClip = WavUtility.ToAudioClip(memStream);
-            // AudioSource audioSource;
-
-            byte[] dataArrByte = Convert.FromBase64String(audioData);//memStream.ToArray();
-
-            //float[] 
-            dataArrFloat = new float[dataArrByte.Length / 2];
-
-            for (int i = 44; i < dataArrFloat.Length; i++) {
-                short sample = BitConverter.ToInt16(dataArrByte, i * 2);
-                dataArrFloat[i] = sample / 32768f;
-            }
-
-            readyToPlay = true;
-
-            //soundClip = new AudioClip();
-
-            // SoundPlayer soundPlayer = new SoundPlayer();
-            // soundPlayer.Stream = memStream;
-            // soundPlayer.Play();
-            // memStream.position = 0;
-            // Debug.Log(response);
-        });
-
-        socketio_client.ConnectAsync();
-        */
-    }
-
-    void procAndPlay() {
-        // Debug.Log("here 1");
-        soundClip = AudioClip.Create("sound_chunk", Convert.ToInt32(dataArrFloat.Length), 1, 48000, false);
-        // Debug.Log("here 2");
-        soundClip.SetData(dataArrFloat, 0);
-        // Debug.Log("here 3");
-        audioSource.clip = soundClip;
-        // Debug.Log("here 4");
-        audioSource.Play();
-        // Debug.Log("here " + audioSource.isPlaying.ToString());
     }
 
     void Update()
     {
-
-        if (readyToPlay) {
-            procAndPlay();
-            readyToPlay = false;
+        while (pins_to_render.Count() != 0) {
+            GameObject new_geopin_marker = Instantiate(markerPrefab, mapCanvas.GetComponent<RectTransform>());
+            new_geopin_marker.GetComponent<RectTransform>().localPosition = pins_to_render[0];
+            pins_to_render.Remove(pins_to_render[0]);
+            new_geopin_marker.SetActive(true);
         }
-
     }
 
     public void OnGeoPinButtonClick()
@@ -153,7 +101,7 @@ public class Client : MonoBehaviour
 
         SendGEOPin(posx, posy, "EVA1 Coords");
 
-        renderGeoPin(0, 0);
+        renderGeoPin(posx, posy);
     }
 
     void SendGEOPin(float x, float y, string desc) {
@@ -198,37 +146,28 @@ public class Client : MonoBehaviour
 
     }
 
-    IEnumerator renderGeoPin(int x, int y)
-    {
+    void renderGeoPin(float x, float y) {
+	Debug.Log("here");
+	try {     
+ 
         double mapHeight = 0.11;
         double mapWidth = 0.11;
 
-        GameObject marker = Instantiate(markerPrefab, transform);
+        Debug.Log("made active");
 
-        float xfloat = (float)((x / 4200.0) * mapHeight);
-        float yfloat = (float)((y / 3500.0) * mapWidth);
+        float xfloat = (float)((x / 4251.0) * mapHeight - mapHeight * 0.5);
+        float yfloat = (float)((-y / 3543.0) * mapWidth + mapWidth * 0.5);
+        float zfloat = 0.001f;
 
+        Debug.Log("computed coords");
 
+        pins_to_render.Add(new Vector3(xfloat, yfloat, zfloat));
 
-        marker.GetComponent<RectTransform>().localPosition = new Vector2(xfloat, yfloat);
+        Debug.Log("applied coord transform");
+        }
+        catch(Exception e) {
+        Debug.Log(e.Message);
+	}
 
-        yield return null;
     }
-
-    /*
-    void renderGeoPin(int x, int y)
-    {
-        double mapHeight = 0.11;
-        double mapWidth = 0.11;
-
-        GameObject marker = Instantiate(markerPrefab, transform, 0);
-
-        float xfloat = (float)( (x / 4200.0) * mapHeight);
-        float yfloat = (float)( (y / 3500.0) * mapWidth);
-
-
-
-        marker.GetComponent<RectTransform>().localPosition = new Vector2(xfloat, yfloat);
-    }
-    */
 }

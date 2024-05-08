@@ -38,28 +38,6 @@ public class Marker_EVA : MonoBehaviour
 
     IEnumerator FetchEVLocs()
     {
-        /*
-        string IMUJsonString = TSSc.GetIMUJsonString();
-        Debug.Log(IMUJsonString);
-        JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
-
-        float x = 0.0f;
-        float y = 0.0f;
-        if (gameObject.name == "Marker_EVA1") {
-            x = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
-            y = IMUJson["imu"]["eva1"]["posy"].GetValue<float>();
-        }
-        if (gameObject.name == "Marker_EVA2") {
-            x = IMUJson["imu"]["eva2"]["posx"].GetValue<float>();
-            y = IMUJson["imu"]["eva2"]["posy"].GetValue<float>();
-        }
-
-        // xpos = xpos + 2;
-        // ypos = ypos + 2;
-
-        transform.localPosition = new Vector3((0.11f * (x / 3000f)) - 0.055f, (0.11f * (y / 3000f)) - 0.055f, -0.002f);
-        yield break;
-        */
 
         
 
@@ -90,7 +68,7 @@ public class Marker_EVA : MonoBehaviour
                     y = recievedInformation["imu"]["eva2"]["posy"].GetValue<float>();
                 }
 
-                transform.localPosition = new Vector3((0.11f * (x / 3000f)) - 0.055f, (0.11f * (y / 3000f)) - 0.055f, -0.002f);
+                transform.localPosition = new Vector3((0.11f * (x / 4251f)) - 0.055f, (0.11f * (-y / 3545f)) + 0.055f, -0.002f);
 
                 // float hr_float = recievedInformation["telemetry"]["eva1"]["heart_rate"].GetValue<float>();
                 // int hr_int = (int)hr_float;
