@@ -480,6 +480,20 @@ var ws = new WebSocket("ws://" + GATEWAY_IP + ":4761");
 
 defineWebSocketHandlers();
 
+function clearNavTarget() {
+    var clear_message = {
+        content: {
+            coords: { x: 0, y: 0 },
+        },
+        sender: this_sender, // Automatically set; adjust if needed for HMD
+        type: "CLEARNAV",
+    };
+
+    document.getElementById("selectedPin").innerHTML = "- Nav Target -"
+
+    ws.send(JSON.stringify(clear_message));
+}
+
 /*
 fetch('/gatewayhost')
 .then(response => {
