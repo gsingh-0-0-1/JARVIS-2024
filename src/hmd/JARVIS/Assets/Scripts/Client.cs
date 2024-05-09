@@ -30,6 +30,11 @@ public class Client : MonoBehaviour
 
     UnicodeEncoding uniEncoding = new UnicodeEncoding();
 
+    public int TOP_LEFT_EASTING = 298305;
+    public int TOP_LEFT_NORTHING = 3272438;
+    
+    public int BOT_RIGHT_EASTING = 298405;
+    public int BOT_RIGHT_NORTHING = 3272330;
 
     public GameObject markerPrefab;
     public GameObject mapCanvas;
@@ -151,8 +156,7 @@ public class Client : MonoBehaviour
     }
 
     void renderGeoPin(float x, float y) {
-	Debug.Log("here");
-	try {     
+	Debug.Log("here");   
  
         double mapHeight = 0.11;
         double mapWidth = 0.11;
@@ -168,10 +172,6 @@ public class Client : MonoBehaviour
         pins_to_render.Add(new Vector3(xfloat, yfloat, zfloat));
 
         Debug.Log("applied coord transform");
-        }
-        catch(Exception e) {
-        Debug.Log(e.Message);
-	}
 
     }
 }
