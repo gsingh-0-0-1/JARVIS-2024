@@ -3,13 +3,22 @@ LOCAL_DATA["GEOPINS"] = [];
 LOCAL_DATA["BREADCRUMBS1"] = [];
 LOCAL_DATA["BREADCRUMBS2"] = [];
 
+const TOP_LEFT_EASTING = 298305;
+const TOP_LEFT_NORTHING = 3272438;
+
+const BOT_RIGHT_EASTING = 298405;
+const BOT_RIGHT_NORTHING = 3272330;
+
+const ROCKYARD_WIDTH = BOT_RIGHT_EASTING - TOP_LEFT_EASTING;
+const ROCKYARD_HEIGHT = TOP_LEFT_NORTHING - BOT_RIGHT_NORTHING;
+
 var this_sender = "LMCC"// + String(new Date().getTime())
 
 var geo_pin_list = document.getElementById("geo_pin_list")
 
 function requestGeoPinCreation() {
-    var x = document.getElementById('pinX').value;
-    var y = document.getElementById('pinY').value;
+    var x = TOP_LEFT_EASTING + Number(document.getElementById('pinX').value);
+    var y = TOP_LEFT_NORTHING - Number(document.getElementById('pinY').value);
     var desc = document.getElementById('pindesc').value;
 
     if (x == '' || y == '' || desc == '') {
@@ -103,8 +112,10 @@ function addBreadCrumb1(content) {
 
     var dot1 = document.createElement("span");
     dot1.classList.add("mapdot1", "current-dot1"); // Add "current-dot" class to the new dot
-    dot1.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
-    dot1.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
+    var modified_x = coords.x - TOP_LEFT_EASTING;
+    var modified_y = -1 * (coords.y - TOP_LEFT_NORTHING);
+    dot1.style.left = String(100 * modified_x.toFixed(2) / ROCKYARD_WIDTH) + "%";
+    dot1.style.top = String(100 * modified_y.toFixed(2) / ROCKYARD_HEIGHT) + "%";
     dot1.appendChild(document.getElementById("EV1_minimap_text"));
 
     // Add the new dot to the beginning of the array
@@ -146,8 +157,14 @@ function addBreadCrumb2(content) {
 
     var dot2 = document.createElement("span");
     dot2.classList.add("mapdot2", "current-dot2"); // Add "current-dot" class to the new dot
-    dot2.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
-    dot2.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
+    
+    var modified_x = coords.x - TOP_LEFT_EASTING;
+    var modified_y = -1 * (coords.y - TOP_LEFT_NORTHING);
+    dot2.style.left = String(100 * modified_x.toFixed(2) / ROCKYARD_WIDTH) + "%";
+    dot2.style.top = String(100 * modified_y.toFixed(2) / ROCKYARD_HEIGHT) + "%";
+
+    //dot2.style.left = String(100 * coords.x.toFixed(2) / 4251) + "%";
+    //dot2.style.top = String(100 * coords.y.toFixed(2) / 3543) + "%";
     dot2.appendChild(document.getElementById("EV2_minimap_text"));
 
     // Add the new dot to the beginning of the array
@@ -201,8 +218,11 @@ function addGeoPin(content) {
 
     var li = document.createElement('li');
 
-    var x = Math.round(Number(content["coords"]["x"]) * 100) / 100
-    var y = Math.round(Number(content["coords"]["y"]) * 100) / 100
+    // var x = Math.round(Number(content["coords"]["x"]) * 100) / 100
+    // var y = Math.round(Number(content["coords"]["y"]) * 100) / 100
+
+    var x = Number(content["coords"]["x"]).toFixed(2)
+    var y = Number(content["coords"]["y"]).toFixed(2)
 
     li.appendChild(document.createTextNode(content["desc"]));
     li.appendChild(document.createElement("br"))
@@ -221,8 +241,8 @@ function addGeoPin(content) {
     // corner of the image. thus we need to subtract the image height from the y
     // and half the image width from the x
 
-    dot3.style.left = String(100 * x / 4251) + "%";
-    dot3.style.top = String(100 * y / 3543) + "%";
+    dot3.style.left = String(100 * (x - TOP_LEFT_EASTING) / ROCKYARD_WIDTH) + "%";
+    dot3.style.top = String(-100 * (y - TOP_LEFT_NORTHING) / ROCKYARD_HEIGHT) + "%";
     dot3.style.position = "absolute"
     // dot3.style.width = "5%"
     // dot3.style.height = "5%"
@@ -241,8 +261,9 @@ function addGeoPin(content) {
 
         console.log("height", imgHeight, imgWidth)
 
-        dot3.style.left = String((100 * x / 4251) - (100 * imgWidth / document.getElementById("panel_minimap").clientWidth)) + "%";
-        dot3.style.top = String((100 * y / 3543) - (100 * imgHeight / document.getElementById("panel_minimap").clientHeight)) + "%";
+        dot3.style.left = String(100 * (x - TOP_LEFT_EASTING) / ROCKYARD_WIDTH) + "%";
+        dot3.style.top = String(-100 * (y - TOP_LEFT_NORTHING) / ROCKYARD_HEIGHT) + "%";
+
     }
 
         // Add event listener for click event
@@ -255,7 +276,7 @@ function addGeoPin(content) {
         // Highlight the corresponding list item
         var color = 'rgba(200, 255, 0, 0.5)'
 
-        li.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        li.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         // document.getElementById('navigateButton').disabled = false;
         selectedPin = content;
 
@@ -349,19 +370,19 @@ document.getElementById('panel_minimap').addEventListener('contextmenu', functio
     var x = event.clientX - rect.left; // x position within the element.
     var y = event.clientY - rect.top;  // y position within the element.
 
-    var scaleX = 4251 / rect.width; // Adjust to your map's dimensions
-    var scaleY = 3543 / rect.height; // Adjust to your map's dimensions
+    // var scaleX = 4251 / rect.width; // Adjust to your map's dimensions
+    // var scaleY = 3543 / rect.height; // Adjust to your map's dimensions
 
-    var coordX = Math.round(x * scaleX);
-    var coordY = Math.round(y * scaleY);
+    // var coordX = Math.round(x * scaleX);
+    // var coordY = Math.round(y * scaleY);
 
     // Show the right-click menu at the mouse position
 
     var menu = document.getElementById('rightClickMenu');
     //menu.style.visibility = 'visible';
     //menu.style.position = 'absolute'
-    var coordX = 4251 * (event.clientX - rect.left) / rect.width
-    var coordY = 3543 * (event.clientY - rect.top) / rect.height
+    var coordX = ROCKYARD_WIDTH * (event.clientX - rect.left) / rect.width
+    var coordY = ROCKYARD_HEIGHT * (event.clientY - rect.top) / rect.height
 
     document.getElementById("pinX").value = Math.round(coordX)
     document.getElementById("pinY").value = Math.round(coordY)
