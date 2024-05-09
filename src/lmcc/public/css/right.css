@@ -378,8 +378,8 @@
 	top: 0%;
 	right: 0%;
 	height: 50%;
-	aspect-ratio: 5/4;
-	background-image: url('/images/rockYardMap_cropped.png');
+	aspect-ratio: 1.07/1;
+	background-image: url('/images/rockYardMap_cropped.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
