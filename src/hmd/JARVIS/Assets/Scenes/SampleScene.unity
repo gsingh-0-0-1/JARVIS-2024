@@ -3033,7 +3033,7 @@ MonoBehaviour:
   faceUserDefinedTargetTransform: 1
   targetToFace: {fileID: 725866422}
   pivotAxis: 7
-  minDistance: 0.1
+  minDistance: 0.6
   maxDistance: 2
   defaultDistance: 1.3
   maxViewHorizontalDegrees: 45

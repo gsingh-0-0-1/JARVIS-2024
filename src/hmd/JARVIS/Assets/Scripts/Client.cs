@@ -44,6 +44,8 @@ public class Client : MonoBehaviour
 
     public GameObject GameCamera;
 
+    Boolean clearNav = false;
+
     void Start()
     {
         //StartCoroutine(renderGeoPin(0, 0));
@@ -92,6 +94,10 @@ public class Client : MonoBehaviour
                 navToCoords(x, y);
             }
 
+            if (tasktype == "CLEARNAV") {
+                clearNav = true;        
+            }
+
             // Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : " + recievedInformation);
         };
         ws.OnError += (sender, e) => {
@@ -115,10 +121,19 @@ public class Client : MonoBehaviour
            GameObject new_nav_arrow = Instantiate(navarrowPrefab);
            new_nav_arrow.transform.position = new Vector3(
                    GameCamera.transform.position.x + navarrows_to_render[0].x,
-                   1,
+                   2.5f,
                    GameCamera.transform.position.z + navarrows_to_render[0].y);
            navarrows_to_render.Remove(navarrows_to_render[0]);
            new_nav_arrow.SetActive(true);
+           current_navarrows.Add(new_nav_arrow);
+        }
+    
+        if (clearNav) {
+            while (current_navarrows.Count() != 0) {
+                Destroy(current_navarrows[0]);
+                current_navarrows.Remove(current_navarrows[0]);
+            }
+            clearNav = false;
         }
     }
 
@@ -241,6 +256,14 @@ public class Client : MonoBehaviour
         double newXCoord = new_x(target_x, target_y, EVA_x, EVA_y, EVA_Heading); // newXCoord == meters to the right of the EVA (negative - left of EVA)
         double newYCoord = new_y(target_x, target_y, EVA_x, EVA_y, EVA_Heading); // newYCoord == meters in front of EVA (negative - behind EVA)
         double heading = radToDeg(new_Heading(target_Heading, EVA_Heading)); // heading == counter-clockwise target orientation relative to EVA (0 - facing same direction)
+
+        double dist = Math.Pow(Math.Pow(newXCoord, 2.0) + Math.Pow(newYCoord, 2.0), 0.5);
+
+        int spacing = 5;
+ 
+        for (int i = 0; i < (int)(dist / spacing); i++) {
+            navarrows_to_render.Add(new Vector3((float)(i * spacing * newXCoord / dist), (float)(i * spacing * newYCoord / dist), (float) heading));
+        }
 
         navarrows_to_render.Add(new Vector3((float) newXCoord, (float) newYCoord, (float) heading));
     }
