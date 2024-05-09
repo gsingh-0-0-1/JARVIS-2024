@@ -36,7 +36,11 @@ class EVACoordSystem{
     }
 
     public static double[] convert() {
-        
+        double[] arr = new double[3];
+        arr[0] = 0.0;
+        arr[1] = 0.0;
+        arr[2] = 0.0;
+        return arr;
     }
 
     // Using Main2 instead of Main since using different file w/ Main function

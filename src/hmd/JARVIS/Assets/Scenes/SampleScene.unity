@@ -1948,6 +1948,10 @@ MonoBehaviour:
   text: {fileID: 0}
   xpos: 1000
   ypos: 1000
+  TOP_LEFT_EASTING: 298305
+  TOP_LEFT_NORTHING: 3272438
+  BOT_RIGHT_EASTING: 298405
+  BOT_RIGHT_NORTHING: 3272330
 --- !u!114 &529593942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2255,6 +2259,11 @@ CanvasRenderer:
 --- !u!4 &725866422 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5628234118856470563, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+  m_PrefabInstance: {fileID: 1476205174}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &764702480 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2351505566771328562, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
   m_PrefabInstance: {fileID: 1476205174}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &777671786
@@ -4723,8 +4732,16 @@ MonoBehaviour:
   textboxdesc: {fileID: 0}
   dataArrFloat: []
   pins_to_render: []
+  navarrows_to_render: []
+  current_navarrows: []
+  TOP_LEFT_EASTING: 298305
+  TOP_LEFT_NORTHING: 3272438
+  BOT_RIGHT_EASTING: 298405
+  BOT_RIGHT_NORTHING: 3272330
+  navarrowPrefab: {fileID: 1525395790}
   markerPrefab: {fileID: 1974695277}
   mapCanvas: {fileID: 1441370686}
+  GameCamera: {fileID: 764702480}
 --- !u!114 &1193126783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4920,7 +4937,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -0.005}
-  m_SizeDelta: {x: 0.11, y: 0.11}
+  m_SizeDelta: {x: 0.11, y: 0.1177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1441370688
 MonoBehaviour:
@@ -4942,7 +4959,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 021e43d8a70cf97488c55a4cb21fc3cc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7f35fc2b9258e284aba3838dd3fd5cb4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5160,12 +5177,12 @@ GameObject:
   - component: {fileID: 1525395792}
   - component: {fileID: 1525395791}
   m_Layer: 0
-  m_Name: Pointer green arrow breadcrumb
+  m_Name: nav_arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1525395791
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5681,6 +5698,10 @@ MonoBehaviour:
   text: {fileID: 0}
   xpos: 1000
   ypos: 1000
+  TOP_LEFT_EASTING: 298305
+  TOP_LEFT_NORTHING: 3272438
+  BOT_RIGHT_EASTING: 298405
+  BOT_RIGHT_NORTHING: 3272330
 --- !u!114 &1627325943
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,6 +18,12 @@ public class Marker_EVA : MonoBehaviour
     public int xpos = 1000;
     public int ypos = 1000;
 
+    public int TOP_LEFT_EASTING = 298305;
+    public int TOP_LEFT_NORTHING = 3272438;
+    
+    public int BOT_RIGHT_EASTING = 298405;
+    public int BOT_RIGHT_NORTHING = 3272330;
+
     void Start()
     {
         // Call the function to fetch JSON data initially
@@ -68,7 +74,13 @@ public class Marker_EVA : MonoBehaviour
                     y = recievedInformation["imu"]["eva2"]["posy"].GetValue<float>();
                 }
 
-                transform.localPosition = new Vector3((0.11f * (x / 4251f)) - 0.055f, (0.11f * (-y / 3545f)) + 0.055f, -0.002f);
+                double mapHeight = 0.1177;
+                double mapWidth = 0.11;
+
+                float xfloat = (float)(((x - TOP_LEFT_EASTING) / (BOT_RIGHT_EASTING - TOP_LEFT_EASTING)) * mapHeight - mapHeight * 0.5);
+                float yfloat = (float)(((y - TOP_LEFT_NORTHING) / (TOP_LEFT_NORTHING - BOT_RIGHT_NORTHING)) * mapWidth + mapWidth * 0.5);
+
+                transform.localPosition = new Vector3(xfloat, yfloat, -0.002f);
 
                 // float hr_float = recievedInformation["telemetry"]["eva1"]["heart_rate"].GetValue<float>();
                 // int hr_int = (int)hr_float;
