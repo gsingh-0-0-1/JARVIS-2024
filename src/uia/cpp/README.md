@@ -5,14 +5,14 @@
 
 ## Python
 
-```cd JARVIS-2024/src/uia/src```
+```cd JARVIS-2024/src/uia/cpp/src```
 ```python3 main.py```
 
 ## C++
 
 Create a `build` directory in `uia` directory
 
-```cd JARVIS-2024/src/uia/build/```
+```cd JARVIS-2024/src/uia/cpp/build/```
 ```cmake .. && make```
 ```./detect_uia```
 
