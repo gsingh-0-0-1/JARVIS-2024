@@ -123,6 +123,7 @@ public class Client : MonoBehaviour
                    GameCamera.transform.position.x + navarrows_to_render[0].x,
                    2.5f,
                    GameCamera.transform.position.z + navarrows_to_render[0].y);
+           new_nav_arrow.transform.rotation = Quaternion.Euler(90.0f, navarrows_to_render[0].z, 0.0f);
            navarrows_to_render.Remove(navarrows_to_render[0]);
            new_nav_arrow.SetActive(true);
            current_navarrows.Add(new_nav_arrow);
@@ -249,9 +250,17 @@ public class Client : MonoBehaviour
         JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
         double EVA_x = IMUJson["imu"]["eva1"]["posx"].GetValue<double>();
         double EVA_y = IMUJson["imu"]["eva1"]["posy"].GetValue<double>();
-        double EVA_Heading = degToRad(IMUJson["imu"]["eva1"]["heading"].GetValue<double>());
+        // the TSS will give heading from -180 to 180, so we need to add 180
+        double rawheading = IMUJson["imu"]["eva1"]["heading"].GetValue<double>();
+        if (rawheading < 0) {
+            rawheading = rawheading + 180;
+        }
+        double EVA_Heading = degToRad(rawheading);
 
-        double target_Heading = Math.Atan2(target_y - EVA_y, target_x - EVA_x);
+        // switch x and y due to the orientation of the camera "inside" the map plane
+        double target_Heading = Math.Atan2(target_x - EVA_x, target_y - EVA_y);
+
+        Debug.Log("target heading " + target_Heading.ToString());
 
         double newXCoord = new_x(target_x, target_y, EVA_x, EVA_y, EVA_Heading); // newXCoord == meters to the right of the EVA (negative - left of EVA)
         double newYCoord = new_y(target_x, target_y, EVA_x, EVA_y, EVA_Heading); // newYCoord == meters in front of EVA (negative - behind EVA)
