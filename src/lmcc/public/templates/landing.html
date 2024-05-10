@@ -21,12 +21,20 @@
 
 </body>
 <script type="text/javascript">
+    var gateway_addr_inp = document.getElementById("gateway_addr")
+    var ev1_addr_inp = document.getElementById("ev1_addr");
+    var ev2_addr_inp = document.getElementById("ev2_addr");
+
+    function constructParamStr() {
+        return "?gateway_ip=" + gateway_addr_inp.value + "&ev1_addr=" + ev1_addr_inp.value + "&ev2_addr=" + ev2_addr_inp.value
+    }
+
 	document.getElementById("leftbutton").onclick = function() {
-		window.location.href = "/left"
+            window.location.href = "/left" + constructParamStr();
 	}
 
 	document.getElementById("rightbutton").onclick = function() {
-		window.location.href = "/right"
+		window.location.href = "/right" + constructParamStr();
 	}
 
 </script>

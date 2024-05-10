@@ -471,10 +471,20 @@ var queryString = window.location.search;
 var urlParams = new URLSearchParams(queryString);
 
 var GATEWAY_IP = urlParams.get("gateway_ip");
+var EV1_IP = urlParams.get("ev1_addr");
+var EV2_IP = urlParams.get("ev2_addr");
 
 if (GATEWAY_IP == undefined) {
     GATEWAY_IP = prompt("Enter Gateway IP")
 }
+
+var hololens_feed_url = "https://HMD_ADDR/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true"
+
+document.getElementById("camfeed_1_src").src = hololens_feed_url.replaceAll("HMD_ADDR", EV1_IP)
+document.getElementById("camfeed_2_src").src = hololens_feed_url.replaceAll("HMD_ADDR", EV2_IP)
+
+document.getElementById("camfeed_1_vid").load()
+document.getElementById("camfeed_2_vid").load()
 
 var ws = new WebSocket("ws://" + GATEWAY_IP + ":4761");
 
@@ -531,7 +541,7 @@ fetch('/localdata/BREADCRUMBS1')
 })
 .then(data => {
     for (let pin_num of Object.keys(data)) {
-        console.log("load/creating bcrumb", data[pin_num])
+        //console.log("load/creating bcrumb", data[pin_num])
         addBreadCrumb1(data[pin_num]["content"]);
     }
 })
@@ -549,7 +559,7 @@ fetch('/localdata/BREADCRUMBS2')
 })
 .then(data => {
     for (let pin_num of Object.keys(data)) {
-        console.log("load/creating bcrumb", data[pin_num])
+        //console.log("load/creating bcrumb", data[pin_num])
         addBreadCrumb2(data[pin_num]["content"]);
     }
 })
