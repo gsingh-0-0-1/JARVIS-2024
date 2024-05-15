@@ -430,53 +430,15 @@ document.querySelector('#rightClickMenu button').addEventListener('click', funct
     // make function call 
 //}
 
-function defineWebSocketHandlers() {
-    ws.onmessage = async function (event, isBinary) {
-    	var data = await event.data.text();
-    	var message = JSON.parse(data);
-    	var message_type = message["type"];
-    	console.log('Received ' + message_type + ' from ' + message["sender"]);
 
-    	if (message_type == "GEOPIN") {
-    		//alert("we got a geopin");
-            // console.log(message["content"]);
-    		addGeoPin(message["content"]);
-    	} else if (message_type == "BREADCRUMBS1") {
-    		// Display the list of breadcrumbs
-    		// breadcrumbList.innerHTML = '';
-            // console.log(message.content)
-    		// message.content.forEach(breadcrumb => {
-            addBreadCrumb1(message.content)
-    		/*
-            var li = document.createElement('li');
-    		var coords = message.content.coords;
-    		var desc = message.content.desc;
-    		li.textContent = `${desc}: (${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
-    		breadcrumbList.appendChild(li);
-            */
-    		// });
-    	}  else if (message_type == "BREADCRUMBS2") {
-            addBreadCrumb2(message.content)
-
-        }
-    };
-}
 
 function addNewNote() {
     
 }
 
 // we need to keep this port value fixed, I guess
-var queryString = window.location.search;
-var urlParams = new URLSearchParams(queryString);
-
-var GATEWAY_IP = urlParams.get("gateway_ip");
 var EV1_IP = urlParams.get("ev1_addr");
 var EV2_IP = urlParams.get("ev2_addr");
-
-if (GATEWAY_IP == undefined) {
-    GATEWAY_IP = prompt("Enter Gateway IP")
-}
 
 var hololens_feed_url = "https://HMD_ADDR/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true"
 
@@ -485,10 +447,6 @@ document.getElementById("camfeed_2_src").src = hololens_feed_url.replaceAll("HMD
 
 document.getElementById("camfeed_1_vid").load()
 document.getElementById("camfeed_2_vid").load()
-
-var ws = new WebSocket("ws://" + GATEWAY_IP + ":4761");
-
-defineWebSocketHandlers();
 
 function clearNavTarget() {
     var clear_message = {
