@@ -59,7 +59,14 @@ LOCAL_DATA["ERRORS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
-    let message = JSON.parse(event.data);
+    var message;
+    try {
+        message = JSON.parse(event.data);
+    } catch (error) {
+        console.log("JSON ERROR")
+        console.log(message)
+        console.log()
+    }
     let message_type = message["type"];
     console.log('LMCC: Received ' + message_type + ' from ' + message["sender"]);
     console.log(message); // Log the full message only once
