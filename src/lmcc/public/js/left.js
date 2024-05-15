@@ -41,7 +41,7 @@ function sendUIA(activeState) {
         content: {
         	dummy : ''
         },
-        sender: this_sender, // Automatically set; adjust if needed for HMD
+        sender: 'LMCC', // Automatically set; adjust if needed for HMD
         type: msgtype,
     };
 
