@@ -29,6 +29,27 @@ function createTask() {
     .catch(error => console.error('Error creating task:', error));
 }
 
+function sendUIA(activeState) {
+
+	var msgtype = 'UIA_OFF';
+
+	if (activeState) {
+		msgtype = 'UIA_ON'
+	}
+
+    var message = {
+        content: {
+        	dummy : ''
+        },
+        sender: this_sender, // Automatically set; adjust if needed for HMD
+        type: msgtype,
+    };
+
+    // document.getElementById("selectedPin").innerHTML = "- Nav Target -"
+
+    ws.send(JSON.stringify(message));
+}
+
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }

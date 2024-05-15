@@ -74,8 +74,16 @@
             </div>
 
             <!-- <br><br> -->
-            <button id="send_task" onclick="createTask()">
+            <button class="taskpanelbutton" id="send_task" onclick="createTask()">
                 Send Task
+            </button>
+
+            <button class="taskpanelbutton" id="send_uia_on" onclick="sendUIA(true)">
+                UIA ON
+            </button>
+
+            <button class="taskpanelbutton" id="send_uia_off" onclick="sendUIA(false)">
+                UIA OFF
             </button>
 
             <div id="task_confirmation_panel">
