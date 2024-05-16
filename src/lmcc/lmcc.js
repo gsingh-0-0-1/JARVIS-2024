@@ -66,6 +66,7 @@ ws.onmessage = function (event) {
         console.log("JSON ERROR")
         console.log(message)
         console.log()
+        return;
     }
     let message_type = message["type"];
     console.log('LMCC: Received ' + message_type + ' from ' + message["sender"]);
