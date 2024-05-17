@@ -435,6 +435,23 @@
     opacity: 1; /* Ensure the current dot is fully opaque */
 }
 
+.roverdot {
+    position: absolute;
+    height: 5px;
+    width: 5px;
+    background-color: rgb(200, 200, 200);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 1; /* Default opacity for new dots */
+    /* border-left: 5px solid transparent;
+    border-right: 5px solid transparent; */
+	border: 0.5vh solid rgb(20, 20, 20);
+}
+
+.roverdot:hover #rover_minimap_text {
+    visibility: visible;
+}
+
 /* .mapdot3 {
     position: absolute;
     height: 5px;

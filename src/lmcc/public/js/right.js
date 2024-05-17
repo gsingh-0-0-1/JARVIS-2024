@@ -23,9 +23,11 @@ function defineWebSocketHandlers() {
             breadcrumbList.appendChild(li);
             */
             // });
-        }  else if (message_type == "BREADCRUMBS2") {
+        } else if (message_type == "BREADCRUMBS2") {
             addBreadCrumb2(message.content)
 
+        } else if (message_type == "ROVERPOS") {
+            addBreadCrumb(message.content, 3)
         }
     };
 }
@@ -37,6 +39,7 @@ var LOCAL_DATA = {}
 LOCAL_DATA["GEOPINS"] = [];
 LOCAL_DATA["BREADCRUMBS1"] = [];
 LOCAL_DATA["BREADCRUMBS2"] = [];
+LOCAL_DATA["ROVERPOS"] = []
 
 const TOP_LEFT_EASTING = 298305;
 const TOP_LEFT_NORTHING = 3272438;
@@ -133,6 +136,82 @@ function toggleBreadcrumbs() {
 
 
 var MAPDOTS1 = []
+var MAPDOTS2 = []
+var ROVERPOS = []
+
+function addBreadCrumb(content, n) {
+    if (n == 1) {
+        LOCAL_DATA["BREADCRUMBS1"].push(content);
+    }
+    if (n == 2) {
+        LOCAL_DATA["BREADCRUMBS2"].push(content);
+    }
+    if (n == 3) {
+        LOCAL_DATA["ROVERPOS"].push(content);
+    }
+
+
+    var li1 = document.createElement('li');
+    var coords = content.coords;
+    li1.textContent = `(${coords.x.toFixed(2)}, ${coords.y.toFixed(2)})`;
+    // breadcrumbList1.prepend(li1);
+
+    var dot;
+
+    if (n == 1 || n == 2) {
+        dot = document.createElement("span");
+        dot.classList.add("mapdot" + String(n), "current-dot" + String(n)); // Add "current-dot" class to the new dot
+    }
+    if (n == 3) {
+        dot = document.getElementById("roverdot");
+    }
+
+    var modified_x = coords.x - TOP_LEFT_EASTING;
+    var modified_y = -1 * (coords.y - TOP_LEFT_NORTHING);
+    dot.style.left = String(100 * modified_x.toFixed(2) / ROCKYARD_WIDTH) + "%";
+    dot.style.top = String(100 * modified_y.toFixed(2) / ROCKYARD_HEIGHT) + "%";
+
+    if (n == 1 || n == 2) {
+        dot.appendChild(document.getElementById("EV" + String(n) + "_minimap_text"));
+    }
+    if (n == 3) {
+        dot.appendChild(document.getElementById("rover_minimap_text"))
+    }
+
+    // Add the new dot to the beginning of the array
+    if (n == 1 || n == 2) {
+        document.getElementById("panel_minimap").appendChild(dot);
+        if (n == 1) {
+            MAPDOTS1.unshift(dot);
+        }
+        if (n == 2) {
+            MAPDOTS2.unshift(dot)
+        }
+    }
+    if (n == 3) {
+        //ROVERPOS.unshift(dot);
+    }
+
+    // Update the appearance of existing dots
+    for (var dotlist of [MAPDOTS1, MAPDOTS2]) {
+        for (let i = 0; i < dotlist.length; i++) {
+            let opacity;
+            if (i <= 10) {
+                // Rapidly decrease opacity for the first 5 dots
+                opacity = 1 - (i * 0.07);
+            } else {
+                // Set a low, fixed opacity for the trailing dots
+                opacity = 0.3;
+            }
+            dotlist[i].style.opacity = opacity;
+
+            // Remove the "current-dot" class from the trailing dots
+            if (i > 0) {
+                dotlist[i].classList.remove("current-dot1");
+            }
+        }
+    }
+}
 
 function addBreadCrumb1(content) {
     LOCAL_DATA["BREADCRUMBS1"].push(content);
@@ -175,9 +254,6 @@ function addBreadCrumb1(content) {
         }
     }
 }
-
-
-var MAPDOTS2 = []
 
 function addBreadCrumb2(content) {
     LOCAL_DATA["BREADCRUMBS2"].push(content);
