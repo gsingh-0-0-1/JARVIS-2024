@@ -10,7 +10,7 @@ using System.Text.Json.Nodes;
 using SocketIOClass = SocketIOClient.SocketIO;
 using WebSocketSharp;
 
-public class bioDataPanel : MonoBehaviour
+public class taskPanel : MonoBehaviour
 {
     public TMP_Text text;
     public static string serverURL = "http://data.cs.purdue.edu:14141";
@@ -25,26 +25,16 @@ public class bioDataPanel : MonoBehaviour
 
     public int i = 0;
 
-    void Start()
+    public void Start_Custom(String host, String gateway_ip)
     {
         // Call the function to fetch JSON data initially
         StartCoroutine(UpdateDataPeriodically());
 
-        TextAsset gateway = Resources.Load("gateway") as TextAsset;
-        string gateway_ip = gateway.ToString().Split("\n")[0];
-
-        Debug.Log("GATEWAY RELOG http://" + gateway_ip + ":4761");
-
-        /*
-        var socketio_client = new SocketIOClass("http://" + gateway_ip + ":4762");
-
-        socketio_client.OnConnected += (sender, e) => {
-            Debug.Log("socket io connected");
-        };
-        */
+        // TextAsset gateway = Resources.Load("gateway") as TextAsset;
+        // String gateway_ip = gateway.ToString().Split("\n")[0];
 
         
-        ws = new WebSocket("ws://data.cs.purdue.edu:4761");
+        ws = new WebSocket("ws://" + gateway_ip + ":4761");
         ws.ConnectAsync();
         ws.OnOpen += (sender, e) => {
             Debug.Log("Connected");
@@ -106,15 +96,7 @@ public class bioDataPanel : MonoBehaviour
             else { 
                 text.SetText("No Active Tasks");
             }
-            // yield return StartCoroutine(FetchBioJSONData());
         }
     }
 
-    IEnumerator FetchBioJSONData()
-    {
-        // Debug.Log("updating panel text");
-        text.SetText(panelText);
-        yield break;
-        
-    }
 }
