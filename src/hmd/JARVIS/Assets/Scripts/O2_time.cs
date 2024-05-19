@@ -1,20 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System;
 
 public class O2_time : MonoBehaviour
 {
     public TMP_Text text;
-    public static string serverURL = "http://data.cs.purdue.edu:14141/";
-    private string telemetryEndpoint = serverURL + "/json_data/teams/0/TELEMETRY.json";
+    public String serverURL = "http://data.cs.purdue.edu:14141/";
+    private String telemetryEndpoint;
     public Image barImage;
 
-    void Start()
+    public void Start_Custom(String host, String gateway_ip)
     {
+        serverURL = "http://" + host + ":14141/";
+        telemetryEndpoint = serverURL + "/json_data/teams/7/TELEMETRY.json";
         // Call the function to fetch JSON data initially
         StartCoroutine(UpdateDataPeriodically());
     }

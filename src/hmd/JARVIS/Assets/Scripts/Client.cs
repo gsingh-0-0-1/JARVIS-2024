@@ -16,7 +16,11 @@ using SocketIOClass = SocketIOClient.SocketIO;
 
 public class Client : MonoBehaviour
 {
+    public GameObject StartupInfoObject;
+    public Startup startupInfoObjectScript;
+
     public TSScConnection TSSc;
+
 
     WebSocket ws;
 
@@ -38,6 +42,8 @@ public class Client : MonoBehaviour
     public int BOT_RIGHT_EASTING = 298405;
     public int BOT_RIGHT_NORTHING = 3272330;
 
+    public int whoAmI;
+
     public GameObject navarrowPrefab;
     public GameObject markerPrefab;
     public GameObject mapCanvas;
@@ -46,23 +52,25 @@ public class Client : MonoBehaviour
 
     Boolean clearNav = false;
 
-    void Start()
+    void Start() {
+    }
+
+    public void Start_Custom(String host, String gateway_ip, int player)
     {
-        //StartCoroutine(renderGeoPin(0, 0));
+        whoAmI = player;
+        // startupInfoObjectScript = StartupInfoObject.GetComponent<Startup>();
 
-        // soundClip = AudioClip.Create("sound_chunk", 10000, 1, 44100, false);
-
-        // TSSc = new TSScConnection();
-        string host = "data.cs.purdue.edu";
+        //String host = "data.cs.purdue.edu";//startupInfoObjectScript.TSS_ADDR;
         TSSc.ConnectToHost(host, 7);
 
-        TextAsset gateway = Resources.Load("gateway") as TextAsset;
-        string gateway_ip = gateway.ToString().Split("\n")[0];
+        //TextAsset gateway = Resources.Load<TextAsset>("gateway");
+        //String gateway_ip = gateway.text.Split("\n")[0];
+        //String gateway_ip = startupInfoObjectScript.GATEWAY_ADDR;
 
-        Debug.Log("GATEWAY IP " + gateway_ip);
+        Debug.Log("GATEWAY IP " + gateway_ip + "|");
 
         // TSSc = new TSScConnection();
-        ws = new WebSocket("ws://data.cs.purdue.edu:4761");
+        ws = new WebSocket("ws://" + gateway_ip + ":4761");
         ws.ConnectAsync();
         ws.OnOpen += (sender, e) => {
                Debug.Log("Connected");
@@ -119,11 +127,14 @@ public class Client : MonoBehaviour
            // TODO: account for heading via the z-component of navarrows_to_render[0]
 
            GameObject new_nav_arrow = Instantiate(navarrowPrefab);
-           new_nav_arrow.transform.position = new Vector3(
-                   GameCamera.transform.position.x + navarrows_to_render[0].x,
-                   2.5f,
-                   GameCamera.transform.position.z + navarrows_to_render[0].y);
-           new_nav_arrow.transform.rotation = Quaternion.Euler(90.0f, navarrows_to_render[0].z, 0.0f);
+           Vector3 transformedPos = GameCamera.transform.TransformVector(navarrows_to_render[0].x, 0, navarrows_to_render[0].y);
+           new_nav_arrow.transform.position = new Vector3(GameCamera.transform.position.x + transformedPos.x, 2.5f, GameCamera.transform.position.z + transformedPos.z);
+           //new_nav_arrow.transform.position = new Vector3(
+           //        GameCamera.transform.position.x + navarrows_to_render[0].x,
+           //        2.5f,
+           //        GameCamera.transform.position.z + navarrows_to_render[0].y);
+           new_nav_arrow.transform.forward = transformedPos;
+           new_nav_arrow.transform.rotation = Quaternion.Euler(90.0f, (float)(Math.Atan2(transformedPos.x, transformedPos.z) * 180 / Math.PI), 0.0f);
            navarrows_to_render.Remove(navarrows_to_render[0]);
            new_nav_arrow.SetActive(true);
            current_navarrows.Add(new_nav_arrow);
@@ -143,10 +154,10 @@ public class Client : MonoBehaviour
         Debug.Log("geo button clicked");
         string IMUJsonString = TSSc.GetIMUJsonString();
         JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
-        float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
-        float posy = IMUJson["imu"]["eva1"]["posy"].GetValue<float>();
+        float posx = IMUJson["imu"]["eva" + whoAmI.ToString()]["posx"].GetValue<float>();
+        float posy = IMUJson["imu"]["eva" + whoAmI.ToString()]["posy"].GetValue<float>();
 
-        SendGEOPin(posx, posy, "EVA1 Coords");
+        SendGEOPin(posx, posy, "EVA" + whoAmI.ToString() + " Coords");
 
         renderGeoPin(posx, posy);
     }
@@ -248,19 +259,28 @@ public class Client : MonoBehaviour
     void navToCoords(float target_x, float target_y) {
         string IMUJsonString = TSSc.GetIMUJsonString();
         JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
-        double EVA_x = IMUJson["imu"]["eva1"]["posx"].GetValue<double>();
-        double EVA_y = IMUJson["imu"]["eva1"]["posy"].GetValue<double>();
-        // the TSS will give heading from -180 to 180, so we need to add 180
-        double rawheading = IMUJson["imu"]["eva1"]["heading"].GetValue<double>();
-        if (rawheading < 0) {
-            rawheading = rawheading + 180;
-        }
+        double EVA_x = IMUJson["imu"]["eva" + whoAmI.ToString()]["posx"].GetValue<double>();
+        double EVA_y = IMUJson["imu"]["eva" + whoAmI.ToString()]["posy"].GetValue<double>();
+        // the TSS will give heading from -180 to 180, so we need to add 360
+        double rawheading = IMUJson["imu"]["eva" + whoAmI.ToString()]["heading"].GetValue<double>();
+        //if (rawheading < 0) {
+        rawheading = (360 + rawheading) % 360;
+        //rawheading = (-rawheading + 90) % 360;
+        //}
         double EVA_Heading = degToRad(rawheading);
 
         // switch x and y due to the orientation of the camera "inside" the map plane
-        double target_Heading = Math.Atan2(target_x - EVA_x, target_y - EVA_y);
 
-        Debug.Log("target heading " + target_Heading.ToString());
+
+        double target_Heading = 180 * Math.Atan2(target_y - EVA_y, target_x - EVA_x) / Math.PI;
+        target_Heading = degToRad((-target_Heading + 90) % 360);
+
+        //Debug.Log("target heading " + radToDeg(target_Heading).ToString());
+
+        //Debug.Log("EVA heading " + radToDeg(EVA_Heading).ToString());
+
+        // since the UTM northing inverts things, I'm just going to flip the EVA heading
+        EVA_Heading = 2 * Math.PI - EVA_Heading;
 
         double newXCoord = new_x(target_x, target_y, EVA_x, EVA_y, EVA_Heading); // newXCoord == meters to the right of the EVA (negative - left of EVA)
         double newYCoord = new_y(target_x, target_y, EVA_x, EVA_y, EVA_Heading); // newYCoord == meters in front of EVA (negative - behind EVA)
@@ -270,8 +290,10 @@ public class Client : MonoBehaviour
 
         int spacing = 5;
  
-        for (int i = 0; i < (int)(dist / spacing); i++) {
-            navarrows_to_render.Add(new Vector3((float)(i * spacing * newXCoord / dist), (float)(i * spacing * newYCoord / dist), (float) heading));
+        for (int i = 1; i < (int)(dist / spacing); i++) {
+            Vector3 newVec = new Vector3((float)(i * spacing * newXCoord / dist), (float)(i * spacing * newYCoord / dist), (float) heading);
+            //Debug.Log(newVec);
+            navarrows_to_render.Add(newVec);
         }
 
         navarrows_to_render.Add(new Vector3((float) newXCoord, (float) newYCoord, (float) heading));
