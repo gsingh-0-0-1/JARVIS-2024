@@ -259,10 +259,10 @@ public class Client : MonoBehaviour
     void navToCoords(float target_x, float target_y) {
         string IMUJsonString = TSSc.GetIMUJsonString();
         JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
-        double EVA_x = IMUJson["imu"]["eva1"]["posx"].GetValue<double>();
-        double EVA_y = IMUJson["imu"]["eva1"]["posy"].GetValue<double>();
+        double EVA_x = IMUJson["imu"]["eva" + whoAmI.ToString()]["posx"].GetValue<double>();
+        double EVA_y = IMUJson["imu"]["eva" + whoAmI.ToString()]["posy"].GetValue<double>();
         // the TSS will give heading from -180 to 180, so we need to add 360
-        double rawheading = IMUJson["imu"]["eva1"]["heading"].GetValue<double>();
+        double rawheading = IMUJson["imu"]["eva" + whoAmI.ToString()]["heading"].GetValue<double>();
         //if (rawheading < 0) {
         rawheading = (360 + rawheading) % 360;
         //rawheading = (-rawheading + 90) % 360;
@@ -290,7 +290,7 @@ public class Client : MonoBehaviour
 
         int spacing = 5;
  
-        for (int i = 0; i < (int)(dist / spacing); i++) {
+        for (int i = 1; i < (int)(dist / spacing); i++) {
             Vector3 newVec = new Vector3((float)(i * spacing * newXCoord / dist), (float)(i * spacing * newYCoord / dist), (float) heading);
             //Debug.Log(newVec);
             navarrows_to_render.Add(newVec);

@@ -3097,7 +3097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 772698228958139833, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.024
+      value: 0.033
       objectReference: {fileID: 0}
     - target: {fileID: 881672223418140901, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_text
@@ -3197,7 +3197,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986024626314766531, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.03
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024310789677354279, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: 5183353073573146339, guid: 175cf7e8b8559f342806a0f7d7f3082a, type: 3}
       propertyPath: m_Enabled
@@ -5854,6 +5858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TSS_ADDR: 
   GATEWAY_ADDR: 
+  PLAYER: 0
   TSS_Input: {fileID: 0}
   GATEWAY_Input: {fileID: 0}
   GeopinButton: {fileID: 1193126771}
@@ -6822,6 +6827,7 @@ MonoBehaviour:
   TOP_LEFT_NORTHING: 3272438
   BOT_RIGHT_EASTING: 298405
   BOT_RIGHT_NORTHING: 3272330
+  whoAmI: 0
   navarrowPrefab: {fileID: 1525395790}
   markerPrefab: {fileID: 1974695277}
   mapCanvas: {fileID: 1441370686}
@@ -9582,7 +9588,7 @@ PrefabInstance:
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1833150784}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -9593,7 +9599,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: bioDataPanel, Assembly-CSharp
+      value: taskPanel, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

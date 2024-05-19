@@ -331,6 +331,10 @@ public class UIADetectionHandler : MonoBehaviour
         // the fourth and last point (idxs 6 and 7) is the transformed (W, 0) point
         double approxUIAPixelWidth = Math.Pow(Math.Pow(outerFrame[6] - outerFrame[0], 2.0) + Math.Pow(outerFrame[7] - outerFrame[1], 2.0), 0.5);
 
+        if (approxUIAPixelWidth < 1) {
+            return;
+        }
+
         // Debug.Log(approxUIAPixelHeight.ToString() + " " + approxUIAPixelWidth.ToString());
 
         // in meters, CHANGE THIS LATER
