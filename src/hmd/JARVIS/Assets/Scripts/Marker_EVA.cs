@@ -5,6 +5,7 @@ using System.Collections;
 using TMPro;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System;
 
 public class Marker_EVA : MonoBehaviour
 {
@@ -24,10 +25,9 @@ public class Marker_EVA : MonoBehaviour
     public int BOT_RIGHT_EASTING = 298405;
     public int BOT_RIGHT_NORTHING = 3272330;
 
-    void Start()
+    public void Start_Custom(String host, String gateway_ip)
     {
         // Call the function to fetch JSON data initially
-        string host = "data.cs.purdue.edu";
         TSSc.ConnectToHost(host, 7);
         StartCoroutine(UpdateEVLocs());
 
@@ -38,15 +38,48 @@ public class Marker_EVA : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1f); // Adjust the interval as needed
-            yield return StartCoroutine(FetchEVLocs());
+            yield return StartCoroutine(FetchLoc());
         }
     }
 
-    IEnumerator FetchEVLocs()
+    IEnumerator FetchLoc()
     {
+        JsonNode locJsonData;
 
-        
+        float x = 0.0f;
+        float y = 0.0f;
+  
 
+        if (gameObject.name == "Marker_EVA1") {
+            string IMUJsonString = TSSc.GetIMUJsonString();
+            locJsonData = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
+            x = locJsonData["imu"]["eva1"]["posx"].GetValue<float>();
+            y = locJsonData["imu"]["eva1"]["posy"].GetValue<float>();
+        }
+        if (gameObject.name == "Marker_EVA2") {
+            string IMUJsonString = TSSc.GetIMUJsonString();
+            locJsonData = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
+            x = locJsonData["imu"]["eva2"]["posx"].GetValue<float>();
+            y = locJsonData["imu"]["eva2"]["posy"].GetValue<float>();
+        }
+        if (gameObject.name == "Marker_Rover") {
+            string RoverJsonString = TSSc.GetROVERJsonString();
+            locJsonData = JsonSerializer.Deserialize<JsonNode>(RoverJsonString)!;
+            x = locJsonData["rover"]["posx"].GetValue<float>();
+            y = locJsonData["rover"]["posy"].GetValue<float>();
+        }        
+
+        double mapHeight = 0.1177;
+        double mapWidth = 0.11;
+
+        float xfloat = (float)(((x - TOP_LEFT_EASTING) / (BOT_RIGHT_EASTING - TOP_LEFT_EASTING)) * mapHeight - mapHeight * 0.5);
+        float yfloat = (float)(((y - TOP_LEFT_NORTHING) / (TOP_LEFT_NORTHING - BOT_RIGHT_NORTHING)) * mapWidth + mapWidth * 0.5);
+
+        transform.localPosition = new Vector3(xfloat, yfloat, -0.002f);
+
+        yield break;
+
+        /*
         using (UnityWebRequest request = UnityWebRequest.Get(telemetryEndpoint))
         {
             yield return request.SendWebRequest();
@@ -73,6 +106,9 @@ public class Marker_EVA : MonoBehaviour
                     x = recievedInformation["imu"]["eva2"]["posx"].GetValue<float>();
                     y = recievedInformation["imu"]["eva2"]["posy"].GetValue<float>();
                 }
+                if (gameObject.name == "Marker_Rover") {
+                    
+                }
 
                 double mapHeight = 0.1177;
                 double mapWidth = 0.11;
@@ -89,6 +125,7 @@ public class Marker_EVA : MonoBehaviour
 
             //yield break;
         }
+        */
         
     }
 }

@@ -42,6 +42,8 @@ public class Client : MonoBehaviour
     public int BOT_RIGHT_EASTING = 298405;
     public int BOT_RIGHT_NORTHING = 3272330;
 
+    public int whoAmI;
+
     public GameObject navarrowPrefab;
     public GameObject markerPrefab;
     public GameObject mapCanvas;
@@ -53,8 +55,9 @@ public class Client : MonoBehaviour
     void Start() {
     }
 
-    public void Start_Custom(String host, String gateway_ip)
+    public void Start_Custom(String host, String gateway_ip, int player)
     {
+        whoAmI = player;
         // startupInfoObjectScript = StartupInfoObject.GetComponent<Startup>();
 
         //String host = "data.cs.purdue.edu";//startupInfoObjectScript.TSS_ADDR;
@@ -151,10 +154,10 @@ public class Client : MonoBehaviour
         Debug.Log("geo button clicked");
         string IMUJsonString = TSSc.GetIMUJsonString();
         JsonNode IMUJson = JsonSerializer.Deserialize<JsonNode>(IMUJsonString)!;
-        float posx = IMUJson["imu"]["eva1"]["posx"].GetValue<float>();
-        float posy = IMUJson["imu"]["eva1"]["posy"].GetValue<float>();
+        float posx = IMUJson["imu"]["eva" + whoAmI.ToString()]["posx"].GetValue<float>();
+        float posy = IMUJson["imu"]["eva" + whoAmI.ToString()]["posy"].GetValue<float>();
 
-        SendGEOPin(posx, posy, "EVA1 Coords");
+        SendGEOPin(posx, posy, "EVA" + whoAmI.ToString() + " Coords");
 
         renderGeoPin(posx, posy);
     }

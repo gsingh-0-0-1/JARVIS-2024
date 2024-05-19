@@ -20,6 +20,7 @@ public class Startup : MonoBehaviour
 
     public String TSS_ADDR = null;
     public String GATEWAY_ADDR = null;
+    public int PLAYER;
 
     public TMP_Text TSS_Input;
     public TMP_Text GATEWAY_Input;
@@ -29,6 +30,10 @@ public class Startup : MonoBehaviour
     public GameObject TaskButton;
     public GameObject HeartRate;
     public GameObject O2TimeLeft;
+
+    public GameObject EVA1;
+    public GameObject EVA2;
+    public GameObject Rover;
 
     void Start() {
         StartCoroutine(FetchIPData());
@@ -42,7 +47,11 @@ public class Startup : MonoBehaviour
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Error fetching data: " + request.error);
+                // set default here if needed
+                TSS_ADDR = "";
+                GATEWAY_ADDR = "";
+                startScripts = true;
+                //Debug.LogError("Error fetching data: " + request.error);
             }
             else
             {
@@ -50,6 +59,7 @@ public class Startup : MonoBehaviour
                 Debug.Log("FETCHED " + textData[0] + " " + textData[1]);
                 TSS_ADDR = textData[0];
                 GATEWAY_ADDR = textData[1];
+                PLAYER = Convert.ToInt32(textData[2]);
                 startScripts = true;
             }
         }
@@ -57,11 +67,14 @@ public class Startup : MonoBehaviour
 
     void Update() {
         if (startScripts) {
-            GeopinButton.GetComponent<Client>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
+            GeopinButton.GetComponent<Client>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
             TaskButton.GetComponent<taskPanel>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
             Task_Panel.GetComponent<UIADetectionHandler>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
             HeartRate.GetComponent<rate>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
             O2TimeLeft.GetComponent<O2_time>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
+            EVA1.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
+            EVA2.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
+            Rover.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
             startScripts = false;
         }
     }
