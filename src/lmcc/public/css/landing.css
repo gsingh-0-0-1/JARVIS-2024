@@ -32,13 +32,46 @@ body {
 }
 
 #leftbutton {
-	left: 30%;
-	top: 50%;
-	transform: translate(-50%, -50%);
+    left: 30%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #rightbutton {
-	left: 70%;
-	top: 50%;
-	transform: translate(-50%, -50%);
+    left: 70%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
+
+.userinput {
+    position: fixed;
+    background-color: #679;
+    top: 75%;
+    transform: translate(-50%, -50%);
+    border: none;
+    padding: 1% 1%;
+    color: #ddd;
+    font-family: Source Code Pro;
+}
+
+.userinput:focus {
+    outline: none;
+}
+
+.userinput::placeholder {
+    color: #aaa;
+}
+
+#gateway_addr {
+    left: 25%;
+}
+
+#ev1_addr {
+    left: 50%;
+}
+
+#ev2_addr {
+    left: 75%;
+}
+
+

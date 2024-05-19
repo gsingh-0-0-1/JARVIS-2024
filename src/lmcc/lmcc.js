@@ -30,6 +30,7 @@ const USER = "LMCC";
 
 const TSS_FULL_HTTP = "http://" + TSS_ADDR + ":" + TSS_PORT
 const GEO_ENDPOINT = TSS_FULL_HTTP + "/json_data/IMU.json"
+const ROVER_ENDPOINT = TSS_FULL_HTTP + "/json_data/ROVER.json"
 const CHECK_STATUIA = TSS_FULL_HTTP + "/json_data/UIA.json"
 const TELEMTRY = 	TSS_FULL_HTTP + "/json_data/teams/7/TELEMETRY.json"
 const CHECK_STATDCU = TSS_FULL_HTTP + "/json_data/DCU.json"
@@ -59,7 +60,15 @@ LOCAL_DATA["ERRORS"] = {};
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
-    let message = JSON.parse(event.data);
+    var message;
+    try {
+        message = JSON.parse(event.data);
+    } catch (error) {
+        console.log("JSON ERROR")
+        console.log(message)
+        console.log()
+        return;
+    }
     let message_type = message["type"];
     console.log('LMCC: Received ' + message_type + ' from ' + message["sender"]);
     console.log(message); // Log the full message only once
@@ -501,6 +510,33 @@ function generateBreadcrumbs() {
 
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
+    }, 4000); // 2 seconds interval
+
+
+    setInterval(() => {
+        // Fetch Rover data from TSS
+        fetch(ROVER_ENDPOINT)
+            .then(response => response.json())
+            .then(data => {
+                // Create a breadcrumb based on the Rover data
+                const rover_breadcrumb = {
+                    content: {
+                        coords: {
+                            x: data["rover"]["posx"],
+                            y: data["rover"]["posy"]
+                        },
+						desc: "Rover",
+
+                    },
+                    sender: "LMCC",
+                    type: "ROVERPOS",
+                    timestamp: new Date().toISOString()
+                };
+
+				ws.send(JSON.stringify(rover_breadcrumb));
+
+            })
+            .catch(error => console.error('Error generating rover breadcrumb:', error));
     }, 4000); // 2 seconds interval
 }
 

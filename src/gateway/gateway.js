@@ -30,8 +30,16 @@ wss.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
 		
 		console.log("RECEIVED MESSAGE")
-		console.log(JSON.parse(message))
-		console.log()
+		try { 
+            console.log(JSON.parse(message))
+        } catch (error) {
+            console.log("ERROR WITH MESSAGE:")
+            console.log(message);
+            console.log()
+            console.log(error)
+        }
+
+        console.log()
 
 		subscribers.forEach(function each(client) {
 			

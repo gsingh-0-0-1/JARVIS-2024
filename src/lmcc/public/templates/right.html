@@ -3,10 +3,7 @@
 <head>
     <title>JARVIS LMCC | Right</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" type="text/css">
-
+    <link href="/css/fonts.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/right.css">
 </head>
@@ -116,6 +113,13 @@
                 EV2
             </span>
 
+            <span id="rover_minimap_text" class="EV_minimap_text">
+                Rover
+            </span>
+
+            <span id="roverdot" class="roverdot">
+            </span>
+
              <!-- Right-click context menu for adding geopin -->
              <div id="rightClickMenu" style="visibility: hidden; position: absolute; z-index: 1000; padding: 10px; background: white; border: 1px solid #ccc;">
                 <input type="hidden" id="rightClickX" name="x">
@@ -130,15 +134,15 @@
         <!-- 3. Camera Feed -->
         <div id="panel_camfeed_1" class="panel cam">
             Crew Camera Feed 1
-            <video class="camfeed_element" controls poster="/images/moonsurface.gif">
-                <source src="https://100.69.33.190/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
+            <video id="camfeed_1_vid" class="camfeed_element" autoplay controls poster="/images/moonsurface.gif">
+                <source id="camfeed_1_src" src="https://192.168.86.24/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
             </video>
         </div>
 
         <div id="panel_camfeed_2" class="panel cam">
             Crew Camera Feed 2
-            <video class="camfeed_element" controls poster="/images/moonsurface.gif">
-                <source src="https://100.69.33.190/api/holographic/stream/live_high.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true" type="video/webm" />
+            <video id="camfeed_2_vid" class="camfeed_element" autoplay controls poster="/images/moonsurface.gif">
+                <source id="camfeed_2_src" src="" type="video/webm" />
             </video>
         </div>
 
@@ -181,6 +185,7 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
 <!--<script src="/js/voice.js"></script>-->
+<script src="/js/commhandler.js"></script>
 <script src="/js/right.js"></script>
 <script>
 

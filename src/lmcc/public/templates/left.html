@@ -3,10 +3,7 @@
 <head>
 	<title>JARVIS LMCC | Left</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
-
+    <link href="/css/fonts.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/left.css">
 </head>
@@ -77,8 +74,16 @@
             </div>
 
             <!-- <br><br> -->
-            <button id="send_task" onclick="createTask()">
+            <button class="taskpanelbutton" id="send_task" onclick="createTask()">
                 Send Task
+            </button>
+
+            <button class="taskpanelbutton" id="send_uia_on" onclick="sendUIA(true)">
+                UIA ON
+            </button>
+
+            <button class="taskpanelbutton" id="send_uia_off" onclick="sendUIA(false)">
+                UIA OFF
             </button>
 
             <div id="task_confirmation_panel">
@@ -173,5 +178,6 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
 <!--<script src="/js/voice.js"></script>-->
+<script src="/js/commhandler.js"></script>
 <script src="/js/left.js"></script>
 </html>
