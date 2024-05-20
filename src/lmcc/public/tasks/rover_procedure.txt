@@ -1,5 +1,5 @@
-LMCC2 will manually command the rover UP the mountain
-At the top of the mountain the rover will collect samples
-	(QR CODE)
-LMCC2 will pilot the rover to a rendezvous point with EV2 for transfer of the collected samples
+After rover location is obtained, LMCC2 command rover to worksite G (UPHILL)
+Once at worksite G, LMCC2 collect samples (via QR code) 
+Once samples collected, LMCC2 command rover to a rendezvous point and notify EV2
+Once the rover and EV2 are at the rendezvous site, EV2 collect samples from rover
 dummy_var
