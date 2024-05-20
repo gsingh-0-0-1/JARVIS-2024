@@ -36,7 +36,11 @@ public class Startup : MonoBehaviour
     public GameObject Rover;
 
     void Start() {
-        StartCoroutine(FetchIPData());
+        TSS_ADDR = "172.20.0.129";
+        GATEWAY_ADDR = "172.20.0.129";
+        PLAYER = 2;
+        startScripts = true;
+        //StartCoroutine(FetchIPData());
     }
 
     IEnumerator FetchIPData()
@@ -51,7 +55,7 @@ public class Startup : MonoBehaviour
                 TSS_ADDR = "";
                 GATEWAY_ADDR = "";
                 startScripts = true;
-                //Debug.LogError("Error fetching data: " + request.error);
+                Debug.Log("Error fetching data: " + request.error);
             }
             else
             {
