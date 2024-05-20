@@ -511,7 +511,7 @@ function generateBreadcrumbs() {
 
             })
             .catch(error => console.error('Error generating breadcrumb:', error));
-    }, 4000); // 2 seconds interval
+    }, 2 * 1000); // 2 seconds interval
 
 
     setInterval(() => {
@@ -1002,6 +1002,7 @@ app.get('/modifygeopin/:timestamp/:newdesc', (req, res) => {
 			LOCAL_DATA["GEOPINS"][key]["content"]["desc"] = req.params.newdesc
 		}
 	}
+	res.send("done")
 })
 
 app.get('/localdata/:item', (req, res) => {
