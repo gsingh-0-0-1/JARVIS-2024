@@ -57,6 +57,7 @@ LOCAL_DATA["BREADCRUMBS2"] = [];
 LOCAL_DATA["TASKS"] = [];
 LOCAL_DATA["TELEMETRY"] = {};
 LOCAL_DATA["ERRORS"] = {};
+
 const ws = new WebSocket('ws://' + GATEWAY_HOST + ':' + GATEWAY_PORT);
 
 ws.onmessage = function (event) {
@@ -403,11 +404,11 @@ async function createGeoPin(data) {
         postData = {
 			content: {
 				coords: data.content.coords,
-				desc: data.desc
+				desc: data.desc,
+				timestamp: data.content.timestamp
 			},
 			sender: data.sender || "LMCC",
 			type: data.type,
-            timestamp: new Date().toISOString()
 		}
 
 		ws.send(JSON.stringify(postData));
@@ -995,6 +996,13 @@ app.get("/specdata", (req, res) => {
 	.catch(error => console.error('Error parsing spec data:', error));
 })
 
+app.get('/modifygeopin/:timestamp/:newdesc', (req, res) => {
+	for (var key of Object.keys(LOCAL_DATA["GEOPINS"])) {
+		if (LOCAL_DATA["GEOPINS"][key]["content"]["timestamp"] == req.params.timestamp) {
+			LOCAL_DATA["GEOPINS"][key]["content"]["desc"] = req.params.newdesc
+		}
+	}
+})
 
 app.get('/localdata/:item', (req, res) => {
 	/*
