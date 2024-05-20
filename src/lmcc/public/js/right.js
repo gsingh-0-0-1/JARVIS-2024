@@ -14,7 +14,7 @@ function defineWebSocketHandlers() {
             // breadcrumbList.innerHTML = '';
             // console.log(message.content)
             // message.content.forEach(breadcrumb => {
-            addBreadCrumb1(message.content)
+            addBreadCrumb(message.content, 1)
             /*
             var li = document.createElement('li');
             var coords = message.content.coords;
@@ -24,7 +24,7 @@ function defineWebSocketHandlers() {
             */
             // });
         } else if (message_type == "BREADCRUMBS2") {
-            addBreadCrumb2(message.content)
+            addBreadCrumb(message.content, 2)
 
         } else if (message_type == "ROVERPOS") {
             addBreadCrumb(message.content, 3)
@@ -54,6 +54,12 @@ var this_sender = "LMCC"// + String(new Date().getTime())
 
 var geo_pin_list = document.getElementById("geo_pin_list")
 
+function modifyGeoPinDesc(timestamp, element) {
+    fetch('/modifygeopin/' + timestamp + "/" + element.value, {
+        method: 'GET'
+    })   
+}
+
 function requestGeoPinCreation() {
     var x = TOP_LEFT_EASTING + Number(document.getElementById('pinX').value);
     var y = TOP_LEFT_NORTHING - Number(document.getElementById('pinY').value);
@@ -67,11 +73,11 @@ function requestGeoPinCreation() {
     const geopinData = {
         content: {
             coords: { x: x || undefined, y: y || undefined },
+            timestamp: new Date().toISOString()
         }, // Will be ignored if undefined
         desc: desc,
         sender: this_sender, // Automatically set; adjust if needed for HMD
         type: "GEOPIN",
-        timestamp: new Date().toISOString()
     };
 
     // console.log(geopinData)
@@ -207,7 +213,12 @@ function addBreadCrumb(content, n) {
 
             // Remove the "current-dot" class from the trailing dots
             if (i > 0) {
-                dotlist[i].classList.remove("current-dot1");
+                if (n == 1) {
+                    dotlist[i].classList.remove("current-dot1");
+                }
+                if (n == 2) {
+                    dotlist[i].classList.remove("current-dot2");
+                }
             }
         }
     }
@@ -323,6 +334,8 @@ function blinkSelectedPin(n, color, el) {
 //custom Geopin
 var MAPDOTSGEOPIN = []
 
+var SELECTED_PIN_ELEMENT;
+
 selectedPin = null;
 function addGeoPin(content) {
     LOCAL_DATA["GEOPINS"].push(content)
@@ -335,10 +348,19 @@ function addGeoPin(content) {
     var x = Number(content["coords"]["x"]).toFixed(2)
     var y = Number(content["coords"]["y"]).toFixed(2)
 
-    li.appendChild(document.createTextNode(content["desc"]));
+    var desc = document.createElement('input')
+    desc.classList.add('geopin_desc_input')
+    desc.value = content["desc"]
+
+    li.appendChild(desc);
     li.appendChild(document.createElement("br"))
     li.appendChild(document.createTextNode("LOC: (" + x + ", " + y + ")"))
     li.setAttribute('data-coords', JSON.stringify({x: x, y: y}));
+    li.setAttribute('timestamp', content["timestamp"]);
+
+    desc.addEventListener('change', function () {
+        modifyGeoPinDesc(content["timestamp"], desc)
+    });
 
     geo_pin_list.prepend(li)
 
@@ -392,6 +414,8 @@ function addGeoPin(content) {
         selectedPin = content;
 
         blinkSelectedPin(3, color, li);
+
+        SELECTED_PIN_ELEMENT_DESC = desc;
     }
     dot3.addEventListener('click', listener);
     li.addEventListener('click', listener);
@@ -611,7 +635,7 @@ fetch('/localdata/BREADCRUMBS1')
 .then(data => {
     for (let pin_num of Object.keys(data)) {
         //console.log("load/creating bcrumb", data[pin_num])
-        addBreadCrumb1(data[pin_num]["content"]);
+        addBreadCrumb(data[pin_num]["content"], 1);
     }
 })
 .catch(error => console.error('Error loading existing breadcrumbs1:', error));
@@ -629,7 +653,7 @@ fetch('/localdata/BREADCRUMBS2')
 .then(data => {
     for (let pin_num of Object.keys(data)) {
         //console.log("load/creating bcrumb", data[pin_num])
-        addBreadCrumb2(data[pin_num]["content"]);
+        addBreadCrumb(data[pin_num]["content"], 2);
     }
 })
 .catch(error => console.error('Error loading existing breadcrumbs2:', error));
