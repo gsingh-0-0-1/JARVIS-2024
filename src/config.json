@@ -10,6 +10,6 @@
     },
     "TSS" : {
         "PORT_WEB" : "14141",
-        "HOST" : "data.cs.purdue.edu"
+        "HOST" : "172.20.0.129"
     }
 }
