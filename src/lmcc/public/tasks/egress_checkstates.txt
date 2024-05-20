@@ -1,7 +1,8 @@
 SWITCH: DCU BATT -> LOCAL
+SWITCH: UIA EMU POWER -> OFF
 SWITCH: DCU OXY -> PRIMARY
 SWITCH: DCU COM -> A
 SWITCH: DCU FAN -> PRIMARY
 SWITCH: DCU PUMP -> CLOSED
 SWITCH: DCU CO2 -> A
-eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump, eva1_co2, eva2_co2, eva1_comm, eva2_comm, eva1_fan, eva2_fan
+eva1_battstat, eva2_battstat, eva1_oxyfill, eva2_oxyfill, eva1_pump, eva2_pump, eva1_co2, eva2_co2, eva1_comm, eva2_comm, eva1_fan, eva2_fan, powerStat, powerStat2 

@@ -1,4 +1,4 @@
-SWITCH: UIA OXY VENT -> ON
-	Wait until Primary and Secondary OXY Tanks are empty for both EVAs
-SWITCH: UIA OXY VENT -> OFF
+1. SWITCH: UIA OXY VENT -> ON
+2. Wait until Primary and Secondary OXY Tanks are empty for both EVAs ( < 10 psi)
+3. SWITCH: UIA OXY VENT -> OFF
 oxyvent
