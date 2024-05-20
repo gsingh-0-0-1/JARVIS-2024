@@ -36,8 +36,8 @@ public class Startup : MonoBehaviour
     public GameObject Rover;
 
     void Start() {
-        TSS_ADDR = "172.20.0.129";
-        GATEWAY_ADDR = "172.20.0.129";
+        TSS_ADDR = "data.cs.purdue.edu";// "192.168.51.110";
+        GATEWAY_ADDR = "data.cs.purdue.edu";
         PLAYER = 2;
         startScripts = true;
         //StartCoroutine(FetchIPData());
@@ -76,9 +76,9 @@ public class Startup : MonoBehaviour
             Task_Panel.GetComponent<UIADetectionHandler>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
             HeartRate.GetComponent<rate>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
             O2TimeLeft.GetComponent<O2_time>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
-            EVA1.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
-            EVA2.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
-            Rover.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR);
+            EVA1.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
+            EVA2.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
+            Rover.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
             startScripts = false;
         }
     }

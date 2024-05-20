@@ -25,8 +25,13 @@ public class Marker_EVA : MonoBehaviour
     public int BOT_RIGHT_EASTING = 298405;
     public int BOT_RIGHT_NORTHING = 3272330;
 
-    public void Start_Custom(String host, String gateway_ip)
+    public GameObject ActiveEVAMarker;
+
+    public int Player;
+
+    public void Start_Custom(String host, String gateway_ip, int p)
     {
+        Player = p;
         // Call the function to fetch JSON data initially
         TSSc.ConnectToHost(host, 7);
         StartCoroutine(UpdateEVLocs());
@@ -48,6 +53,7 @@ public class Marker_EVA : MonoBehaviour
 
         float x = 0.0f;
         float y = 0.0f;
+        float z = 0.0f;
   
 
         if (gameObject.name == "Marker_EVA1") {
@@ -75,7 +81,32 @@ public class Marker_EVA : MonoBehaviour
         float xfloat = (float)(((x - TOP_LEFT_EASTING) / (BOT_RIGHT_EASTING - TOP_LEFT_EASTING)) * mapHeight - mapHeight * 0.5);
         float yfloat = (float)(((y - TOP_LEFT_NORTHING) / (TOP_LEFT_NORTHING - BOT_RIGHT_NORTHING)) * mapWidth + mapWidth * 0.5);
 
-        transform.localPosition = new Vector3(xfloat, yfloat, -0.002f);
+        if (Player == 1)
+        {
+            if (gameObject.name == "Marker_EVA1")
+            {
+                transform.localPosition = new Vector3(xfloat, yfloat, 0.001f);
+                ActiveEVAMarker.transform.localPosition = new Vector3(xfloat, yfloat, -0.001f);
+            }
+            else
+            {
+                transform.localPosition = new Vector3(xfloat, yfloat, -0.001f);
+            }
+        }
+        if (Player == 2)
+        {
+            if (gameObject.name == "Marker_EVA2")
+            {
+                transform.localPosition = new Vector3(xfloat, yfloat, 0.001f);
+                ActiveEVAMarker.transform.localPosition = new Vector3(xfloat, yfloat, -0.001f);
+            }
+            else
+            {
+                transform.localPosition = new Vector3(xfloat, yfloat, -0.001f);
+            }
+        }
+
+
 
         yield break;
 

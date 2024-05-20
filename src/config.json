@@ -2,14 +2,14 @@
     "GATEWAY" : {
         "PORT_SOC" : "4761",
         "PORT_WEB" : "4762",
-        "HOST" : "0.0.0.0"
+        "HOST" : "127.0.0.1"
     },
     "LMCC" : {
         "PORT_WEB" : "4763",
-        "HOST" : "0.0.0.0"
+        "HOST" : "127.0.0.1"
     },
     "TSS" : {
         "PORT_WEB" : "14141",
-        "HOST" : "172.20.0.129"
+        "HOST" : "data.cs.purdue.edu"
     }
 }

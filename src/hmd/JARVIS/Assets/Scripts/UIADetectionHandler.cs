@@ -14,8 +14,6 @@ using UnityEngine.Windows.WebCam;
 using TMPro;
 // using UnityEditor.AssetImporters;
 using SocketIOClass = SocketIOClient.SocketIO;
-using Unity.VisualScripting;
-using Unity.XR.CoreUtils;
 
 public class UIADetectionHandler : MonoBehaviour
 {
@@ -23,11 +21,9 @@ public class UIADetectionHandler : MonoBehaviour
 
     public RawImage videoDisplay;
     public WebCamTexture webCamTexture = null;
-    
 
     private List<GameObject> activeBoundingBoxes = new List<GameObject>();
     private VideoCapture videoCapture = null;
-    private Texture2D photoTexture = null;
 
     public GameObject UIAFrame;
     public GameObject GameCamera;
@@ -43,7 +39,7 @@ public class UIADetectionHandler : MonoBehaviour
 
     Boolean UIAIsActive = false;
 
-    int nframes_max = 3;
+    int nframes_max = 10;
     int nframes_done = 0;
 
     int screenWidth = 1952;
@@ -84,8 +80,6 @@ public class UIADetectionHandler : MonoBehaviour
     public GameObject BBOX_DEPRESS_G;
     public GameObject BBOX_DEPRESS_R;
 
-    private PhotoCapture photoCaptureObject = null;
-
     string[] subComponents = new string[]
     {
         "eva1_power", "eva1_oxy", "eva1_water_supply", "eva1_water_waste",
@@ -94,7 +88,7 @@ public class UIADetectionHandler : MonoBehaviour
     };
 
 
-    
+
     [DllImport("UIADetect", EntryPoint = "loadFeatures", CallingConvention = CallingConvention.Cdecl)]
     private static extern int loadFeatures(String keypoints_str, String descriptors_str);
     [DllImport("UIADetect", EntryPoint = "detectUIA", CallingConvention = CallingConvention.Cdecl)]
@@ -115,7 +109,7 @@ public class UIADetectionHandler : MonoBehaviour
         ws = new WebSocket("ws://" + gateway_ip + ":4761");
         ws.ConnectAsync();
         ws.OnOpen += (sender, e) => {
-               Debug.Log("Connected");
+            Debug.Log("Connected");
         };
         ws.OnMessage += (sender, e) =>
         {
@@ -152,12 +146,15 @@ public class UIADetectionHandler : MonoBehaviour
 
         // taskPanelText.SetText("feature files loaded");
 
-        try {
+        try
+        {
             loadFeatures(keypoints.text.ToString(), descriptors.text.ToString());
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Debug.Log(e.Message);
         }
-        
+
         StartWebCamTexture();
 
         // handle the permissions dialog the first time the app is run
@@ -169,113 +166,73 @@ public class UIADetectionHandler : MonoBehaviour
 
     void StartWebCamTexture()
     {
-        PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
-    }
-
-    private void OnPhotoCaptureCreated(PhotoCapture captureObject)
-    {
-        photoCaptureObject = captureObject;
-
-        Resolution cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
-
-        CameraParameters c = new CameraParameters();
-        c.hologramOpacity = 0.0f;
-        c.cameraResolutionWidth = cameraResolution.width;
-        c.cameraResolutionHeight = cameraResolution.height;
-        c.pixelFormat = CapturePixelFormat.BGRA32;
-        photoTexture = new Texture2D(cameraResolution.width, cameraResolution.height, TextureFormat.BGRA32, false);
-
-        captureObject.StartPhotoModeAsync(c, OnPhotoModeStarted);
-    }
-
-    private void OnPhotoModeStarted(PhotoCapture.PhotoCaptureResult result)
-    {
-        if (result.success)
+        if (WebCamTexture.devices.Length > 0)
         {
-            photoCaptureObject.TakePhotoAsync(OnCaptured);   
+            webCamTexture = new WebCamTexture(WebCamTexture.devices[0].name, screenWidth, screenHeight, 15);
+            Renderer renderer = GetComponent<Renderer>();
+            renderer.material.mainTexture = webCamTexture;
         }
-    }
-
-    private void OnCaptured(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame frame)
-    {
-        if (result.success && frame != null)
+        else
         {
-            if (UIAIsActive) { 
-                frame.UploadImageDataToTexture(photoTexture);
-
-                Matrix4x4 cameraToWorldMatrix;
-                frame.TryGetCameraToWorldMatrix(out cameraToWorldMatrix);
-
-                Matrix4x4 projectionMatrix;
-                frame.TryGetProjectionMatrix(out projectionMatrix);
-
-                double UIADistance = ProcessFrame(photoTexture);
-
-                // Position the canvas object slightly in front
-                // of the real world web camera.
-                Vector3 translation = cameraToWorldMatrix.GetColumn(3);
-                Vector3 forward = cameraToWorldMatrix.GetColumn(2);
-
-
-                Vector3 position = translation + forward * ((float)UIADistance);
-
-                // Rotate the canvas object so that it faces the user.
-                Quaternion rotation = Quaternion.LookRotation(-cameraToWorldMatrix.GetColumn(2), cameraToWorldMatrix.GetColumn(1));
-                
-                UIAFrame.transform.position = position;
-                
-                
-                photoCaptureObject.TakePhotoAsync(OnCaptured);
-            }
+            Debug.LogError("No webcam found.");
         }
     }
 
     void Update()
     {
-        /* if (webCamTexture == null) {
-             return;
-         }
-         if (play_texture) {
-             webCamTexture.Play();
-             play_texture = false;
-             screenWidth = webCamTexture.width;
-             screenHeight = webCamTexture.height;
-         }
+        if (webCamTexture == null)
+        {
+            return;
+        }
+        if (play_texture)
+        {
+            webCamTexture.Play();
+            play_texture = false;
+            screenWidth = webCamTexture.width;
+            screenHeight = webCamTexture.height;
+        }
 
-         if (webCamTexture.didUpdateThisFrame && webCamTexture.isPlaying && frame_to_proc)
-         {
-             // Debug.Log("proc");
-             ProcessFrame(webCamTexture);
-             if (nframes_done > nframes_max) {
-                 nframes_done = 0;
-                 frame_to_proc = false;
-                 webCamTexture.Stop();
-             }
-             nframes_done = nframes_done + 1;
-             // webCamTexture.Stop();
-         }*/
-        
+        if (webCamTexture.didUpdateThisFrame && webCamTexture.isPlaying && frame_to_proc)
+        {
+            // Debug.Log("proc");
+            ProcessFrame(webCamTexture);
+            if (nframes_done > nframes_max)
+            {
+                nframes_done = 0;
+                frame_to_proc = false;
+                webCamTexture.Stop();
+            }
+            nframes_done = nframes_done + 1;
+            UpdateBoundingBoxes(outerCorners);
+            // webCamTexture.Stop();
+        }
 
-        if (activateUIA) {
+        if (activateUIA)
+        {
             UIAFrame.SetActive(true);
             activateUIA = false;
         }
-        if (deActivateUIA) {
+        if (deActivateUIA)
+        {
             UIAFrame.SetActive(false);
             deActivateUIA = false;
         }
     }
 
-    IEnumerator LoopedBBoxUpdate() {
-        while (true) {
+    IEnumerator LoopedBBoxUpdate()
+    {
+        while (true)
+        {
             yield return new WaitForSeconds(0.25f);
-            if (UIAIsActive) {
+            if (UIAIsActive)
+            {
                 yield return StartCoroutine(updateBoundingBoxStates());
             }
         }
     }
 
-    IEnumerator updateBoundingBoxStates() {
+    IEnumerator updateBoundingBoxStates()
+    {
         string UIAJsonString = TSSc.GetUIAJsonString();
         JsonNode UIAJson = JsonSerializer.Deserialize<JsonNode>(UIAJsonString)!;
 
@@ -283,38 +240,38 @@ public class UIADetectionHandler : MonoBehaviour
         BBOX_EVA1_POWER_R.SetActive(!UIAJson["uia"]["eva1_power"].GetValue<Boolean>());
 
         BBOX_EVA1_OXY_G.SetActive(UIAJson["uia"]["eva1_oxy"].GetValue<Boolean>());
-        BBOX_EVA1_OXY_R.SetActive(!UIAJson["uia"]["eva1_oxy"].GetValue<Boolean>());        
+        BBOX_EVA1_OXY_R.SetActive(!UIAJson["uia"]["eva1_oxy"].GetValue<Boolean>());
 
         BBOX_EVA1_SUPPLY_G.SetActive(UIAJson["uia"]["eva1_water_supply"].GetValue<Boolean>());
-        BBOX_EVA1_SUPPLY_R.SetActive(!UIAJson["uia"]["eva1_water_supply"].GetValue<Boolean>());   
+        BBOX_EVA1_SUPPLY_R.SetActive(!UIAJson["uia"]["eva1_water_supply"].GetValue<Boolean>());
 
         BBOX_EVA1_WASTE_G.SetActive(UIAJson["uia"]["eva1_water_waste"].GetValue<Boolean>());
-        BBOX_EVA1_WASTE_R.SetActive(!UIAJson["uia"]["eva1_water_waste"].GetValue<Boolean>());   
+        BBOX_EVA1_WASTE_R.SetActive(!UIAJson["uia"]["eva1_water_waste"].GetValue<Boolean>());
 
 
         BBOX_EVA2_POWER_G.SetActive(UIAJson["uia"]["eva2_power"].GetValue<Boolean>());
         BBOX_EVA2_POWER_R.SetActive(!UIAJson["uia"]["eva2_power"].GetValue<Boolean>());
 
         BBOX_EVA2_OXY_G.SetActive(UIAJson["uia"]["eva2_oxy"].GetValue<Boolean>());
-        BBOX_EVA2_OXY_R.SetActive(!UIAJson["uia"]["eva2_oxy"].GetValue<Boolean>());        
+        BBOX_EVA2_OXY_R.SetActive(!UIAJson["uia"]["eva2_oxy"].GetValue<Boolean>());
 
         BBOX_EVA2_SUPPLY_G.SetActive(UIAJson["uia"]["eva2_water_supply"].GetValue<Boolean>());
-        BBOX_EVA2_SUPPLY_R.SetActive(!UIAJson["uia"]["eva2_water_supply"].GetValue<Boolean>());   
+        BBOX_EVA2_SUPPLY_R.SetActive(!UIAJson["uia"]["eva2_water_supply"].GetValue<Boolean>());
 
         BBOX_EVA2_WASTE_G.SetActive(UIAJson["uia"]["eva2_water_waste"].GetValue<Boolean>());
-        BBOX_EVA2_WASTE_R.SetActive(!UIAJson["uia"]["eva2_water_waste"].GetValue<Boolean>());   
+        BBOX_EVA2_WASTE_R.SetActive(!UIAJson["uia"]["eva2_water_waste"].GetValue<Boolean>());
 
 
         BBOX_VENT_G.SetActive(UIAJson["uia"]["oxy_vent"].GetValue<Boolean>());
-        BBOX_VENT_R.SetActive(!UIAJson["uia"]["oxy_vent"].GetValue<Boolean>());   
+        BBOX_VENT_R.SetActive(!UIAJson["uia"]["oxy_vent"].GetValue<Boolean>());
 
         BBOX_DEPRESS_G.SetActive(UIAJson["uia"]["depress"].GetValue<Boolean>());
-        BBOX_DEPRESS_R.SetActive(!UIAJson["uia"]["depress"].GetValue<Boolean>());   
+        BBOX_DEPRESS_R.SetActive(!UIAJson["uia"]["depress"].GetValue<Boolean>());
 
         yield break;
     }
 
-    private double ProcessFrame(Texture2D texture)
+    private void ProcessFrame(WebCamTexture texture)
     {
         Color32[] pixels = texture.GetPixels32();
         GCHandle pixelHandle = GCHandle.Alloc(pixels, GCHandleType.Pinned);
@@ -332,7 +289,7 @@ public class UIADetectionHandler : MonoBehaviour
             float[] boundingBoxes = new float[maxExpectedBoxes * 8];        // 8 coordinates per box * 10 bounding boxes
 
             //float[] outerCorners = new float[8];
-            
+
             detectUIA(pixelPtr, texture.width, texture.height, step, boundingBoxes, outerCorners, ref numBoxes);
 
             // Debug.Log("TEST " + testFunc(10).ToString() + " NB " + numBoxes.ToString());
@@ -342,7 +299,7 @@ public class UIADetectionHandler : MonoBehaviour
             outString = outString + "(" + outerCorners[0].ToString() + ", " + outerCorners[1].ToString() + "), ";
             outString = outString + "(" + outerCorners[2].ToString() + ", " + outerCorners[3].ToString() + "), ";
             outString = outString + "(" + outerCorners[4].ToString() + ", " + outerCorners[5].ToString() + "), ";
-            outString = outString + "(" + outerCorners[6].ToString() + ", " + outerCorners[7].ToString() + "), ";            
+            outString = outString + "(" + outerCorners[6].ToString() + ", " + outerCorners[7].ToString() + "), ";
 
             //for (int i = 0; i < numBoxes; i++) {
             //    outString = outString + ("Box " + (i + 1).ToString() + " Corner1: (" + boundingBoxes[i * 8].ToString() + ", " + boundingBoxes[i * 8 + 1].ToString() + "), ");
@@ -359,47 +316,6 @@ public class UIADetectionHandler : MonoBehaviour
             Array.Resize(ref boundingBoxes, numBoxes * 8);
 
             renderUIA = true;
-
-            screenWidth = photoTexture.width;
-            screenHeight = photoTexture.height;
-
-            double UIACenterScreenX = (boundingBoxes[0] + boundingBoxes[2] + boundingBoxes[4] + boundingBoxes[6]) / 4.0;
-            double UIACenterScreenY = (boundingBoxes[1] + boundingBoxes[3] + boundingBoxes[5] + boundingBoxes[7]) / 4.0;
-
-            double modScreenX = -1 * (UIACenterScreenX - (screenWidth / 2));
-            double modScreenY = 1 * (UIACenterScreenY - (screenHeight / 2));
-
-            // the first point (idxs 0 and 1) in outerFrame is the transformed (0, 0) point
-            // the second point (idxs 2 and 3) is the transformed (0, H) point
-            double approxUIAPixelHeight = Math.Pow(Math.Pow(boundingBoxes[2] - boundingBoxes[0], 2.0) + Math.Pow(boundingBoxes[3] - boundingBoxes[1], 2.0), 0.5);
-
-            // the fourth and last point (idxs 6 and 7) is the transformed (W, 0) point
-            double approxUIAPixelWidth = Math.Pow(Math.Pow(boundingBoxes[6] - boundingBoxes[0], 2.0) + Math.Pow(boundingBoxes[7] - boundingBoxes[1], 2.0), 0.5);
-
-            if (approxUIAPixelWidth < 1)
-            {
-                pixelHandle.Free();
-                return -1.0;
-            }
-
-            // Debug.Log(approxUIAPixelHeight.ToString() + " " + approxUIAPixelWidth.ToString());
-
-            // in meters, CHANGE THIS LATER
-            double realUIAWidth = 0.53;
-            double realUIAHeight = 0.61;
-
-            // degrees
-            double HL2_FOV_hor = 64.69;
-            double HL2_FOV_ver = 29.0;
-
-            double expectedUIAPixelWidth = screenWidth * (realUIAWidth / (2 * Math.PI * 1)) / (HL2_FOV_hor / 360);
-            double expectedUIAPixelHeight = screenHeight * (realUIAHeight / (2 * Math.PI * 1)) / (HL2_FOV_ver / 360);
-
-            double UIADistance = 1 * (expectedUIAPixelWidth / approxUIAPixelWidth);
-
-            pixelHandle.Free();
-            return UIADistance;
-
             //UpdateBoundingBoxes(outerCorners);
         }
         finally
@@ -411,14 +327,14 @@ public class UIADetectionHandler : MonoBehaviour
 
     private void UpdateBoundingBoxes(float[] outerFrame)
     {
-        screenWidth = photoTexture.width;
-        screenHeight = photoTexture.height;
+        screenWidth = webCamTexture.width;
+        screenHeight = webCamTexture.height;
 
         double UIACenterScreenX = (outerFrame[0] + outerFrame[2] + outerFrame[4] + outerFrame[6]) / 4.0;
         double UIACenterScreenY = (outerFrame[1] + outerFrame[3] + outerFrame[5] + outerFrame[7]) / 4.0;
 
         double modScreenX = -1 * (UIACenterScreenX - (screenWidth / 2));
-        double modScreenY =  1 * (UIACenterScreenY - (screenHeight / 2));
+        double modScreenY = 1 * (UIACenterScreenY - (screenHeight / 2));
 
         // the first point (idxs 0 and 1) in outerFrame is the transformed (0, 0) point
         // the second point (idxs 2 and 3) is the transformed (0, H) point
@@ -427,12 +343,13 @@ public class UIADetectionHandler : MonoBehaviour
         // the fourth and last point (idxs 6 and 7) is the transformed (W, 0) point
         double approxUIAPixelWidth = Math.Pow(Math.Pow(outerFrame[6] - outerFrame[0], 2.0) + Math.Pow(outerFrame[7] - outerFrame[1], 2.0), 0.5);
 
-        if (approxUIAPixelWidth < 1) {
+        if (approxUIAPixelWidth < 1)
+        {
             return;
         }
 
         // Debug.Log(approxUIAPixelHeight.ToString() + " " + approxUIAPixelWidth.ToString());
-            
+
         // in meters, CHANGE THIS LATER
         double realUIAWidth = 0.53;
         double realUIAHeight = 0.61;
@@ -441,16 +358,13 @@ public class UIADetectionHandler : MonoBehaviour
         double HL2_FOV_hor = 64.69;
         double HL2_FOV_ver = 29.0;
 
-
-
         double expectedUIAPixelWidth = screenWidth * (realUIAWidth / (2 * Math.PI * 1)) / (HL2_FOV_hor / 360);
-        double expectedUIAPixelHeight = screenHeight * (realUIAHeight / (2 * Math.PI * 1)) / (HL2_FOV_ver / 360);
-        
+
         double UIADistance = 1 * (expectedUIAPixelWidth / approxUIAPixelWidth);
 
         // taskPanelText.SetText(webCamTexture.width.ToString() + " " + screenWidth.ToString() + " " + Convert.ToInt32(expectedUIAPixelWidth).ToString() + " " + Convert.ToInt32(approxUIAPixelWidth).ToString() + " " + UIADistance.ToString());
 
-        double verticalAngleOffset = Math.Atan2((expectedUIAPixelHeight * 1), (approxUIAPixelHeight * UIADistance));//HL2_FOV_ver * (modScreenY / screenHeight);
+        double verticalAngleOffset = HL2_FOV_ver * (modScreenY / screenHeight);
 
         //taskPanelText.SetText(Convert.ToInt32(expectedUIAPixelWidth).ToString() + " " + Convert.ToInt32(approxUIAPixelHeight).ToString());
 
@@ -462,7 +376,7 @@ public class UIADetectionHandler : MonoBehaviour
 
         // now we can rotate the camera's forward vector by verticalAngleOffset around this axis
 
-        Vector3 UIADirectionVec = rotation * GameCamera.transform.forward;  
+        Vector3 UIADirectionVec = rotation * GameCamera.transform.forward;
 
         Vector3 relativePos = new Vector3((float)(UIADistance * UIADirectionVec.x / UIADirectionVec.magnitude),
                                           (float)(UIADistance * UIADirectionVec.y / UIADirectionVec.magnitude),
@@ -477,7 +391,7 @@ public class UIADetectionHandler : MonoBehaviour
         UIAFrame.transform.position = relativePos + GameCamera.transform.position;
         UIAFrame.transform.forward = new Vector3(GameCamera.transform.forward.x, 0, GameCamera.transform.forward.z);
         // UIAFrame.SetActive(true);
-        
+
     }
 
 
