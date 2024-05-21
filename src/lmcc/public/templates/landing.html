@@ -15,9 +15,10 @@
     <div id="rightbutton" class="userbutton">Right Screen |</div>
     <br><br>
     <input type="text" class="userinput" id="gateway_addr" placeholder="Gateway IP">
-    <input type="text" class="userinput" id="ev1_addr" placeholder="EV1 HMD IP">
-    <input type="text" class="userinput" id="ev2_addr" placeholder="EV2 HMD IP">
-
+    <input type="text" class="userinput" id="ev1_addr" placeholder="EV HMD IP">
+    <!--
+    	<input type="text" class="userinput" id="ev2_addr" placeholder="EV2 HMD IP">
+	-->
 
 </body>
 <script type="text/javascript">
@@ -26,7 +27,7 @@
     var ev2_addr_inp = document.getElementById("ev2_addr");
 
     function constructParamStr() {
-        return "?gateway_ip=" + gateway_addr_inp.value + "&ev1_addr=" + ev1_addr_inp.value + "&ev2_addr=" + ev2_addr_inp.value
+        return "?gateway_ip=" + gateway_addr_inp.value + "&ev1_addr=" + ev1_addr_inp.value// + "&ev2_addr=" + ev2_addr_inp.value
     }
 
 	document.getElementById("leftbutton").onclick = function() {

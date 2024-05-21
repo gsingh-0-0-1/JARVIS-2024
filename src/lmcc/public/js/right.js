@@ -580,15 +580,15 @@ function addNewNote() {
 
 // we need to keep this port value fixed, I guess
 var EV1_IP = urlParams.get("ev1_addr");
-var EV2_IP = urlParams.get("ev2_addr");
+//var EV2_IP = urlParams.get("ev2_addr");
 
 var hololens_feed_url = "https://HMD_ADDR/api/holographic/stream/live_low.mp4?holo=true&pv=true&mic=true&loopback=true&RenderFromCamera=true"
 
-//document.getElementById("camfeed_1_src").src = hololens_feed_url.replaceAll("HMD_ADDR", EV1_IP)
-document.getElementById("camfeed_2_src").src = hololens_feed_url.replaceAll("HMD_ADDR", EV2_IP)
+document.getElementById("camfeed_1_src").src = hololens_feed_url.replaceAll("HMD_ADDR", EV1_IP)
+//document.getElementById("camfeed_2_src").src = hololens_feed_url.replaceAll("HMD_ADDR", EV2_IP)
 
-//document.getElementById("camfeed_1_vid").load()
-document.getElementById("camfeed_2_vid").load()
+document.getElementById("camfeed_1_vid").load()
+//document.getElementById("camfeed_2_vid").load()
 
 function clearNavTarget() {
     var clear_message = {

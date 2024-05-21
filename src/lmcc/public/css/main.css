@@ -14,6 +14,10 @@ button {
 	font-family: Source Code Pro, Courier;
 }
 
+button:active {
+	outline: 10% solid white;
+}
+
 .help-panel{
 	position: fixed;
     top: 50%;
