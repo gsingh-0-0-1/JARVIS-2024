@@ -63,15 +63,11 @@ body {
 }
 
 #gateway_addr {
-    left: 25%;
+    left: 40%;
 }
 
 #ev1_addr {
-    left: 50%;
-}
-
-#ev2_addr {
-    left: 75%;
+    left: 60%;
 }
 
 

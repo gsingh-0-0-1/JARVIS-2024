@@ -584,3 +584,16 @@
 .geopin_desc_input:focus {
 	outline: none;
 }
+
+
+#panel_interface_control {
+	top: 0%;
+	left: 22%;
+	height: 50%;
+	width: 22%;	
+	/* background-color: #88c; */
+	/* background-image: linear-gradient(to top, #253254, #161c58); */
+	background-image: linear-gradient(to bottom right, #33426b, #161c56);
+}
+
+
