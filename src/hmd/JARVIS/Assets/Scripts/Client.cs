@@ -128,7 +128,7 @@ public class Client : MonoBehaviour
 
            GameObject new_nav_arrow = Instantiate(navarrowPrefab);
            Vector3 transformedPos = GameCamera.transform.TransformVector(navarrows_to_render[0].x, 0, navarrows_to_render[0].y);
-           new_nav_arrow.transform.position = new Vector3(GameCamera.transform.position.x + transformedPos.x, 2.5f, GameCamera.transform.position.z + transformedPos.z);
+           new_nav_arrow.transform.position = new Vector3(GameCamera.transform.position.x + transformedPos.x, 2.7f, GameCamera.transform.position.z + transformedPos.z);
            //new_nav_arrow.transform.position = new Vector3(
            //        GameCamera.transform.position.x + navarrows_to_render[0].x,
            //        2.5f,
