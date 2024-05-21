@@ -11,7 +11,13 @@ using System;
 public class BioPanelExtended : MonoBehaviour
 {
 
-    public TMP_Text O2Pressure;
+    public TMP_Text O2PressurePrim;
+    public TMP_Text O2PressureSec;
+    public TMP_Text coolantMl;
+    public TMP_Text temp;
+    public TMP_Text oxyConsumption;
+    public TMP_Text battTimeLeft;
+
     public String serverURL = "http://data.cs.purdue.edu:14141/";
     private String telemetryEndpoint;
     public int whoAmI;
@@ -56,7 +62,7 @@ public class BioPanelExtended : MonoBehaviour
                 //text.SetText($"{jsonData}");
                 float psi = recievedInformation["telemetry"]["eva1"]["oxy_pri_pressure"].GetValue<float>();
                 int psi_int = (int)psi;
-                O2Pressure.SetText($"{psi_int}");
+                O2PressurePrim.SetText($"{psi_int}");
             }
         }
     }
