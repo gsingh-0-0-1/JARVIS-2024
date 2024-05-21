@@ -9,7 +9,7 @@ public class ExtendBioPanel : MonoBehaviour
     public void OnExtendClick()
     {
 
-        if (extension.ActiveSelf == true)
+        if (extension.activeSelf == true)
         {
             extension.SetActive(false);
         }

@@ -35,6 +35,8 @@ public class Startup : MonoBehaviour
     public GameObject EVA2;
     public GameObject Rover;
 
+    public GameObject ExtendedBio;
+
     void Start() {
         TSS_ADDR = "data.cs.purdue.edu";// "192.168.51.110";
         GATEWAY_ADDR = "data.cs.purdue.edu";
@@ -79,6 +81,7 @@ public class Startup : MonoBehaviour
             EVA1.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
             EVA2.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
             Rover.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
+            //ExtendedBio.GetComponent<ExtendBioPanel>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
             startScripts = false;
         }
     }
