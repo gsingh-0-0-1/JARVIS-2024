@@ -88,10 +88,12 @@ void drawRelativeSubcomponent(cv::Mat& M, std::vector<cv::Point2f>& all_sub_boxe
     }
 }
 
-extern "C" EXPORT void detectUIA(unsigned char* frameData, int width, int height, int step, float* outBoundingBoxes, int& numBoxes)
+extern "C" EXPORT void detectUIA(unsigned char* frameData, int width, int height, int step, float* outBoundingBoxes, int& numBoxes, float* rotationTranslation, float* camera_matrix, float* dist_coeffs)
 {
     frame = cv::Mat(height, width, CV_8UC4, frameData, step);
     cv::cvtColor(frame, frame, cv::COLOR_RGBA2BGR);
+    cv::rotate(frame, frame, cv::ROTATE_180);
+    // cv::flip(frame, frame, 1);
 
     if (frame.empty())
     {
@@ -186,6 +188,39 @@ extern "C" EXPORT void detectUIA(unsigned char* frameData, int width, int height
                     outBoundingBoxes[idx2 + 6] = boxes[idx + 3].x;
                     outBoundingBoxes[idx2 + 7] = boxes[idx + 3].y;
                 }
+
+                // Converting source_points to objp (object points in 3D)
+                std::vector<cv::Point3f> objp;
+                for (size_t i = 0; i < source_points.size(); ++i) {
+                    // Check if the point is an inlier
+                    if (mask.at<uchar>(i) == 1) {
+                        float x = source_points[i].x / WIDTH * REAL_WIDTH;
+                        float y = source_points[i].y / HEIGHT * REAL_HEIGHT;
+                        objp.push_back(cv::Point3f(x, y, 0));
+                    }
+                }
+
+                // Converting target_points to points (image points in 2D)
+                std::vector<cv::Point2f> points;
+                for (size_t i = 0; i < target_points.size(); ++i) {
+                    // Check if the point is an inlier
+                    if (mask.at<uchar>(i) == 1) {
+                        points.push_back(cv::Point2f(target_points[i].x, target_points[i].y));
+                    }
+                }
+
+                // Solve PnP
+                cv::Mat rvec, tvec;
+                cv::Mat matrix = cv::Mat(3, 3, CV_32F, camera_matrix);
+                cv::Mat dist = cv::Mat(5, 1, CV_32F, dist_coeffs);
+                cv::solvePnPRansac(objp, points, matrix, dist, rvec, tvec, false, cv::SOLVEPNP_ITERATIVE);
+
+                rotationTranslation[0] = rvec.at<double>(0);
+                rotationTranslation[1] = rvec.at<double>(1);
+                rotationTranslation[2] = rvec.at<double>(2);
+                rotationTranslation[3] = tvec.at<double>(0);
+                rotationTranslation[4] = tvec.at<double>(1);
+                rotationTranslation[5] = tvec.at<double>(2);
             }
         }
     }

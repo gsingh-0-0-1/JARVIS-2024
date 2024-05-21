@@ -13,6 +13,8 @@
 int NUM_FEATURES = 2000;     // Increase nfeatures to increase accuracy (default: 500)
 int HEIGHT = 883;
 int WIDTH = 756;
+float REAL_HEIGHT = 0.6096;
+float REAL_WIDTH = 0.5334;
 
 // Position of subcomponents in the target image anti-clockwise from top-left
 std::vector<cv::Point2f> EMU1_POWER =   {cv::Point2f(34, 248), cv::Point2f(34, 419), cv::Point2f(116, 419), cv::Point2f(116, 248)};
@@ -45,7 +47,7 @@ cv::Ptr<cv::BFMatcher> bf = cv::BFMatcher::create(cv::NORM_HAMMING, true);
 extern "C" {
 #endif
     EXPORT void loadFeatures();
-    EXPORT void detectUIA(unsigned char* frameData, int width, int height, int step, float* outBoundingBoxes, int& numBoxes);
+    EXPORT void detectUIA(unsigned char* frameData, int width, int height, int step, float* outBoundingBoxes, int& numBoxes, float* rotationTranslation, float* camera_matrix, float* dist_coeffs);
 #ifdef __cplusplus
 }
 #endif
