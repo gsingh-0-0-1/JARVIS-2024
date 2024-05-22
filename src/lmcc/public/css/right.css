@@ -245,13 +245,14 @@
 
 #control_notes {
 	position: absolute;
-	background-color: #bbb;
+	background-color: #567;
 	border: 0.1vh solid #345;
 	left: 50%;
 	top: 15%;
 	transform: translate(-50%, 0%);
 	width: 90%;
 	height: 30%;
+	color: #ddd;
 }
 
 #control_notes:focus {
@@ -562,7 +563,7 @@
 	height: 50%;
 	width: 23%;
 	/* background-color: #88c; */
-	background-image: linear-gradient(to bottom right, #33426b, #161c56);
+	background-image: linear-gradient(to bottom right, #33426b, #161c56)
 }
 
 
