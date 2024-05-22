@@ -36,8 +36,8 @@ public class Startup : MonoBehaviour
     public GameObject Rover;
 
     void Start() {
-        TSS_ADDR = "192.168.51.110";
-        GATEWAY_ADDR = "192.168.51.47";
+        TSS_ADDR = "172.20.10.6";
+        GATEWAY_ADDR = "172.20.10.6";
         PLAYER = 2;
         startScripts = true;
         //StartCoroutine(FetchIPData());
