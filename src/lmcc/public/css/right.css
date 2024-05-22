@@ -574,11 +574,12 @@
 }
 
 .geopin_desc_input {
-	display: inline;
-	background-color: #506090;
-	padding: 1% 1%;
+	display: inline-block;
+	width: 70%;
+	background-color: #8888bb;
+	padding: 2% 2%;
 	font-family: Source Code Pro;
-	border: none;
+	border: 0.3vh solid #bbbbdd;
 }
 
 .geopin_desc_input:focus {
@@ -594,6 +595,19 @@
 	/* background-color: #88c; */
 	/* background-image: linear-gradient(to top, #253254, #161c58); */
 	background-image: linear-gradient(to bottom right, #33426b, #161c56);
+	text-align: center;
+}
+
+.hmdcontrol {
+	display: inline-block;
+	width: 25%;
+	height: 20%;
+	text-align: center;
+	align-content: center;
+}
+
+button:active {
+	background-color: #f00;
 }
 
 
