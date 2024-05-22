@@ -13433,7 +13433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   O2PressurePrim: {fileID: 1930256855}
   O2PressureSec: {fileID: 1372027654}
-  coolantMl: {fileID: 569653592}
+  coolantMl: {fileID: 1865330504}
   temp: {fileID: 304897531}
   oxyConsumption: {fileID: 412011898}
   battTimeLeft: {fileID: 2064624097}

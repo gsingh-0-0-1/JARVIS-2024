@@ -81,7 +81,7 @@ public class Startup : MonoBehaviour
             EVA1.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
             EVA2.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
             Rover.GetComponent<Marker_EVA>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
-            //ExtendedBio.GetComponent<ExtendBioPanel>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
+            ExtendedBio.GetComponent<BioPanelExtended>().Start_Custom(TSS_ADDR, GATEWAY_ADDR, PLAYER);
             startScripts = false;
         }
     }

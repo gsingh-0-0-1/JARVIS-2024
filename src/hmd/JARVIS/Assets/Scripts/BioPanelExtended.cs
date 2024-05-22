@@ -60,9 +60,44 @@ public class BioPanelExtended : MonoBehaviour
                 //text.SetText(jsonData);
                 JsonNode recievedInformation = JsonSerializer.Deserialize<JsonNode>(jsonData);
                 //text.SetText($"{jsonData}");
-                float psi = recievedInformation["telemetry"]["eva1"]["oxy_pri_pressure"].GetValue<float>();
-                int psi_int = (int)psi;
-                O2PressurePrim.SetText($"{psi_int}");
+
+                //setting text for primary pressure
+                float primPsi = recievedInformation["telemetry"][$"eva{whoAmI}"]["oxy_pri_pressure"].GetValue<float>();
+                int primPsi_int = (int)primPsi;
+                O2PressurePrim.SetText($"{primPsi_int}");
+
+                //secondary oxy pressure
+                float secPsi = recievedInformation["telemetry"][$"eva{whoAmI}"]["oxy_sec_pressure"].GetValue<float>();
+                int secPsi_int = (int)secPsi;
+                O2PressureSec.SetText($"{secPsi_int}");
+
+
+                //Coolant
+                float coolant = recievedInformation["telemetry"][$"eva{whoAmI}"]["coolant_ml"].GetValue<float>();
+                coolantMl.SetText($"{coolant}");
+
+                //temp
+                float suitTemp = recievedInformation["telemetry"][$"eva{whoAmI}"]["temperature"].GetValue<float>();
+                temp.SetText($"{suitTemp}");
+
+                //oxy consump
+                float consump = recievedInformation["telemetry"][$"eva{whoAmI}"]["oxy_consumption"].GetValue<float>();
+                oxyConsumption.SetText($"{consump}");
+
+
+                float batt_seconds = recievedInformation["telemetry"][$"eva{whoAmI}"]["batt_time_left"].GetValue<float>();
+                int batt_minutes = (int) batt_seconds / 60;
+                int batt_hours = batt_minutes / 60;
+                int batt_min_right = batt_minutes % 60;
+
+                if (batt_min_right < 10)
+                {
+                    battTimeLeft.SetText($"{batt_hours}: {batt_min_right}");
+                }
+                else
+                {
+                    battTimeLeft.SetText($"{batt_hours}: {batt_min_right}");
+                }
             }
         }
     }
