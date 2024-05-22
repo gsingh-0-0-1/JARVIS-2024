@@ -1,4 +1,4 @@
-SWITCH: UIA WATER WASTE -> ON/OPEN
+SWITCH: UIA WATER WASTE -> OPEN
 	Wait until Water Coolant Tank is EMPTY
-SWITCH: UIA WATER WASTE -> OFF
+SWITCH: UIA WATER WASTE -> CLOSE
 eva1_waterwaste, eva2_waterwaste

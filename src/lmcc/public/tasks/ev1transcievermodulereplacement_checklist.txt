@@ -1,4 +1,4 @@
-Collect replacement transceiver module and non-conductive tools.
-Remove the faulty module.
-Install the new module ensuring all connections are secure.
+Collect replacement transceiver module and non-conductive tools
+Remove the faulty module
+Install the new module ensuring all connections are secure
 dummy_var
